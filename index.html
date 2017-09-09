@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>护林员管理系统</title>
+    <link rel="stylesheet" href="libs/skins/Aqua/css/ligerui-all.css">
+    <link rel="stylesheet" href="font/iconfont.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <article class="flex h100vh">
+        <aside id="mainNav" class="aside_menu h100vh flex column">
+            <div class="logo_title tcenter">
+                <img src="img/logo.png" alt="">
+                <label class="block">广东护林</label>
+            </div>
+            <nav class="flex_1">
+               <dl>
+                   <dd link="views/main/index.html" class="tcenter firstload">
+                        <i class="icons" style="background-position: 0 -40px;"></i>
+                        <label class="block">首页</label>
+                   </dd>
+                   <dd link="views/blank.html" class="tcenter">
+                        <i class="icons" style="background-position: -40px -40px;"></i>
+                        <label class="block">统计图表</label>
+                   </dd>
+                   <dd link="views/blank.html" class="tcenter">
+                        <i class="icons" style="background-position: -80px -40px;"></i>
+                        <label class="block">通知公告</label>
+                   </dd>
+                   <dd link="views/blank.html" class="tcenter">
+                        <i class="icons" style="background-position: -120px -40px;"></i>
+                        <label class="block">巡护林管理</label>
+                   </dd>
+                   <dd link="views/blank.html" class="tcenter">
+                        <i class="icons" style="background-position: -160px -40px;"></i>
+                        <label class="block">护林员管理</label>
+                   </dd>
+               </dl>
+            </nav>
+            <div class="sysinfo">
+                <dl>
+                    <dd class="tcenter">广东防火办</dd>
+                    <dd><i class="icons" style="background-position: -160px 0;vertical-align: -6px;"></i>系统中心</dd>
+                    <dd><i class="icons" style="background-position: -180px 0;vertical-align: -5px;"></i>注销</dd>
+                </dl>
+            </div>
+        </aside>
+        <section id="mainFrame" class="section_content flex_1 h100vh ohidden"></section>
+    </article>
+    <script src="libs/jquery-1.9.0.min.js"></script>
+    <script src="libs/ligerui.min.js"></script>
+    <script src="libs/vue.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

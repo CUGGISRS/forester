@@ -1,0 +1,115 @@
+.icons {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(../img/icons.png) no-repeat 0 0;
+}
+#mainNav {
+  background: #323941;
+  color: #fff;
+  width: 74px;
+}
+#mainNav .logo_title {
+  padding: 1em 0;
+  font-family: "STXinwei";
+  font-size: 16px;
+}
+#mainNav nav dd {
+  padding: .8em 0 .6em;
+}
+#mainNav nav dd.selected {
+  background: #2A2F35;
+}
+#mainNav nav dd .icons {
+  width: 40px;
+  height: 40px;
+}
+#mainNav .sysinfo {
+  zoom: .85;
+}
+#mainNav .sysinfo dl {
+  margin: .5em;
+}
+#mainNav .sysinfo dd {
+  padding: 5px 0;
+  line-height: 1.5;
+}
+#mainNav .sysinfo .icons {
+  margin-right: 4px;
+}
+#secondMenu {
+  min-height: 30px;
+  padding: 0 2em;
+  border-bottom: 1px solid #D5D7D6;
+}
+#secondMenu dd {
+  position: relative;
+  padding: 5px 7px;
+  display: inline-block;
+  vertical-align: middle;
+}
+#secondMenu dd.selected:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #3997D6;
+}
+#secondMenu dd + dd {
+  margin-left: 1em;
+}
+#secondMenu .icons {
+  vertical-align: middle;
+}
+#openlayerContent {
+  background: #234021;
+}
+.panel {
+  position: absolute;
+  border: 1px solid #D5E1E7;
+  -webkit-box-shadow: 0 1px 1px 0 #D9E1E7;
+  box-shadow: 0 1px 1px 0 #D9E1E7;
+  border-radius: 2px;
+  background: #fff;
+  width: 220px;
+}
+.panel .close {
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+}
+.panel .close .iconfont {
+  font-weight: 600;
+  font-size: 22px;
+  color: #C5D7E1;
+  line-height: 12px;
+}
+.panel .title {
+  padding: 5px 0 5px 6px;
+  border-bottom: 1px solid #E5E4E9;
+}
+.panel .title .icons {
+  margin-right: 3px;
+  width: 18px;
+  background-position: 0 0;
+  zoom: .85;
+}
+#mainPanel {
+  display: none;
+  height: -webkit-calc(100vh - 120px);
+  height: calc(100vh - 120px);
+  top: 15px;
+  left: 20px;
+}
+#assistPanel {
+  display: none;
+  height: -webkit-calc(100vh - 300px);
+  height: calc(100vh - 300px);
+  top: 65px;
+  right: 20px;
+}
+#assistPanel .title {
+  color: #588AA1;
+}

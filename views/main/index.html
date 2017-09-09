@@ -1,0 +1,69 @@
+<div class="flex column h100">
+        <header id="secondMenu">
+            <dl>
+                <dd class="firstload" link="views/main/forester.html" data-assist="views/main/assist/main.html">
+                    <i class="icons" style="background-position: 0 0;"></i>
+                    护林员
+                </dd>
+                <dd link="views/blank.html">
+                    <i class="icons" style="background-position: -20px 0;"></i>
+                    轨迹
+                </dd>
+                <dd link="views/blank.html">
+                    <i class="icons" style="background-position: -40px 0;"></i>
+                    巡护区
+                </dd>
+                <dd link="views/blank.html">
+                    <i class="icons" style="background-position: -60px 0;"></i>
+                    关键点
+                </dd>
+                <dd link="views/blank.html">
+                    <i class="icons" style="background-position: -80px 0;"></i>
+                    报警
+                </dd>
+                <dd link="views/blank.html">
+                    <i class="icons" style="background-position: -100px 0;"></i>
+                    热点
+                </dd>
+                <dd link="views/blank.html">
+                    <i class="icons" style="background-position: -120px 0;"></i>
+                    紧急任务
+                </dd>
+                <dd link="views/blank.html">
+                    <i class="icons" style="background-position: -140px 0;"></i>
+                    考勤
+                </dd>
+            </dl>
+        </header>
+        <section id="openlayerFrame" class="flex_1 ohidden relative">
+            <div id="openlayerContent" class="w100 h100"></div>
+            <div id="mainPanel" class="panel"></div>
+            <div id="assistPanel" class="panel"></div>
+        </section>
+    </div>
+    <script>
+        var Page = {};
+        (function(){
+            $(document).ready(function(){
+                $('#secondMenu').on('click', 'dd', function(){
+                    //加载主面板
+                    $('#mainPanel').load(this.getAttribute('link')).fadeIn(400);
+                    $(this).addClass('selected').siblings().removeClass('selected');
+                    //加载侧面板
+                    fillAssistPanel(this.getAttribute('data-assist'));
+                });
+                $('#secondMenu dd.firstload').trigger('click');
+                $('#openlayerFrame .panel').on('click', '.close', function(){
+                    $(this).closest('.panel').fadeOut(400);
+                });
+            });
+
+            function fillAssistPanel(url) {
+                $('#assistPanel').load(url).fadeIn(400);
+            }
+            //提供webgis加载侧边提示信息面板
+            Page.fillPanel = function (info) {
+                //一系列约定的判断
+            }
+        })();
+    </script>
