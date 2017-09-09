@@ -45,6 +45,9 @@ textarea {
     width: 0;
     height: 0;
 } */
+::-webkit-input-placeholder {
+    color: #bbb;
+}
 
 .scroll {
     -webkit-overflow-scrolling: touch;

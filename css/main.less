@@ -1,10 +1,44 @@
+body{
+    font-size: 14px;
+}
 .icons{
     display: inline-block;
     width: 20px; height: 20px;
     background: url(../img/icons.png) no-repeat 0 0;
 }
+.checkbox{
+    position: relative;
+    display: inline-block;
+    width: 1em; height: 1em;
+    border: 1px solid #e3e3e3;
+    border-radius: 2px;
+    vertical-align: middle;
+    &:hover{
+        -webkit-box-shadow: 0 0 4px 2px #eee inset;
+                box-shadow: 0 0 4px 2px #eee inset;
+    }
+}
+[type="checkbox"]:checked + .checkbox{
+    -webkit-box-shadow: 0 0 4px 2px #eee inset;
+            box-shadow: 0 0 4px 2px #eee inset;
+    &::after{
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -4px 0 0 -3px;
+        border: 1px solid #8d8d8d;
+        border-top-width: 0; border-right-width: 0;
+        width: 6px;
+        height: 4px;
+        -webkit-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+                transform: rotate(-45deg);
+    }
+}
 #mainNav{ 
-    background: #323941; color: #fff; width: 74px; 
+    background: #323941; color: #fff; width: 6em; 
     .logo_title{ padding: 1em 0; font-family: "STXinwei"; font-size: 16px; }
     nav{
         dd{ 
@@ -23,6 +57,7 @@
         dd{ padding: 5px 0; line-height: 1.5;}
         .icons{ 
             margin-right: 4px;
+            vertical-align: -4px;
         }
     }
 }
@@ -37,7 +72,7 @@
             position: absolute;
             bottom: 0; left: 0;
             width: 100%;
-            height: 3px;
+            height: 4px;
             background: #3997D6;
         }
         & + dd{
@@ -45,7 +80,7 @@
         }
     }
     .icons{
-        vertical-align: middle;
+        vertical-align: -4px;
     }
 }
 
@@ -71,7 +106,7 @@
         }
     }
     .title{
-        padding: 5px 0 5px 6px;
+        padding: 5px 0 5px 6px; line-height: 1.3;
         border-bottom: 1px solid #E5E4E9;
         .icons{
             margin-right: 3px; width: 18px;
@@ -85,6 +120,57 @@
     height: -webkit-calc(~"100vh - 120px");
     height: calc(~"100vh - 120px");
     top: 15px; left: 20px;
+    .title{
+        [type="checkbox"]{
+            display: none;
+        }
+        label{
+            margin-right: 4px;
+        }
+    }
+    .query{
+        border-bottom: 1px solid #E5E4E9;
+        padding: 10px 10px 0;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        form{
+            border: 1px solid #eee; border-radius: 3px;
+            -webkit-box-shadow: 0 0 4px 1px #eee inset;
+                    box-shadow: 0 0 4px 1px #eee inset;
+            input, button{
+                border: 0;
+                background: transparent;
+            }
+            input{
+                padding: 5px; width: 100%; outline: none;
+            }
+            button{
+                background: #6DA1D5;
+                padding: 0 6px; width: 3em;
+                border-radius: 3px;margin-bottom: -1px;
+            }
+        }
+        .tabs{
+            span{
+                position: relative;
+                display: inline-block;
+                line-height: 2.4; text-align: center;
+                &.selected:after{
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    width: 5em;
+                    height: 4px;
+                    background: #6CA1D3;
+                    margin-left: -2.5em;
+                }
+            }
+        }
+    }
+    .treeContext{
+        padding: 15px;
+    }
 }
 #assistPanel{
     display: none;

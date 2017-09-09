@@ -1,13 +1,49 @@
+body {
+  font-size: 14px;
+}
 .icons {
   display: inline-block;
   width: 20px;
   height: 20px;
   background: url(../img/icons.png) no-repeat 0 0;
 }
+.checkbox {
+  position: relative;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 1px solid #e3e3e3;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+.checkbox:hover {
+  -webkit-box-shadow: 0 0 4px 2px #eee inset;
+  box-shadow: 0 0 4px 2px #eee inset;
+}
+[type="checkbox"]:checked + .checkbox {
+  -webkit-box-shadow: 0 0 4px 2px #eee inset;
+  box-shadow: 0 0 4px 2px #eee inset;
+}
+[type="checkbox"]:checked + .checkbox::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -4px 0 0 -3px;
+  border: 1px solid #8d8d8d;
+  border-top-width: 0;
+  border-right-width: 0;
+  width: 6px;
+  height: 4px;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
 #mainNav {
   background: #323941;
   color: #fff;
-  width: 74px;
+  width: 6em;
 }
 #mainNav .logo_title {
   padding: 1em 0;
@@ -36,6 +72,7 @@
 }
 #mainNav .sysinfo .icons {
   margin-right: 4px;
+  vertical-align: -4px;
 }
 #secondMenu {
   min-height: 30px;
@@ -54,14 +91,14 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 3px;
+  height: 4px;
   background: #3997D6;
 }
 #secondMenu dd + dd {
   margin-left: 1em;
 }
 #secondMenu .icons {
-  vertical-align: middle;
+  vertical-align: -4px;
 }
 #openlayerContent {
   background: #234021;
@@ -88,6 +125,7 @@
 }
 .panel .title {
   padding: 5px 0 5px 6px;
+  line-height: 1.3;
   border-bottom: 1px solid #E5E4E9;
 }
 .panel .title .icons {
@@ -102,6 +140,60 @@
   height: calc(100vh - 120px);
   top: 15px;
   left: 20px;
+}
+#mainPanel .title [type="checkbox"] {
+  display: none;
+}
+#mainPanel .title label {
+  margin-right: 4px;
+}
+#mainPanel .query {
+  border-bottom: 1px solid #E5E4E9;
+  padding: 10px 10px 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#mainPanel .query form {
+  border: 1px solid #eee;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 4px 1px #eee inset;
+  box-shadow: 0 0 4px 1px #eee inset;
+}
+#mainPanel .query form input,
+#mainPanel .query form button {
+  border: 0;
+  background: transparent;
+}
+#mainPanel .query form input {
+  padding: 5px;
+  width: 100%;
+  outline: none;
+}
+#mainPanel .query form button {
+  background: #6DA1D5;
+  padding: 0 6px;
+  width: 3em;
+  border-radius: 3px;
+  margin-bottom: -1px;
+}
+#mainPanel .query .tabs span {
+  position: relative;
+  display: inline-block;
+  line-height: 2.4;
+  text-align: center;
+}
+#mainPanel .query .tabs span.selected:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 5em;
+  height: 4px;
+  background: #6CA1D3;
+  margin-left: -2.5em;
+}
+#mainPanel .treeContext {
+  padding: 15px;
 }
 #assistPanel {
   display: none;
