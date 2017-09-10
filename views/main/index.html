@@ -47,10 +47,10 @@
             $(document).ready(function(){
                 $('#secondMenu').on('click', 'dd', function(){
                     //加载主面板
-                    $('#mainPanel').load(this.getAttribute('link')).fadeIn(400);
+                    $('#mainPanel').load(this.getAttribute('link') + '?_=' + (+new Date())).fadeIn(400);
                     $(this).addClass('selected').siblings().removeClass('selected');
                     //加载侧面板
-                    fillAssistPanel(this.getAttribute('data-assist'));
+                    fillAssistPanel(this.getAttribute('data-assist') + '?_=' + (+new Date()));
                 });
                 $('#secondMenu dd.firstload').trigger('click');
                 $('#openlayerFrame .panel').on('click', '.close', function(){

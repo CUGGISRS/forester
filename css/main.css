@@ -179,6 +179,7 @@ body {
 #mainPanel .query .tabs span {
   position: relative;
   display: inline-block;
+  cursor: pointer;
   line-height: 2.4;
   text-align: center;
 }
@@ -194,6 +195,20 @@ body {
 }
 #mainPanel .treeContext {
   padding: 15px;
+}
+#mainPanel .resultContext dd {
+  padding: 10px 20px 10px 3em;
+  border-bottom: 1px solid #E6E5EA;
+  line-height: 1.8;
+}
+#mainPanel .resultContext dd h3 {
+  font-size: 15px;
+  font-weight: 600;
+}
+#mainPanel .resultContext dd .icons {
+  margin-left: -24px;
+  margin-right: 4px;
+  vertical-align: -4px;
 }
 #assistPanel {
   display: none;

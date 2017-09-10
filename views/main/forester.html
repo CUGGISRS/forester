@@ -3,64 +3,106 @@
         <i class="icons"></i>
         <span class="flex_1">护林员查询</span>
         <label>
-            <input type="checkbox" name="offline" checked>
+            <input type="checkbox" v-model="offline">
             <i class="checkbox"></i>
             离线
         </label>
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
     <div class="query">
-        <form action="." class="flex acenter">
-            <input type="text" placeholder="请输入人名/电话查询" name="filter" class="flex_1">
-            <button type="submit">扫完</button>
+        <form action="." @submit.prevent="filterQuery" class="flex acenter">
+            <input type="text" v-model="filterWord" placeholder="请输入人名/电话查询" @input="filterQuery" class="flex_1">
+            <button type="submit">搜索</button>
         </form>
         <div class="tabs flex acenter jcenter">
-            <span class="flex_1 selected">组织机构</span>
-            <span class="flex_1">查询结果</span>
+            <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="tabIdx=0">组织机构</span>
+            <span class="flex_1" :class="{'selected': tabIdx == 1}" @click="tabIdx=1">查询结果</span>
         </div>
     </div>
     <div class="result flex_1 ohidden">
-        <div class="treeContext h100 scroll bbox">
+        <div class="treeContext h100 scroll bbox" v-show="tabIdx == 0">
             <ul id="treecontext" class="l-tree" style="width: calc(100% - 30px)"></ul>
         </div>
-        <div class="resultContext">
-
+        <div class="resultContext h100 scroll bbox" v-show="tabIdx == 1">
+            <dl>
+                <dd>
+                    <h3><i class="icons"></i><span>清远市阳山县</span></h3>
+                    <p>赵家辉&emsp;13512345678</p>
+                    <p>面积&emsp;1234.23亩</p>
+                </dd>
+                <dd>
+                    <h3><i class="icons"></i><span>清远市阳山县</span></h3>
+                    <p>赵家辉&emsp;13512345678</p>
+                    <p>面积&emsp;1234.23亩</p>
+                </dd>
+                <dd>
+                    <h3><i class="icons"></i><span>清远市阳山县</span></h3>
+                    <p>赵家辉&emsp;13512345678</p>
+                    <p>面积&emsp;1234.23亩</p>
+                </dd>
+                <dd>
+                    <h3><i class="icons"></i><span>清远市阳山县</span></h3>
+                    <p>赵家辉&emsp;13512345678</p>
+                    <p>面积&emsp;1234.23亩</p>
+                </dd>
+            </dl>
         </div>
     </div>
 </div>
 
 <script>
-        (function () {
-            var counts = [1, 20, 10];
-            $("#treecontext").ligerTree({
-                data: createData(),
-                checkbox: true,
-                idFieldName: 'id',
-                isExpand: 2,
-                slide: false
-            });
-            function createData(e) {
-                e = e || {};
-                var level = e.level || 1,
-                    prev = e.prev || "",
-                    count = counts[level - 1],
-                    data = [];
-                var hasChildren = level < counts.length;
-                for (var i = 0, l = parseInt(count); i < l; i++) {
-                    var num = i + 1, id = prev + num;
-                    var o = {
-                        text: "node" + id,
-                        index: num
-                    };
-                    if (hasChildren) {
-                        o.children = createData({
-                            level: level + 1,
-                            prev: id + "-"
-                        });
-                    }
-                    data.push(o);
-                }
-                return data;
+(function () {
+    var baseurl = 'http://www.ligerui.com/demos/tree/treeDeptData.ashx';
+    var tree = new Vue({
+        el: '#vue-forester',
+        data:  {
+            offline: true,
+            filterWord: '',
+            tabIdx: 0
+        },
+        watch: {
+            offline: function(v){
+                console.log('offline:', v);
             }
-        })();
+        },
+        mounted: mounted,
+        methods: {
+            filterQuery: function(){
+                console.log('filterQuery', this.filterWord);
+                this.tabIdx = +!!this.filterWord;
+            }
+        }
+    });
+    function mounted () {
+        $("#treecontext").ligerTree({
+            checkbox: false,
+            treeLine: false,
+            url: baseurl + '?type=company',
+            isExpand: 1,
+            idFieldName: 'id', 
+            slide: false,
+            isLeaf : function(data)
+            {
+                if (!data) return false;
+                return data.type == "employee";
+            },
+            delay: function(e)
+            {
+                var data = e.data;
+                if (data.type == "company")
+                {
+                    return { url: baseurl + '?type=deptment&prev=' + data.id }
+                }
+                if (data.type == "deptment")
+                {
+                    return { url: baseurl + '?type=employee&prev=' + data.id }
+                }
+                return false;
+            },
+            onClick: function(data, target) {
+                console.log('data', data);
+            }
+        });
+    }
+})();
 </script>
