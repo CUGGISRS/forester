@@ -2,36 +2,28 @@
         <header id="secondMenu">
             <dl>
                 <dd class="firstload" link="views/main/forester.html" data-assist="views/main/assist/main.html">
-                    <i class="icons" style="background-position: 0 0;"></i>
-                    护林员
+                    <i class="icons icon_00"></i>护林员
                 </dd>
                 <dd link="views/blank.html">
-                    <i class="icons" style="background-position: -20px 0;"></i>
-                    轨迹
+                    <i class="icons icon_01"></i>轨迹
                 </dd>
                 <dd link="views/blank.html">
-                    <i class="icons" style="background-position: -40px 0;"></i>
-                    巡护区
+                    <i class="icons icon_02"></i>巡护区
                 </dd>
                 <dd link="views/blank.html">
-                    <i class="icons" style="background-position: -60px 0;"></i>
-                    关键点
+                    <i class="icons icon_03"></i>关键点
                 </dd>
                 <dd link="views/blank.html">
-                    <i class="icons" style="background-position: -80px 0;"></i>
-                    报警
+                    <i class="icons icon_04"></i>报警
                 </dd>
                 <dd link="views/blank.html">
-                    <i class="icons" style="background-position: -100px 0;"></i>
-                    热点
+                    <i class="icons icon_05"></i>热点
                 </dd>
                 <dd link="views/blank.html">
-                    <i class="icons" style="background-position: -120px 0;"></i>
-                    紧急任务
+                    <i class="icons icon_06"></i>紧急任务
                 </dd>
                 <dd link="views/blank.html">
-                    <i class="icons" style="background-position: -140px 0;"></i>
-                    考勤
+                    <i class="icons icon_07"></i>考勤
                 </dd>
             </dl>
         </header>
@@ -42,7 +34,10 @@
         </section>
     </div>
     <script>
-        var Page = {};
+        var Page = {
+            //提供webgis加载侧边提示信息面板
+            fillPanel: function () {}
+        };
         (function(){
             $(document).ready(function(){
                 $('#secondMenu').on('click', 'dd', function(){
@@ -50,7 +45,7 @@
                     $('#mainPanel').load(this.getAttribute('link') + '?_=' + (+new Date())).fadeIn(400);
                     $(this).addClass('selected').siblings().removeClass('selected');
                     //加载侧面板
-                    fillAssistPanel(this.getAttribute('data-assist') + '?_=' + (+new Date()));
+                    fillAssistPanel(this.getAttribute('data-assist'));
                 });
                 $('#secondMenu dd.firstload').trigger('click');
                 $('#openlayerFrame .panel').on('click', '.close', function(){
@@ -59,11 +54,12 @@
             });
 
             function fillAssistPanel(url) {
-                $('#assistPanel').load(url).fadeIn(400);
+                url && $('#assistPanel').load(url + '?_=' + (+new Date())).fadeIn(400);
             }
             //提供webgis加载侧边提示信息面板
             Page.fillPanel = function (info) {
                 //一系列约定的判断
+                info.url && fillAssistPanel(info.url)
             }
         })();
     </script>

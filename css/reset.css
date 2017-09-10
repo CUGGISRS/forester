@@ -34,17 +34,18 @@ textarea {
 }
 
 
-/* ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: #d9d9d9;
+    background: #bbb;
     cursor: pointer;
 }
 ::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-} */
+    width: 4px;
+    height: 4px;
+}
+
 ::-webkit-input-placeholder {
     color: #bbb;
 }
@@ -260,4 +261,9 @@ textarea {
 /*************ligerui.css重置****************/
 .l-tree-loading{
     margin-left: -12px;
+}
+.l-tree{
+    width: 100%!important;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }

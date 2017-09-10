@@ -11,8 +11,8 @@
     </div>
     <div class="query">
         <form action="." @submit.prevent="filterQuery" class="flex acenter">
-            <input type="text" v-model="filterWord" placeholder="请输入人名/电话查询" @input="filterQuery" class="flex_1">
-            <button type="submit">搜索</button>
+            <input type="text" v-model="filterWord" placeholder="请输入人名/电话查询" class="flex_1">
+            <button type="submit"><i class="icons icon_30"></i></button>
         </form>
         <div class="tabs flex acenter jcenter">
             <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="tabIdx=0">组织机构</span>
@@ -52,8 +52,8 @@
 
 <script>
 (function () {
-    var baseurl = 'http://www.ligerui.com/demos/tree/treeDeptData.ashx';
-    var tree = new Vue({
+    var treeEve;
+    var treeDom = new Vue({
         el: '#vue-forester',
         data:  {
             offline: true,
@@ -62,45 +62,62 @@
         },
         watch: {
             offline: function(v){
-                console.log('offline:', v);
+                treeEve.reload()
             }
         },
         mounted: mounted,
         methods: {
             filterQuery: function(){
-                console.log('filterQuery', this.filterWord);
+                var self = this;
                 this.tabIdx = +!!this.filterWord;
+                $.get(HOMECtrl + "GetLbsUsersByUserInfo", {
+                    userInfo: self.filterWord,
+                    organId: 2
+                }).done(function(data){
+                    console.log('data-filterquery:', data);
+                })
             }
         }
     });
     function mounted () {
-        $("#treecontext").ligerTree({
+        var self = this;
+        var parms = '&disconnectTimer=' + TIMEOUT;
+        treeEve = $("#treecontext").ligerTree({
+            url: HOMECtrl + 'GetHomeRootOrgan?organId=2' + parms,
+            ajaxType: 'get',
+            slide: false,
             checkbox: false,
             treeLine: false,
-            url: baseurl + '?type=company',
-            isExpand: 1,
-            idFieldName: 'id', 
-            slide: false,
-            isLeaf : function(data)
-            {
+            childIcon: '',
+            isLeaf: function(data){
                 if (!data) return false;
-                return data.type == "employee";
+                return 'UserId' in data;
             },
-            delay: function(e)
-            {
+            delay: function(e){
                 var data = e.data;
-                if (data.type == "company")
-                {
-                    return { url: baseurl + '?type=deptment&prev=' + data.id }
+                if (data.IsExistSub){
+                    return { 
+                        url: HOMECtrl + 'GetHomeSubOrganList?organId='+ data.OrganID + parms
+                    }
+                } else {
+                    return { 
+                        url: HOMECtrl + 'GetHomeUserList?organId='+ data.OrganID +'&isDisplayOffLine='+ self.offline + parms
+                    }
                 }
-                if (data.type == "deptment")
-                {
-                    return { url: baseurl + '?type=employee&prev=' + data.id }
-                }
-                return false;
             },
-            onClick: function(data, target) {
-                console.log('data', data);
+            onClick: function(e, target) {
+                console.log('onClick:data', e.data);
+                'UserId' in e.data && Page.fillPanel({url: 'views/main/assist/info.html'})
+            },
+            render: function(data, name){
+                if('UserId' in data) {
+                    return '<i class="icons '+ (data.Provider ? 'icon_00' : 'icon_01') +'"></i>' + data.UserName
+                } else {
+                    return data.OrganName + '（'+ data.OrganOnLineNum +'/'+ data.OrganTotal +'）'
+                }
+            },
+            onSuccess: function (data) {
+                data[0]['OrganID'] == 2 && data[0].IsExistSub && treeEve.expandAll();
             }
         });
     }
