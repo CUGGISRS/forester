@@ -21,7 +21,7 @@
     </div>
     <div class="result flex_1 ohidden">
         <div class="treeContext h100 scroll bbox" v-show="tabIdx == 0">
-            <ul id="treecontext" class="l-tree" style="width: calc(100% - 30px)"></ul>
+            <ul id="treecontext" class="l-tree l-tree-nolines" style="width: calc(100% - 30px)"></ul>
         </div>
         <div class="resultContext h100 scroll bbox" v-show="tabIdx == 1">
             <dl>
@@ -105,13 +105,22 @@
                     }
                 }
             },
-            onClick: function(e, target) {
-                console.log('onClick:data', e.data);
-                'UserId' in e.data && Page.fillPanel({url: 'views/main/assist/info.html'})
+            onClick: function(e) {
+                var data = e.data;
+                if(!data) return;
+                'UserId' in data && $.get(QUERYUSERCtrl + 'GetUserById?userId=' + data.UserId).done(function(d){
+                    sessionStorage.setItem('_panel_info_', JSON.stringify(d));
+                    $('.placeholder', e.target).replaceWith(function(){
+                        return '<label>' + this.innerHTML + '</label>' + 
+                        '<label>电话：' + d.PHONE_NUM + '</label>' + 
+                        '<label>面积：' + d.PHONE_NUM + '亩</label>';
+                    });
+                    Page.fillPanel({url: 'views/main/assist/info.html'});
+                });
             },
-            render: function(data, name){
+            render: function(data){
                 if('UserId' in data) {
-                    return '<i class="icons '+ (data.Provider ? 'icon_00' : 'icon_01') +'"></i>' + data.UserName
+                    return '<label class="placeholder"><i class="icons '+ (data.Provider ? 'icon_00' : 'icon_01') +'"></i>' + data.UserName + '</label>'
                 } else {
                     return data.OrganName + '（'+ data.OrganOnLineNum +'/'+ data.OrganTotal +'）'
                 }

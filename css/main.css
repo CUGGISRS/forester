@@ -109,9 +109,10 @@ body {
   -ms-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
-.l-tree .icons {
-  vertical-align: -4px;
-  margin-right: 4px;
+.l-tree-nolines .l-line,
+.l-tree-nolines .l-note,
+.l-tree-nolines .l-note-last {
+  background-position: 1000px 1000px ;
 }
 #mainNav {
   background: #323941;
@@ -271,7 +272,29 @@ body {
   margin-left: -2.5em;
 }
 #mainPanel .treeContext {
-  padding: 15px;
+  padding: 15px 0px;
+}
+#mainPanel .treeContext .l-tree li .l-body .icons {
+  vertical-align: -4px;
+  margin-right: 4px;
+  margin-left: -24px;
+  pointer-events: none;
+}
+#mainPanel .treeContext .l-tree li .l-body label {
+  pointer-events: none;
+  display: block;
+  padding-left: 24px;
+}
+#mainPanel .treeContext .l-tree li .l-body.l-selected {
+  min-height: 22px;
+  height: auto;
+  background: #F4F4F4;
+}
+#mainPanel .treeContext .l-tree li .l-body.l-selected span {
+  min-height: 20px;
+  height: auto;
+  border: 0;
+  background: transparent;
 }
 #mainPanel .resultContext dd {
   padding: 10px 20px 10px 3em;

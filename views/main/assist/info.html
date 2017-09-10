@@ -1,13 +1,13 @@
-<div class="flex column h100">
+<div id="vue-panel-info" class="flex column h100">
     <div class="title bbox flex acenter">
         <span class="flex_1">护林员</span>
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
     <div class="detail bbox flex acenter jcenter">
         <div class="distrible flex_1">
-            <p>赵晓军</p>
-            <p>13512345678</p>
-            <p>清远市阳山县</p>
+            <p>{{ info.USER_NAME }}</p>
+            <p>{{ info.PHONE_NUM }}</p>
+            <p>{{ info.SNAME }}{{ info.XNAME }}</p>
         </div>
         <div class="btnarea">
             <p>
@@ -40,8 +40,14 @@
 
 <script>
     (function(){
-        $(document).ready(function(){
-            
-        });
+        new Vue({
+            el: '#vue-panel-info',
+            data: {
+                info: {}
+            },
+            created: function () {
+                this.info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}')
+            }
+        })
     })();
 </script>
