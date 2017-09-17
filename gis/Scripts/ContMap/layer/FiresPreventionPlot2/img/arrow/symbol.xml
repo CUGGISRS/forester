@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbols>
+<Symbol Name="简单箭头" Color="-65536" HighlightColor="-256" ImgUri="symbol_arrow_simple.png"/>
+<Symbol Name="直角箭头" Color="-65536" HighlightColor="-256" ImgUri="symbol_arrow_straight.png"/>
+<Symbol Name="自定义燕尾箭头" Color="-65536" HighlightColor="-256" ImgUri="symbol_arrow_custom_tailed.png"/>
+<Symbol Name="合围箭头" Color="-65536" HighlightColor="-256" ImgUri="symbol_arrow_double.png"/>
+</Symbols>

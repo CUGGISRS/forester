@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Symbols>
+<Symbol Name="火线" Width="3" Color="-65536" HighlightColor="-256" ImgUri="symbol_redline.png"/>
+<Symbol Name="已灭火线" Width="3" Color="-16777216" HighlightColor="-256" ImgUri="symbol_blackline.png"/>
+<Symbol Name="受控火线" Width="3" Color="-16776961" HighlightColor="-256" ImgUri="symbol_blueline.png"/>
+<Symbol Name="隔离带" Width="3" Color="-16711936" HighlightColor="-256" ImgUri="symbol_greenline.png"/>
+</Symbols>

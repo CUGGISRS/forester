@@ -114,6 +114,14 @@ body {
 .l-tree-nolines .l-note-last {
   background-position: 1000px 1000px ;
 }
+.l-dialog {
+  overflow: hidden;
+}
+.l-dialog .l-dialog-table {
+  width: -webkit-calc(100% + 2px);
+  width: calc(100% + 2px);
+  margin-left: -1px;
+}
 #mainNav {
   background: #323941;
   color: #fff;
@@ -300,6 +308,7 @@ body {
   padding: 10px 20px 10px 3em;
   border-bottom: 1px solid #E6E5EA;
   line-height: 1.8;
+  cursor: pointer;
 }
 #mainPanel .resultContext dd h3 {
   font-size: 15px;
@@ -309,6 +318,9 @@ body {
   margin-left: -24px;
   margin-right: 4px;
   vertical-align: -4px;
+}
+#mainPanel .resultContext dd.selected {
+  background-color: #F6F6F6;
 }
 #assistPanel {
   display: none;
@@ -394,6 +406,9 @@ body {
 #assistPanel .tabs span + span {
   border-left: 1px solid #ddd;
 }
+#assistPanel .tabs span.selected {
+  color: #3997D6;
+}
 #assistPanel .tabs .icons {
   zoom: .85;
   vertical-align: -4px;
@@ -415,16 +430,50 @@ body {
   line-height: 1.5;
   color: #fff;
   margin: 0 4px;
-  background: red;
   text-align: center;
+  background: #3997D6;
+}
+#assistPanel .tabdetail .tab_panel_title .circle.green {
+  background: #1A9F80;
+}
+#assistPanel .tabdetail .tab_panel_title .circle.orange {
+  background: #F7A112;
+}
+#assistPanel .tabdetail .tab_panel_title .circle.red {
+  background: #E44C3F;
+}
+#assistPanel .tabdetail .tab_panel_title .circle.blue {
+  background: #3997D6;
 }
 #assistPanel .tabdetail .tab_panel_detail {
-  padding-left: -webkit-calc(1.5em + 4px);
-  padding-left: calc(1.5em + 4px);
+  position: relative;
+  padding-left: -webkit-calc(1.5em + 8px);
+  padding-left: calc(1.5em + 8px);
   line-height: 1.6;
 }
 #assistPanel .tabdetail .tab_panel_detail .icons {
-  margin-left: -20px;
-  margin-right: 4px;
-  vertical-align: -4px;
+  position: absolute;
+  left: 4px;
+}
+#assistPanel .tabdetail .tab_panel_detail .table {
+  margin-left: -webkit-calc(0px - 1.5em - 4px);
+  margin-left: calc(0px - 1.5em - 4px);
+  width: -webkit-calc(100% + 1.5em);
+  width: calc(100% + 1.5em);
+}
+#assistPanel .tabdetail .tab_panel_detail .table th {
+  background: #F7F7F7;
+  border: 1px solid #E2E2E2;
+  padding: 4px 1em;
+  width: 45%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#assistPanel .tabdetail .tab_panel_detail .table td {
+  border: 1px solid #E2E2E2;
+  padding: 4px 1em;
+}
+#assistPanel .tabdetail .tab_panel_detail .table label {
+  display: block;
+  white-space: nowrap;
 }

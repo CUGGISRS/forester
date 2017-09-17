@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Symbols>
+<Symbol Name="火头" Text="火头" Size="32" Color="-65536" HighlightColor="-256" Angle="0" OffsetX="0" OffsetY="0" VerticalAlignment="MIDDLE" HorizontalAlignment="CENTER" ImgUri="symbol_huotou2.png"/>
+<Symbol Name="火尾" Text="火尾" Size="32" Color="-65536" HighlightColor="-256" Angle="0" OffsetX="0" OffsetY="0" VerticalAlignment="MIDDLE" HorizontalAlignment="CENTER" ImgUri="symbol_huowei2.png"/>
+<Symbol Name="扑火队伍" Text="扑火队伍" Size="32" Color="-65536" HighlightColor="-256" Angle="0" OffsetX="0" OffsetY="0" VerticalAlignment="MIDDLE" HorizontalAlignment="CENTER" ImgUri="symbol_duiwu2.png"/>
+<Symbol Name="自定义文本" Text="自定义文本" Size="32" Color="-65536" HighlightColor="-256" Angle="0" OffsetX="0" OffsetY="0" VerticalAlignment="MIDDLE" HorizontalAlignment="CENTER" ImgUri="symbol_custom2.png"/>
+</Symbols>

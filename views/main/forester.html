@@ -25,25 +25,10 @@
         </div>
         <div class="resultContext h100 scroll bbox" v-show="tabIdx == 1">
             <dl>
-                <dd>
-                    <h3><i class="icons"></i><span>清远市阳山县</span></h3>
-                    <p>赵家辉&emsp;13512345678</p>
-                    <p>面积&emsp;1234.23亩</p>
-                </dd>
-                <dd>
-                    <h3><i class="icons"></i><span>清远市阳山县</span></h3>
-                    <p>赵家辉&emsp;13512345678</p>
-                    <p>面积&emsp;1234.23亩</p>
-                </dd>
-                <dd>
-                    <h3><i class="icons"></i><span>清远市阳山县</span></h3>
-                    <p>赵家辉&emsp;13512345678</p>
-                    <p>面积&emsp;1234.23亩</p>
-                </dd>
-                <dd>
-                    <h3><i class="icons"></i><span>清远市阳山县</span></h3>
-                    <p>赵家辉&emsp;13512345678</p>
-                    <p>面积&emsp;1234.23亩</p>
+                <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
+                    <h3><i class="icons"></i><span>{{item.SNAME}}{{item.XNAME}}</span></h3>
+                    <p class="whitespace">{{item.USER_NAME}}&emsp;{{item.PHONE_NUM}}</p>
+                    <p class="whitespace">面积&emsp;{{item.Area}}亩</p>
                 </dd>
             </dl>
         </div>
@@ -51,84 +36,123 @@
 </div>
 
 <script>
-(function () {
-    var treeEve;
-    var treeDom = new Vue({
-        el: '#vue-forester',
-        data:  {
-            offline: true,
-            filterWord: '',
-            tabIdx: 0
-        },
-        watch: {
-            offline: function(v){
-                treeEve.reload()
-            }
-        },
-        mounted: mounted,
-        methods: {
-            filterQuery: function(){
-                var self = this;
-                this.tabIdx = +!!this.filterWord;
-                $.get(HOMECtrl + "GetLbsUsersByUserInfo", {
-                    userInfo: self.filterWord,
-                    organId: 2
-                }).done(function(data){
-                    console.log('data-filterquery:', data);
-                })
-            }
-        }
-    });
-    function mounted () {
-        var self = this;
-        var parms = '&disconnectTimer=' + TIMEOUT;
-        treeEve = $("#treecontext").ligerTree({
-            url: HOMECtrl + 'GetHomeRootOrgan?organId=2' + parms,
-            ajaxType: 'get',
-            slide: false,
-            checkbox: false,
-            treeLine: false,
-            childIcon: '',
-            isLeaf: function(data){
-                if (!data) return false;
-                return 'UserId' in data;
+    (function () {
+        var treeEve;
+        var treeDom = new Vue({
+            el: '#vue-forester',
+            data: {
+                offline: true,
+                filterWord: '',
+                tabIdx: 0,
+                resultsIdx: -1,
+                results: []
             },
-            delay: function(e){
-                var data = e.data;
-                if (data.IsExistSub){
-                    return { 
-                        url: HOMECtrl + 'GetHomeSubOrganList?organId='+ data.OrganID + parms
-                    }
-                } else {
-                    return { 
-                        url: HOMECtrl + 'GetHomeUserList?organId='+ data.OrganID +'&isDisplayOffLine='+ self.offline + parms
-                    }
+            watch: {
+                offline: function (v) {
+                    treeEve.reload()
                 }
             },
-            onClick: function(e) {
-                var data = e.data;
-                if(!data) return;
-                'UserId' in data && $.get(QUERYUSERCtrl + 'GetUserById?userId=' + data.UserId).done(function(d){
-                    sessionStorage.setItem('_panel_info_', JSON.stringify(d));
-                    $('.placeholder', e.target).replaceWith(function(){
-                        return '<label>' + this.innerHTML + '</label>' + 
-                        '<label>电话：' + d.PHONE_NUM + '</label>' + 
-                        '<label>面积：' + d.PHONE_NUM + '亩</label>';
+            created: function () {
+                /**
+                 * 切换到护林员专题
+                 */
+                GIS$.hlyThemeOnShow();
+            },
+            beforeDestroy: function () {
+                /**
+                 * 关闭护林员专题时调用
+                 */
+                GIS$.onClose();
+            },
+            mounted: mounted,
+            methods: {
+                filterQuery: function () {
+                    var self = this;
+                    this.tabIdx = +!!this.filterWord;
+                    $.get(QueryUser_Ctrl + "GetLbsUsersByUserInfo", {
+                        userInfo: self.filterWord,
+                        organId: 2
+                    }).done(function (data) {
+                        self.results = data;
+                    })
+                },
+                selectItem: function (idx) {
+                    this.resultsIdx = idx;
+                    var data = this.results[idx];
+                    this.getInfoById({
+                        userId: data.ID,
+                        isOnline: false
                     });
-                    Page.fillPanel({url: 'views/main/assist/info.html'});
-                });
-            },
-            render: function(data){
-                if('UserId' in data) {
-                    return '<label class="placeholder"><i class="icons '+ (data.Provider ? 'icon_00' : 'icon_01') +'"></i>' + data.UserName + '</label>'
-                } else {
-                    return data.OrganName + '（'+ data.OrganOnLineNum +'/'+ data.OrganTotal +'）'
+                },
+                getInfoById: function (options, fn) {
+                    $.get(QueryUser_Ctrl + 'GetUserInfoById', options).done(function (d) {
+                        //给副面板传值
+                        sessionStorage.setItem('_panel_info_', JSON.stringify(d));
+                        (typeof fn == 'function') && fn(d);
+                        //加载副面板
+                        Page.fillPanel({
+                            url: 'views/main/assist/info.html'
+                        });
+                    });
                 }
-            },
-            onSuccess: function (data) {
-                data[0]['OrganID'] == 2 && data[0].IsExistSub && treeEve.expandAll();
             }
         });
-    }
-})();
+
+        function mounted() {
+            var self = this;
+            var parms = '&disconnectTimer=' + TIMEOUT;
+            treeEve = $("#treecontext").ligerTree({
+                url: Home_Ctrl + 'GetHomeRootOrgan?organId=2' + parms,
+                ajaxType: 'get',
+                slide: false,
+                checkbox: false,
+                treeLine: false,
+                childIcon: '',
+                isLeaf: function (data) {
+                    if (!data) return false;
+                    return 'UserId' in data;
+                },
+                delay: function (e) {
+                    var data = e.data;
+                    if (!data) return false;
+                    if (data.IsExistSub) {
+                        return {
+                            url: Home_Ctrl + 'GetHomeSubOrganList?organId=' + data.OrganID + parms
+                        }
+                    } else {
+                        return {
+                            url: Home_Ctrl + 'GetHomeUserList?organId=' + data.OrganID +
+                                '&isDisplayOffLine=' + self.offline + parms
+                        }
+                    }
+                },
+                onClick: function (e) {
+                    var data = e.data;
+                    if (!data) return;
+                    'UserId' in data && self.getInfoById({
+                        userId: data.UserId,
+                        isOnline: data.IsOnline
+                    }, function (d) {
+                        $('.placeholder', e.target).replaceWith(function () {
+                            return '<label>' + this.innerHTML + '</label>' +
+                                '<label>电话：' + d.UserInfo.PHONE_NUM + '</label>' +
+                                '<label>面积：' + 0 + '亩</label>';
+                        });
+                    });
+                },
+                render: function (data) {
+                    if ('UserId' in data) {
+                        return '<label class="placeholder"><i class="icons ' + (data.IsOnline ?
+                            'icon_00' : 'icon_01') + '"></i>' + data.UserName + '</label>'
+                    } else {
+                        return data.OrganName + '（' + data.OrganOnLineNum + '/' + data.OrganTotal + '）'
+                    }
+                },
+                onSuccess: function (data) {
+                    if (!data || !data[0]) return false;
+                    data[0]['OrganID'] == 2 && data[0].IsExistSub && treeEve.expandAll();
+                }
+            });
+        }
+    })();
 </script>

@@ -1,29 +1,8 @@
 <div class="flex column h100">
         <header id="secondMenu">
             <dl>
-                <dd class="firstload" link="views/main/forester.html" data-assist="views/main/assist/main.html">
-                    <i class="icons icon_00"></i>护林员
-                </dd>
-                <dd link="views/blank.html">
-                    <i class="icons icon_01"></i>轨迹
-                </dd>
-                <dd link="views/blank.html">
-                    <i class="icons icon_02"></i>巡护区
-                </dd>
-                <dd link="views/blank.html">
-                    <i class="icons icon_03"></i>关键点
-                </dd>
-                <dd link="views/blank.html">
-                    <i class="icons icon_04"></i>报警
-                </dd>
-                <dd link="views/blank.html">
-                    <i class="icons icon_05"></i>热点
-                </dd>
-                <dd link="views/blank.html">
-                    <i class="icons icon_06"></i>紧急任务
-                </dd>
-                <dd link="views/blank.html">
-                    <i class="icons icon_07"></i>考勤
+                <dd v-for="(item,index) in menus" @click="selectMenu(index)" :key="index" :class="{'selected': selected == index}">
+                    <i class="icons" :class="item.clsName"></i>{{item.name}}
                 </dd>
             </dl>
         </header>
@@ -39,18 +18,38 @@
             fillPanel: function () {}
         };
         (function(){
-            $(document).ready(function(){
-                $('#secondMenu').on('click', 'dd', function(){
-                    //加载主面板
-                    $('#mainPanel').load(this.getAttribute('link') + '?_=' + (+new Date())).fadeIn(400);
-                    $(this).addClass('selected').siblings().removeClass('selected');
-                    //加载侧面板
-                    fillAssistPanel(this.getAttribute('data-assist'));
-                });
-                $('#secondMenu dd.firstload').trigger('click');
-                $('#openlayerFrame .panel').on('click', '.close', function(){
-                    $(this).closest('.panel').fadeOut(400);
-                });
+            new Vue({
+                el: '#secondMenu',
+                data: {
+                    menus: SECONDMENUS,
+                    selected: -1
+                },
+                watch: {
+                    selected: function(val) {
+                        sessionStorage.setItem('_2_nav_selected_', val || 0);
+                        //清除不同面板下副面板的选中项
+                        sessionStorage.removeItem('_panel_nav_selected_');
+                        this.fillContext();
+                    }
+                },
+                mounted: function () {
+                    this.selectMenu(0);
+                },
+                methods: {
+                    selectMenu: function(idx) {
+                        this.selected = idx;
+                    },
+                    fillContext: function() {
+                        if (typeof Hly != 'undefined') {
+                            var item = this.menus[this.selected || 0] || {};
+                            $('#mainPanel').load(item.link + '?_=' + (+new Date())).fadeIn(400);
+                            //加载侧面板
+                            fillAssistPanel(item.assist);
+                        } else {
+                            setTimeout(this.fillContext.bind(this));
+                        }
+                    }
+                }
             });
 
             function fillAssistPanel(url) {
@@ -59,7 +58,24 @@
             //提供webgis加载侧边提示信息面板
             Page.fillPanel = function (info) {
                 //一系列约定的判断
-                info.url && fillAssistPanel(info.url)
+                info && info.url && fillAssistPanel(info.url)
             }
         })();
+        $(document).ready(function(){
+            $('#openlayerFrame .panel').on('click', '.close', function(){
+                $(this).closest('.panel').fadeOut(400);
+            });
+            (function initMap(){
+                if (typeof Hly != 'undefined') {
+                    //地图初始化
+                    GIS$.mapInit();
+                    //地图数据刷新
+                    GIS$.mapDataRefresh();
+                    //点击事件挂接
+                    GIS$.mapClickEvent();
+                } else {
+                    setTimeout(initMap);
+                }
+            })();
+        });
     </script>

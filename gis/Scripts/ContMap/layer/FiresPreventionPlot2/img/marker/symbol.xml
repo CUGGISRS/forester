@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Symbols>
+<Symbol Name="火点" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_firepoint2.png" HighlightUri="symbol_firepoint_highlight.png"/>
+<Symbol Name="烟点" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_smokepoint2.png" HighlightUri="symbol_smokepoint_highlight.png"/>
+<Symbol Name="已灭火点" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_fireoutpoint2.png" HighlightUri="symbol_fireoutpoint_highlight.png"/>
+<Symbol Name="指挥中心" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_commandoffice2.png" HighlightUri="symbol_commandoffice_highlight.png"/>
+<Symbol Name="分指中心" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_subcommandoffice2.png" HighlightUri="symbol_subcommandoffice_highlight.png"/>
+<Symbol Name="打火队伍" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_firehitteam2.png" HighlightUri="symbol_firehitteam_highlight.png"/>
+<Symbol Name="武警标志" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_armedpolice2.png" HighlightUri="symbol_armedpolice_highlight.png"/>
+<Symbol Name="森警标志" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_forestpolice2.png" HighlightUri="symbol_forestpolice_highlight.png"/>
+<Symbol Name="森林警察" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_forestpoliceman2.png" HighlightUri="symbol_forestpoliceman_highlight.png"/>
+<Symbol Name="飞机" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_plane2.png" HighlightUri="symbol_plane_highlight.png"/>
+<Symbol Name="指挥车" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_commandcar2.png" HighlightUri="symbol_commandcar_highlight.png"/>
+<Symbol Name="停机坪" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_helicopterstoppoint2.png" HighlightUri="symbol_helicopterstoppoint_highlight.png"/>
+<Symbol Name="取水点" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_getwaterpoint2.png" HighlightUri="symbol_getwaterpoint_highlight.png"/>
+<Symbol Name="洒水点" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_throwwaterpoint2.png" HighlightUri="symbol_throwwaterpoint_highlight.png"/>
+<Symbol Name="强火线" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_strong2.png" HighlightUri="symbol_strong_highlight.png"/>
+<Symbol Name="中火线" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_middle2.png" HighlightUri="symbol_middle_highlight.png"/>
+<Symbol Name="弱火线" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_weak2.png" HighlightUri="symbol_weak_highlight.png"/>
+<Symbol Name="军队" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_army2.png" HighlightUri="symbol_army_highlight.png"/>
+<Symbol Name="雷击点" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_thunderpoint2.png" HighlightUri="symbol_thunderpoint_highlight.png"/>
+<Symbol Name="瞭望塔" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_tower2.png" HighlightUri="symbol_tower_highlight.png"/>
+<Symbol Name="风向标" Width="50" Height="50" Angle="0" OffsetX="0" OffsetY="0" ImgUri="symbol_winddirection2.png" HighlightUri="symbol_winddirection_highlight.png"/>
+</Symbols>
