@@ -13,12 +13,9 @@
         </section>
     </div>
     <script>
-        var Page = {
-            //提供webgis加载侧边提示信息面板
-            fillPanel: function () {}
-        };
+        var Page = {};
         (function(){
-            new Vue({
+            var nav2Vue = new Vue({
                 el: '#secondMenu',
                 data: {
                     menus: SECONDMENUS,
@@ -54,6 +51,10 @@
 
             function fillAssistPanel(url) {
                 url && $('#assistPanel').load(url + '?_=' + (+new Date())).fadeIn(400);
+            }
+            //选择二级菜单
+            Page.chooseNav = function(idx){
+                nav2Vue.selected = idx;
             }
             //提供webgis加载侧边提示信息面板
             Page.fillPanel = function (info) {

@@ -1,4 +1,4 @@
-<div class="flex column h100">
+<div id="vue-assist-main" class="flex column h100">
     <div class="title bbox flex acenter">
         <span class="flex_1">广东省信息汇总</span>
         <button class="close"><i class="iconfont icon-x"></i></button>
@@ -6,33 +6,50 @@
     <div class="maininfo flex_1 h100 scroll">
         <dl>
             <dt>实时信息</dt>
-            <dd><i class="icons icon_10"></i>在线护林员（300个）</dd>
-            <dd><i class="icons icon_11"></i>24小时热点（3个）</dd>
-            <dd><i class="icons icon_12"></i>反馈信息（2个）</dd>
-            <dd><i class="icons icon_13"></i>报警信息（1个）</dd>
+            <dd><i class="icons icon_10"></i>在线护林员（{{RealTimeInfoForDay.OnlineUserNum}}个）</dd>
+            <dd><i class="icons icon_11"></i>24小时热点（{{RealTimeInfoForDay.HotSpotNumForDay}}个）</dd>
+            <dd><i class="icons icon_12"></i>反馈信息（{{RealTimeInfoForDay.NoticeNum}}个）</dd>
+            <dd><i class="icons icon_13"></i>报警信息（{{RealTimeInfoForDay.AlarmNum}}个）</dd>
         </dl>
         <dl>
             <dt>当月汇总信息</dt>
-            <dd>护林员总数：1129人</dd>
-            <dd>专职护林员：789人</dd>
-            <dd>兼职护林员：234人</dd>
-            <dd>巡护区面积：7736亩</dd>
-            <dd>巡护区个数：34块</dd>
-            <dd>人均面积：12亩/人</dd>
-            <dd>报警反馈：10起</dd>
-            <dd>其中火情火灾：0起</dd>
-            <dd>热点数：3起</dd>
-            <dd>出勤率：广东省（95.21%）</dd>
-            <dd>出勤率最高：清远市（79.21%）</dd>
-            <dd>出勤率最低：省保护区（0%）</dd>
+            <dd class="whitespace">护林员总数：{{StatisticsInfoForMonth.UserNum}}人</dd>
+            <dd class="whitespace">专职护林员：{{StatisticsInfoForMonth.FullTimeUserNum}}人</dd>
+            <dd class="whitespace">兼职护林员：{{StatisticsInfoForMonth.PartTimeUserNum}}人</dd>
+            <dd class="whitespace">巡护区面积：{{StatisticsInfoForMonth.PatrolAreaTotalArea}}亩</dd>
+            <dd class="whitespace">巡护区个数：{{StatisticsInfoForMonth.PatrolAreaNum}}块</dd>
+            <dd class="whitespace">人均面积：{{StatisticsInfoForMonth.AreaOfPerson}}亩/人</dd>
+            <dd class="whitespace">报警反馈：{{StatisticsInfoForMonth.AlarmNum}}起</dd>
+            <dd class="whitespace">其中火情火灾：{{StatisticsInfoForMonth.AlarmForFireNum}}起</dd>
+            <dd class="whitespace">热点数：{{StatisticsInfoForMonth.HotSpotNum}}起</dd>
+            <dd class="whitespace">出勤率：{{RateInfo.AttendanceRate.OrganName}}（{{RateInfo.AttendanceRate.Rate}}%）</dd>
+            <dd class="whitespace">出勤率最高：{{RateInfo.MaxAttendanceRate.OrganName}}（{{RateInfo.MaxAttendanceRate.Rate}}%）</dd>
+            <dd class="whitespace">出勤率最低：{{RateInfo.MinAttendanceRate.OrganName}}（{{RateInfo.MinAttendanceRate.Rate}}%）</dd>
         </dl>
     </div>
 </div>
 
 <script>
     (function(){
-        $(document).ready(function(){
-            
-        });
+        new Vue({
+            el: '#vue-assist-main',
+            data: {
+                RealTimeInfoForDay: {},
+                StatisticsInfoForMonth: {},
+                RateInfo: {
+                    AttendanceRate: {},
+                    MaxAttendanceRate: {},
+                    MinAttendanceRate: {}
+                }
+            },
+            created: function () {
+                var self = this;
+                $.get(Home_Ctrl + 'GetHomeStatistics?organId=2').done(function (d) {
+                    self.RealTimeInfoForDay = d.RealTimeInfoForDay;
+                    self.StatisticsInfoForMonth = d.StatisticsInfoForMonth;
+                    self.RateInfo = d.RateInfo;
+                });
+            }
+        })
     })();
 </script>

@@ -1,7 +1,7 @@
 var IPServer = 'http://180.76.134.119'
 var Home_Ctrl = IPServer + '/gdhly/Home/';
 var QueryUser_Ctrl = IPServer + '/gdhly/QueryUser/'
-var TIMEOUT = '10000';
+var TIMEOUT = '1000000';
 var PANELMENUS = [
     {
         id: 0,
@@ -48,6 +48,7 @@ var PANELMENUS = [
 ];
 var SECONDMENUS = [
     {
+        id: 0,
         name: '护林员', //名字
         link: 'views/main/forester.html', //主面板链接
         assist: 'views/main/assist/main.html', //副面板主页
@@ -60,6 +61,7 @@ var SECONDMENUS = [
         ]
     },
     {
+        id: 1,
         name: '轨迹',
         link: 'views/blank.html',
         assist: '',
@@ -72,6 +74,7 @@ var SECONDMENUS = [
         ]
     },
     {
+        id: 2,
         name: '巡护区',
         link: 'views/blank.html',
         assist: '',
@@ -84,6 +87,7 @@ var SECONDMENUS = [
         ]
     },
     {
+        id: 3,
         name: '报警',
         link: 'views/blank.html',
         assist: '',
@@ -96,6 +100,7 @@ var SECONDMENUS = [
         ]
     },
     {
+        id: 4,
         name: '热点',
         link: 'views/blank.html',
         assist: '',
@@ -108,6 +113,7 @@ var SECONDMENUS = [
         ]
     },
     {
+        id: 5,
         name: '考勤',
         link: 'views/blank.html',
         assist: '',

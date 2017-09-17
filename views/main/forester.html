@@ -38,7 +38,7 @@
 <script>
     (function () {
         var treeEve;
-        var treeDom = new Vue({
+        new Vue({
             el: '#vue-forester',
             data: {
                 offline: true,
@@ -93,6 +93,16 @@
                         Page.fillPanel({
                             url: 'views/main/assist/info.html'
                         });
+                        var user = d.UserInfo || {};
+                        var gps = d.GpsInfo || {};
+                        GIS$.jumpToUser({
+                            UserId: user.ID,
+                            UserName: user.USER_NAME,
+                            Longitude: gps.LONGITUDE,
+                            Latitude: gps.LATITUDE,
+                            Provider: gps.PROVIDER,
+                            onlineState: gps.ONLINESTATE
+                        });
                     });
                 }
             }
@@ -139,6 +149,11 @@
                                 '<label>面积：' + 0 + '亩</label>';
                         });
                     });
+                },
+                onSelect: function(e){
+                    var data = e.data;
+                    if (!data || 'UserId' in data) return;
+                    GIS$.jumpToUnitZone();
                 },
                 render: function (data) {
                     if ('UserId' in data) {
