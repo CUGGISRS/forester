@@ -1,6 +1,9 @@
 var IPServer = 'http://180.76.134.119'
 var Home_Ctrl = IPServer + '/gdhly/Home/';
 var QueryUser_Ctrl = IPServer + '/gdhly/QueryUser/'
+var QueryGPSInfo_Ctrl = IPServer + '/gdhly/QueryGPSInfo/'
+var QueryPatrolarea_Ctrl = IPServer + '/gdhly/QueryPatrolarea/'
+var ManagePatrol_Ctrl = IPServer + '/gdhly/ManagePatrol/'
 var TIMEOUT = '1000000';
 var PANELMENUS = [
     {

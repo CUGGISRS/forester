@@ -94,10 +94,23 @@
             },
             created: function () {
                 var info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
-                this.info.UserInfo = info.UserInfo || {};
-                this.info.GpsInfo = info.GpsInfo || {};
-                this.info.AlarmInfoList = info.AlarmInfoList || [];
-                this.info.NoticeList = info.NoticeList || [];
+                info.UserInfo ? this.setInfo(info) : this.getInfo();
+            },
+            methods: {
+                getInfo: function () {
+                    var self = this;
+                    var options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
+                    if(!options.userId) return console.log('缺少必要的userId！');
+                    $.get(QueryUser_Ctrl + 'GetUserInfoById', options).done(function (d) {
+                        self.setInfo(d);
+                    });
+                },
+                setInfo: function(info){
+                    this.info.UserInfo = info.UserInfo || {};
+                    this.info.GpsInfo = info.GpsInfo || {};
+                    this.info.AlarmInfoList = info.AlarmInfoList || [];
+                    this.info.NoticeList = info.NoticeList || [];
+                }
             }
         })
     })();

@@ -23,6 +23,8 @@
                 },
                 watch: {
                     selected: function(val) {
+                        //离开时清除原有专题
+                        Page.destroyed && (Page.destroyed(), Page.destroyed = null);
                         sessionStorage.setItem('_2_nav_selected_', val || 0);
                         //清除不同面板下副面板的选中项
                         sessionStorage.removeItem('_panel_nav_selected_');

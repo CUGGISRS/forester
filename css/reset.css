@@ -258,6 +258,7 @@ textarea {
     width: 100vw!important;
 }
 
+.strong{ font-weight: 600; }
 /*************ligerui.css重置****************/
 .l-tree-loading{
     margin-left: -12px;

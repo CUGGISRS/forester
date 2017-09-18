@@ -413,9 +413,6 @@ body {
   zoom: .85;
   vertical-align: -4px;
 }
-#assistPanel .tabdetail {
-  padding-bottom: 1em;
-}
 #assistPanel .tabdetail .tab_panel {
   margin-left: 10px;
 }
@@ -452,11 +449,18 @@ body {
   position: relative;
   padding-left: -webkit-calc(1.5em + 8px);
   padding-left: calc(1.5em + 8px);
+  padding-right: 10px;
   line-height: 1.6;
 }
 #assistPanel .tabdetail .tab_panel_detail .icons {
   position: absolute;
   left: 4px;
+}
+#assistPanel .tabdetail .tab_panel_detail .audio {
+  margin-left: -webkit-calc(0px - 1.5em - 4px);
+  margin-left: calc(0px - 1.5em - 4px);
+  width: -webkit-calc(100% + 1.5em);
+  width: calc(100% + 1.5em);
 }
 #assistPanel .tabdetail .tab_panel_detail .table {
   margin-left: -webkit-calc(0px - 1.5em - 4px);
@@ -479,4 +483,14 @@ body {
 #assistPanel .tabdetail .tab_panel_detail .table label {
   display: block;
   white-space: nowrap;
+}
+#assistPanel .tabdetail .backouter {
+  padding: 6px;
+  border-top: 1px solid #eee;
+}
+#assistPanel .tabdetail .backouter .back {
+  border: 0;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
 }

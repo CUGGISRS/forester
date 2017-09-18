@@ -331,7 +331,6 @@ body{
         }
     }
     .tabdetail{
-        padding-bottom: 1em;
         .tab_panel{
             margin-left: 10px;
         }
@@ -363,10 +362,17 @@ body{
             position: relative;
             padding-left: -webkit-calc(~"1.5em + 8px");
             padding-left: calc(~"1.5em + 8px");
+            padding-right: 10px;
             line-height: 1.6;
             .icons{
                 position: absolute;
                 left: 4px;
+            }
+            .audio{
+                margin-left: -webkit-calc(~"0px - 1.5em - 4px");
+                margin-left: calc(~"0px - 1.5em - 4px");
+                width: -webkit-calc(~"100% + 1.5em");
+                width: calc(~"100% + 1.5em");
             }
             .table{
                 margin-left: -webkit-calc(~"0px - 1.5em - 4px");
@@ -386,6 +392,13 @@ body{
                     padding: 4px 1em;
                 }
                 label{ display: block; white-space: nowrap; }
+            }
+        }
+
+        .backouter{
+            padding: 6px; border-top: 1px solid #eee;
+            .back{
+                border: 0; background: transparent; color: #666; cursor: pointer;
             }
         }
     }

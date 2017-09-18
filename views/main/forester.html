@@ -38,7 +38,7 @@
 <script>
     (function () {
         var treeEve;
-        new Vue({
+        Page.treeDom = new Vue({
             el: '#vue-forester',
             data: {
                 offline: true,
@@ -57,12 +57,10 @@
                  * 切换到护林员专题
                  */
                 GIS$.hlyThemeOnShow();
-            },
-            beforeDestroy: function () {
                 /**
                  * 关闭护林员专题时调用
                  */
-                GIS$.onClose();
+                Page.destroyed = GIS$.onClose;
             },
             mounted: mounted,
             methods: {
@@ -71,7 +69,8 @@
                     this.tabIdx = +!!this.filterWord;
                     $.get(QueryUser_Ctrl + "GetLbsUsersByUserInfo", {
                         userInfo: self.filterWord,
-                        organId: 2
+                        organId: 2,
+                        disconnectTimer: TIMEOUT
                     }).done(function (data) {
                         self.results = data;
                     })
@@ -81,13 +80,14 @@
                     var data = this.results[idx];
                     this.getInfoById({
                         userId: data.ID,
-                        isOnline: false
+                        isOnline: data.IsOnline
                     });
                 },
                 getInfoById: function (options, fn) {
                     $.get(QueryUser_Ctrl + 'GetUserInfoById', options).done(function (d) {
                         //给副面板传值
                         sessionStorage.setItem('_panel_info_', JSON.stringify(d));
+                        sessionStorage.setItem('_panel_info_options_', JSON.stringify(options));
                         (typeof fn == 'function') && fn(d);
                         //加载副面板
                         Page.fillPanel({
@@ -103,6 +103,11 @@
                             Provider: gps.PROVIDER,
                             onlineState: gps.ONLINESTATE
                         });
+                    });
+                },
+                selectDepartArea: function(options){
+                    $.get(Home_Ctrl + 'GetOrganGeometry', options).done(function (d) {
+                        GIS$.jumpToUnitZone(d);
                     });
                 }
             }
@@ -152,8 +157,10 @@
                 },
                 onSelect: function(e){
                     var data = e.data;
-                    if (!data || 'UserId' in data) return;
-                    GIS$.jumpToUnitZone();
+                    if (!data || 'UserId' in data) return GIS$.clearUnitZone();
+                    self.selectDepartArea({
+                        organId: data.OrganID
+                    });
                 },
                 render: function (data) {
                     if ('UserId' in data) {
