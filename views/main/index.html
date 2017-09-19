@@ -55,12 +55,14 @@
                 nav2Vue.selected = idx;
             }
             Page.showInfo = function () {
+                Page.actions.selected = -1;
                 $('#assistPanel').load('views/main/assist/info.html').fadeIn(400);
             }
             Page.showMain = function (bol) {
                 if(bol == false) {
                     $('#assistPanel').fadeOut(400);
                 } else {
+                    Page.actions.selected = -1;
                     $('#assistPanel').load('views/main/assist/main.html').fadeIn(400);
                 }
             }
