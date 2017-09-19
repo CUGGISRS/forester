@@ -1,6 +1,6 @@
 <div id="vue-assist-main" class="flex column h100">
     <div class="title bbox flex acenter">
-        <span class="flex_1">广东省信息汇总</span>
+        <span class="flex_1">{{OrganName}}信息汇总</span>
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
     <div class="maininfo flex_1 h100 scroll">
@@ -40,15 +40,18 @@
                     AttendanceRate: {},
                     MaxAttendanceRate: {},
                     MinAttendanceRate: {}
-                }
+                },
+                OrganName: ''
             },
             created: function () {
                 var self = this;
-                $.get(Home_Ctrl + 'GetHomeStatistics?organId=2').done(function (d) {
+                var data = JSON.parse(sessionStorage.getItem('_panel_main_options_') || '{"OrganID": 2, "OrganName": "广东省"}');
+                $.get(Home_Ctrl + 'GetHomeStatistics?organId=' + data.OrganID).done(function (d) {
                     self.RealTimeInfoForDay = d.RealTimeInfoForDay;
                     self.StatisticsInfoForMonth = d.StatisticsInfoForMonth;
                     self.RateInfo = d.RateInfo;
                 });
+                this.OrganName = data.OrganName;
             }
         })
     })();

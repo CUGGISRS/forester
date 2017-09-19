@@ -8,6 +8,7 @@
         </header>
         <section id="openlayerFrame" class="flex_1 ohidden relative">
             <div id="openlayerContent" class="w100 h100"></div>
+            <div id="openlayerBtns" class="absolute"></div>
             <div id="mainPanel" class="panel"></div>
             <div id="assistPanel" class="panel"></div>
         </section>
@@ -42,8 +43,6 @@
                         if (typeof Hly != 'undefined') {
                             var item = this.menus[this.selected || 0] || {};
                             $('#mainPanel').load(item.link + '?_=' + (+new Date())).fadeIn(400);
-                            //加载侧面板
-                            fillAssistPanel(item.assist);
                         } else {
                             setTimeout(this.fillContext.bind(this));
                         }
@@ -51,20 +50,23 @@
                 }
             });
 
-            function fillAssistPanel(url) {
-                url && $('#assistPanel').load(url + '?_=' + (+new Date())).fadeIn(400);
-            }
             //选择二级菜单
             Page.chooseNav = function(idx){
                 nav2Vue.selected = idx;
             }
-            //提供webgis加载侧边提示信息面板
-            Page.fillPanel = function (info) {
-                //一系列约定的判断
-                info && info.url && fillAssistPanel(info.url)
+            Page.showInfo = function () {
+                $('#assistPanel').load('views/main/assist/info.html').fadeIn(400);
+            }
+            Page.showMain = function (bol) {
+                if(bol == false) {
+                    $('#assistPanel').fadeOut(400);
+                } else {
+                    $('#assistPanel').load('views/main/assist/main.html').fadeIn(400);
+                }
             }
         })();
         $(document).ready(function(){
+            $('#openlayerBtns').load('views/actions.html');
             $('#openlayerFrame .panel').on('click', '.close', function(){
                 $(this).closest('.panel').fadeOut(400);
             });

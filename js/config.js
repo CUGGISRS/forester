@@ -54,7 +54,6 @@ var SECONDMENUS = [
         id: 0,
         name: '护林员', //名字
         link: 'views/main/forester.html', //主面板链接
-        assist: 'views/main/assist/main.html', //副面板主页
         clsName: 'icon_00', //图标
         panelMenus: [ //副面板菜单
             PANELMENUS[0],
@@ -67,7 +66,6 @@ var SECONDMENUS = [
         id: 1,
         name: '轨迹',
         link: 'views/blank.html',
-        assist: '',
         clsName: 'icon_01',
         panelMenus: [
             PANELMENUS[1],
@@ -80,7 +78,6 @@ var SECONDMENUS = [
         id: 2,
         name: '巡护区',
         link: 'views/blank.html',
-        assist: '',
         clsName: 'icon_02',
         panelMenus: [
             PANELMENUS[2],
@@ -93,8 +90,7 @@ var SECONDMENUS = [
         id: 3,
         name: '报警',
         link: 'views/blank.html',
-        assist: '',
-        clsName: 'icon_04',
+        clsName: 'icon_39',
         panelMenus: [
             PANELMENUS[5],
             PANELMENUS[0],
@@ -106,7 +102,6 @@ var SECONDMENUS = [
         id: 4,
         name: '热点',
         link: 'views/blank.html',
-        assist: '',
         clsName: 'icon_05',
         panelMenus: [
             PANELMENUS[6],
@@ -119,7 +114,6 @@ var SECONDMENUS = [
         id: 5,
         name: '考勤',
         link: 'views/blank.html',
-        assist: '',
         clsName: 'icon_07'
     }
 ];

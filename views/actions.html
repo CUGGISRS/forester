@@ -1,0 +1,66 @@
+<div id="vue-actions" class="outer flex">
+    <div class="single">
+        <div class="block">
+            <button class="item" @click="taggleMainAssist">
+                <i class="icons icon_60"></i>
+            </button>
+        </div>
+    </div>
+    <div class="single">
+        <div class="block flex_1">
+            <div class="tabs flex">
+                <button class="item" @click="selected=1">
+                    <i class="icons icon_61"></i> 广东省
+                </button>
+                <button class="item" @click="selected=2" :class="{'selected': selected==2}">
+                    <i class="icons icon_62"></i> 定位
+                </button>
+                <button class="item" @click="selected=3" :class="{'selected': selected==3}">
+                    <i class="icons icon_63"></i> 图层
+                </button>
+                <button class="item" @click="selected=4" :class="{'selected': selected==4}">
+                    <i class="icons icon_64"></i> 工具
+                </button>
+                <button class="item" @click="selected=5" :class="{'selected': selected==5}">
+                    <i class="icons icon_65"></i> 全屏
+                </button>
+            </div>
+            <div class="tabs_panel" v-if="selected==2">
+                我是定位<br>
+                我是定位<br>
+                我是定位<br>
+                我是定位<br>
+                我是定位<br>
+            </div>
+            <div class="tabs_panel" v-if="selected==3">
+                我是图层<br>
+                我是图层<br>
+                我是图层<br>
+                我是图层<br>
+                我是图层<br>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function(){
+        Page.actions = new Vue({
+            el: '#vue-actions',
+            data: {
+                mainAssist: false,
+                selected: -1
+            },
+            watch: {
+                selected: function (v) {
+                    v && Page.showMain(false);
+                }
+            },
+            methods: {
+                taggleMainAssist: function () {
+                    this.mainAssist = !this.mainAssist;
+                    Page.showMain(this.mainAssist);
+                }
+            }
+        })
+    })();
+</script>

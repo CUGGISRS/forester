@@ -26,7 +26,7 @@
         <div class="resultContext h100 scroll bbox" v-show="tabIdx == 1">
             <dl>
                 <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
-                    <h3><i class="icons"></i><span>{{item.SNAME}}{{item.XNAME}}</span></h3>
+                    <h3><i class="icons" :class="(item.Provider || 'NETWORK') + (item.IsOnline ? ' online' : '')"></i><span>{{item.DEPARTMENT_NAME}}</span></h3>
                     <p class="whitespace">{{item.USER_NAME}}&emsp;{{item.PHONE_NUM}}</p>
                     <p class="whitespace">面积&emsp;{{item.Area}}亩</p>
                 </dd>
@@ -90,9 +90,7 @@
                         sessionStorage.setItem('_panel_info_options_', JSON.stringify(options));
                         (typeof fn == 'function') && fn(d);
                         //加载副面板
-                        Page.fillPanel({
-                            url: 'views/main/assist/info.html'
-                        });
+                        Page.showInfo();
                         var user = d.UserInfo || {};
                         var gps = d.GpsInfo || {};
                         GIS$.jumpToUser({
@@ -161,18 +159,23 @@
                     self.selectDepartArea({
                         organId: data.OrganID
                     });
+                    sessionStorage.setItem('_panel_main_options_', JSON.stringify(data));
+                    //加载副面板
+                    Page.showMain();
                 },
                 render: function (data) {
                     if ('UserId' in data) {
-                        return '<label class="placeholder"><i class="icons ' + (data.IsOnline ?
-                            'icon_00' : 'icon_01') + '"></i>' + data.UserName + '</label>'
+                        return '<label class="placeholder"><i class="icons ' + (data.Provider || 'NETWORK') + (data.IsOnline ? ' online ' : '') + '"></i>' + data.UserName + '</label>'
                     } else {
                         return data.OrganName + '（' + data.OrganOnLineNum + '/' + data.OrganTotal + '）'
                     }
                 },
                 onSuccess: function (data) {
                     if (!data || !data[0]) return false;
-                    data[0]['OrganID'] == 2 && data[0].IsExistSub && treeEve.expandAll();
+                    if (data[0]['OrganID'] == 2) {
+                        data[0].IsExistSub && treeEve.expandAll();
+                        Page.showMain();
+                    }
                 }
             });
         }
