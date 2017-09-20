@@ -64,7 +64,7 @@
                     break;
                 case "护林员图层":
                     console.log("护林员图层：" + e.itemId);
-                    Page.treeDom && Page.treeDom.getInfoById({
+                    Page.Forester && Page.Forester.getInfoById({
                         userId: e.itemId,
                         isOnline: false
                     });

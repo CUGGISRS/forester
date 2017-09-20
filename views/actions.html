@@ -1,7 +1,7 @@
 <div id="vue-actions" class="outer flex">
     <div class="single">
         <div class="block">
-            <button class="item" @click="taggleMainAssist">
+            <button class="item" @click="taggleBtn(0)">
                 <i class="icons icon_60"></i>
             </button>
         </div>
@@ -9,28 +9,88 @@
     <div class="single">
         <div class="block flex_1">
             <div class="tabs flex">
-                <button class="item" @click="selected=1">
+                <button class="item" @click="taggleBtn(1)">
                     <i class="icons icon_61"></i> 广东省
                 </button>
-                <button class="item" @click="selected=2" :class="{'selected': selected==2}">
+                <button class="item" @click="taggleBtn(2)" :class="{'selected': selected==2}">
                     <i class="icons icon_62"></i> 定位
                 </button>
-                <button class="item" @click="selected=3" :class="{'selected': selected==3}">
+                <button class="item" @click="taggleBtn(3)" :class="{'selected': selected==3}">
                     <i class="icons icon_63"></i> 图层
                 </button>
-                <button class="item" @click="selected=4" :class="{'selected': selected==4}">
+                <button class="item" @click="taggleBtn(4)" :class="{'selected': selected==4}">
                     <i class="icons icon_64"></i> 工具
                 </button>
-                <button class="item" @click="selected=5" :class="{'selected': selected==5}">
+                <button class="item" @click="taggleBtn(5)" :class="{'selected': selected==5}">
                     <i class="icons icon_65"></i> 全屏
                 </button>
             </div>
-            <div class="tabs_panel" v-if="selected==2">
-                我是定位<br>
-                我是定位<br>
-                我是定位<br>
-                我是定位<br>
-                我是定位<br>
+            <form action="." @submit.prevent="gpsMeth" class="tabs_panel" v-if="selected==2">
+                <dl class="gpsDiv">
+                    <dt class="flex acenter jcenter columns3">
+                        <button class="input" :class="{'selected': gpsIdx == 0}" @click="gpsIdx = 0">地名</button>
+                        <button class="input" :class="{'selected': gpsIdx == 1}" @click="gpsIdx = 1">度分秒形式</button>
+                        <button class="input" :class="{'selected': gpsIdx == 2}" @click="gpsIdx = 2">小数形式</button>
+                    </dt>
+                    <template v-if="gpsIdx==0">
+                        <dd class="hasClear input">
+                            <input type="text" v-model="gps[0].address">
+                            <i class="iconfont icon-guanbi absolute right"></i>
+                        </dd>
+                        <dd>
+                            请输入地名，如：广州市
+                        </dd>
+                    </template>
+                    <template v-if="gpsIdx==1">
+                        <dd class="flex columns3">
+                            <span class="input hasafter1">
+                                <span class="absolute left after">E</span>
+                                <input type="text" v-model="gps[1].ed">
+                                <span class="absolute dw">°</span>
+                            </span>
+                            <span class="input">
+                                <input type="text" v-model="gps[1].ef">
+                                <span class="absolute dw">′</span>
+                            </span>
+                            <span class="hasClear input">
+                                <input type="text" v-model="gps[1].em">
+                                <span class="absolute dw">″</span>
+                                <i class="iconfont icon-guanbi absolute right"></i>
+                            </span>
+                        </dd>
+                        <dd class="flex columns3">
+                            <span class="input hasafter1">
+                                <span class="absolute left after">N</span>
+                                <input type="text" v-model="gps[1].nd">
+                                <span class="absolute dw">°</span>
+                            </span>
+                            <span class="input">
+                                <input type="text" v-model="gps[1].nf">
+                                <span class="absolute dw">′</span>
+                            </span>
+                            <span class="hasClear input">
+                                <input type="text" v-model="gps[1].nm">
+                                <span class="absolute dw">″</span>
+                                <i class="iconfont icon-guanbi absolute right"></i>
+                            </span>
+                        </dd>
+                    </template>
+                    <template v-if="gpsIdx==2">
+                        <dd class="hasClear input hasafter3">
+                            <span class="absolute left after">经度：</span>
+                            <input type="text" v-model="gps[2].edfm">
+                            <i class="iconfont icon-guanbi absolute right"></i>
+                        </dd>
+                        <dd class="hasClear input hasafter3">
+                            <span class="absolute left after">纬度：</span>
+                            <input type="text" v-model="gps[2].ndfm">
+                            <i class="iconfont icon-guanbi absolute right"></i>
+                        </dd>
+                    </template>
+                    <dd class="btn tcenter">
+                        <button type="submit">定位</button>
+                    </dd>
+                </form>
             </div>
             <div class="tabs_panel" v-if="selected==3">
                 我是图层<br>
@@ -44,21 +104,51 @@
 </div>
 <script>
     (function(){
-        Page.actions = new Vue({
+        Page.Actions = new Vue({
             el: '#vue-actions',
             data: {
-                mainAssist: false,
-                selected: -1
+                selected: -1,
+                gpsIdx: 0,
+                gps: [
+                    {
+                        address: ''
+                    },
+                    {
+                        ed: '',
+                        ef: '',
+                        em: '',
+                        nd: '',
+                        nf: '',
+                        nm: ''
+                    },
+                    {
+                        edfm: '',
+                        ndfm: ''
+                    }
+                ]
             },
             watch: {
                 selected: function (v) {
-                    v && Page.showMain(false);
+                    this.loadPanel(v == 0);
                 }
             },
             methods: {
-                taggleMainAssist: function () {
-                    this.mainAssist = !this.mainAssist;
-                    Page.showMain(this.mainAssist);
+                taggleBtn: function (i) {
+                    if(this.selected == i) {
+                        this.selected = -1;
+                    } else {
+                        this.selected = i;
+                    }
+                },
+                loadPanel: function (bol) {
+                    this.selected = bol ? 0 : this.selected;
+                    bol ? $('#assistPanel').load('views/main/assist/main.html?' + +new Date).fadeIn(400) : $('#assistPanel').hide();
+                },
+                reset: function () {
+                    this.selected = -1;
+                },
+                gpsMeth: function(){
+
                 }
             }
         })

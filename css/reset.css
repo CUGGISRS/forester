@@ -259,6 +259,7 @@ textarea {
 }
 
 .strong{ font-weight: 600; }
+.hidden{ display: none; }
 /*************ligerui.css重置****************/
 .l-tree-loading{
     margin-left: -12px;

@@ -38,29 +38,36 @@
 <script>
     (function () {
         var treeEve;
-        Page.treeDom = new Vue({
+        Page.Forester = new Vue({
             el: '#vue-forester',
             data: {
                 offline: true,
                 filterWord: '',
                 tabIdx: 0,
                 resultsIdx: -1,
-                results: []
+                results: [],
+                lastPanel: 'main'
             },
             watch: {
                 offline: function (v) {
                     treeEve.reload()
                 }
             },
-            created: function () {
-                /**
-                 * 切换到护林员专题
-                 */
-                GIS$.hlyThemeOnShow();
-                /**
-                 * 关闭护林员专题时调用
-                 */
-                Page.destroyed = GIS$.onClose;
+            beforeCreate: function () {
+                (function initTheme(){
+                    if (typeof Hly != 'undefined' && typeof hlyMap != 'undefined') {
+                        /**
+                         * 切换到护林员专题
+                         */
+                        GIS$.hlyThemeOnShow();
+                        /**
+                         * 关闭护林员专题时调用
+                         */
+                        Page.destroyed = GIS$.onClose;
+                    } else {
+                        setTimeout(initTheme);
+                    }
+                })();
             },
             mounted: mounted,
             methods: {
@@ -161,7 +168,7 @@
                     });
                     sessionStorage.setItem('_panel_main_options_', JSON.stringify(data));
                     //加载副面板
-                    Page.showMain();
+                    Page.Actions.loadPanel(true);
                 },
                 render: function (data) {
                     if ('UserId' in data) {
@@ -174,7 +181,7 @@
                     if (!data || !data[0]) return false;
                     if (data[0]['OrganID'] == 2) {
                         data[0].IsExistSub && treeEve.expandAll();
-                        Page.showMain();
+                        Page.Actions.loadPanel(true);
                     }
                 }
             });

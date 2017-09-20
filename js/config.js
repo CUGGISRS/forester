@@ -5,6 +5,53 @@ var QueryGPSInfo_Ctrl = IPServer + '/gdhly/QueryGPSInfo/'
 var QueryPatrolarea_Ctrl = IPServer + '/gdhly/QueryPatrolarea/'
 var ManagePatrol_Ctrl = IPServer + '/gdhly/ManagePatrol/'
 var TIMEOUT = '1000000';
+var MENUS = [
+    {
+        id: 0,
+        name: '首页',
+        link: 'views/main/index.html',
+        type: 'load',
+        cached: false,
+        needCache: true,
+        clsName: 'icon_20'
+    },
+    {
+        id: 1,
+        name: '统计图表',
+        link: 'views/blank',
+        type: 'iframe',
+        cached: false,
+        needCache: false,
+        clsName: 'icon_21'
+    },
+    {
+        id: 2,
+        name: '通知公告',
+        link: 'views/blank',
+        type: 'iframe',
+        cached: false,
+        needCache: false,
+        clsName: 'icon_22'
+    },
+    {
+        id: 3,
+        name: '巡护林管理',
+        link: 'views/blank',
+        type: 'iframe',
+        cached: false,
+        needCache: false,
+        clsName: 'icon_23'
+    },
+    {
+        id: 4,
+        name: '护林员管理',
+        link: 'views/blank',
+        type: 'iframe',
+        cached: false,
+        needCache: false,
+        clsName: 'icon_24'
+    }
+];
 var PANELMENUS = [
     {
         id: 0,
@@ -55,6 +102,7 @@ var SECONDMENUS = [
         name: '护林员', //名字
         link: 'views/main/forester.html', //主面板链接
         clsName: 'icon_00', //图标
+        cached: false, //是否缓存了
         panelMenus: [ //副面板菜单
             PANELMENUS[0],
             PANELMENUS[1],
@@ -67,6 +115,7 @@ var SECONDMENUS = [
         name: '轨迹',
         link: 'views/blank.html',
         clsName: 'icon_01',
+        cached: false,
         panelMenus: [
             PANELMENUS[1],
             PANELMENUS[0],
@@ -79,6 +128,7 @@ var SECONDMENUS = [
         name: '巡护区',
         link: 'views/blank.html',
         clsName: 'icon_02',
+        cached: false,
         panelMenus: [
             PANELMENUS[2],
             PANELMENUS[0],
@@ -91,6 +141,7 @@ var SECONDMENUS = [
         name: '报警',
         link: 'views/blank.html',
         clsName: 'icon_39',
+        cached: false,
         panelMenus: [
             PANELMENUS[5],
             PANELMENUS[0],
@@ -103,6 +154,7 @@ var SECONDMENUS = [
         name: '热点',
         link: 'views/blank.html',
         clsName: 'icon_05',
+        cached: false,
         panelMenus: [
             PANELMENUS[6],
             PANELMENUS[0],
@@ -114,7 +166,8 @@ var SECONDMENUS = [
         id: 5,
         name: '考勤',
         link: 'views/blank.html',
-        clsName: 'icon_07'
+        clsName: 'icon_07',
+        cached: false,
     }
 ];
 

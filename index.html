@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <article class="flex h100vh">
+    <article id="app" class="flex h100vh">
         <aside id="mainNav" class="aside_menu h100vh flex column">
             <div class="logo_title tcenter">
                 <img src="img/logo.png" alt="">
@@ -20,25 +20,9 @@
             </div>
             <nav class="flex_1">
                <dl>
-                   <dd link="views/main/index.html" class="tcenter firstload">
-                        <i class="icons icon_20"></i>
-                        <label class="block">首页</label>
-                   </dd>
-                   <dd link="views/blank.html" class="tcenter">
-                        <i class="icons icon_21"></i>
-                        <label class="block">统计图表</label>
-                   </dd>
-                   <dd link="views/blank.html" class="tcenter">
-                        <i class="icons icon_22"></i>
-                        <label class="block">通知公告</label>
-                   </dd>
-                   <dd link="views/blank.html" class="tcenter">
-                        <i class="icons icon_23"></i>
-                        <label class="block">巡护林管理</label>
-                   </dd>
-                   <dd link="views/blank.html" class="tcenter">
-                        <i class="icons icon_24"></i>
-                        <label class="block">护林员管理</label>
+                   <dd v-for="(item,index) in menus" :class="{'selected': index==selected}" @click="selected=index" class="tcenter">
+                        <i class="icons icon_20" :class="item.clsName"></i>
+                        <label class="block" v-html="item.name">首页</label>
                    </dd>
                </dl>
             </nav>
@@ -50,11 +34,11 @@
                 </dl>
             </div>
         </aside>
-        <section id="mainFrame" class="section_content flex_1 h100vh ohidden"></section>
+        <section id="menu_items" class="section_content flex_1 h100vh ohidden"></section>
     </article>
+    <script src="libs/vue.js"></script>
     <script src="libs/jquery-1.9.0.min.js"></script>
     <script src="libs/ligerui.min.js"></script>
-    <script src="libs/vue.js"></script>
     <script src="js/config.js"></script>
     <script src="js/index.js"></script>
     <!--依赖js库-->

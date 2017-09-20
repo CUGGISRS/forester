@@ -407,6 +407,7 @@ body {
 }
 #openlayerBtns .single + .single {
   margin-left: 5px;
+  width: 24em;
 }
 #openlayerBtns .item {
   border: 0;
@@ -426,6 +427,85 @@ body {
 }
 #openlayerBtns .tabs_panel {
   border-top: 1px solid #e5e5e5;
+}
+#openlayerBtns .gpsDiv {
+  padding: 1em 1em 0;
+}
+#openlayerBtns .gpsDiv .columns3 .input {
+  width: 30%;
+}
+#openlayerBtns .gpsDiv .columns3 .input + .input {
+  margin-left: 5%;
+}
+#openlayerBtns .gpsDiv dt {
+  height: 30px;
+}
+#openlayerBtns .gpsDiv dd {
+  margin-top: 10px;
+  height: 30px;
+}
+#openlayerBtns .gpsDiv .input {
+  position: relative;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  background: #fff;
+  height: 30px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#openlayerBtns .gpsDiv .input.selected,
+#openlayerBtns .gpsDiv .input:focus {
+  border-color: #3997D6;
+}
+#openlayerBtns .gpsDiv .input input {
+  border: 0;
+  height: 100%;
+  background: transparent;
+  width: 100%;
+  outline: none;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 5px;
+}
+#openlayerBtns .gpsDiv .input.hasClear input {
+  padding-right: 20px;
+}
+#openlayerBtns .gpsDiv .input.hasClear .iconfont {
+  top: 50%;
+  right: 5px;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+#openlayerBtns .gpsDiv .input.hasafter1 {
+  padding-left: 1em;
+}
+#openlayerBtns .gpsDiv .input.hasafter3 {
+  padding-left: 3em;
+}
+#openlayerBtns .gpsDiv .input .after {
+  top: 50%;
+  text-indent: 5px;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+#openlayerBtns .gpsDiv .input .dw {
+  top: 0;
+  right: 0;
+  -webkit-transform: translate(172%, 5%);
+  -ms-transform: translate(172%, 5%);
+  transform: translate(172%, 5%);
+}
+#openlayerBtns .gpsDiv .btn {
+  padding: 10px 0;
+}
+#openlayerBtns .gpsDiv .btn button {
+  background: #3997D6;
+  border: 0;
+  border-radius: 3px;
+  color: #fff;
+  padding: 6px 2em;
 }
 #assistPanel {
   display: none;

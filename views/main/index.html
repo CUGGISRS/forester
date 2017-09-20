@@ -23,14 +23,41 @@
                     selected: -1
                 },
                 watch: {
-                    selected: function(val) {
+                    selected: function(val, o) {
+                        var item = this.menus[this.selected], targetId;
+                        if(!item) return;
                         //离开时清除原有专题
                         Page.destroyed && (Page.destroyed(), Page.destroyed = null);
                         sessionStorage.setItem('_2_nav_selected_', val || 0);
                         //清除不同面板下副面板的选中项
                         sessionStorage.removeItem('_panel_nav_selected_');
-                        this.fillContext();
+                        targetId = 'mainPanel_item_' + item.id;
+                        if (!item.cached) {
+                            item.cached = true;
+                            $('#mainPanel').append($('<div id="'+ targetId +'" class="h100 w100 hidden"></div>').load(item.link));
+                        }
+                        $('#mainPanel').fadeIn(400).find('#' + targetId).show().siblings().hide();
                     }
+                },
+                created: function () {
+                    $('#openlayerBtns').load('views/actions.html');
+                    $('#openlayerFrame .panel').on('click', '.close', function(){
+                        $(this).closest('.panel').fadeOut(400);
+                        //关闭汇总信息
+                        Page.Actions.reset();
+                    });
+                    (function initMap(){
+                        if (typeof Hly != 'undefined') {
+                            //地图初始化
+                            GIS$.mapInit();
+                            //地图数据刷新
+                            GIS$.mapDataRefresh();
+                            //点击事件挂接
+                            GIS$.mapClickEvent();
+                        } else {
+                            setTimeout(initMap);
+                        }
+                    })();
                 },
                 mounted: function () {
                     this.selectMenu(0);
@@ -38,14 +65,6 @@
                 methods: {
                     selectMenu: function(idx) {
                         this.selected = idx;
-                    },
-                    fillContext: function() {
-                        if (typeof Hly != 'undefined') {
-                            var item = this.menus[this.selected || 0] || {};
-                            $('#mainPanel').load(item.link + '?_=' + (+new Date())).fadeIn(400);
-                        } else {
-                            setTimeout(this.fillContext.bind(this));
-                        }
                     }
                 }
             });
@@ -54,35 +73,12 @@
             Page.chooseNav = function(idx){
                 nav2Vue.selected = idx;
             }
+
             Page.showInfo = function () {
-                Page.actions.selected = -1;
-                $('#assistPanel').load('views/main/assist/info.html').fadeIn(400);
-            }
-            Page.showMain = function (bol) {
-                if(bol == false) {
-                    $('#assistPanel').fadeOut(400);
-                } else {
-                    Page.actions.selected = -1;
-                    $('#assistPanel').load('views/main/assist/main.html').fadeIn(400);
-                }
+                Page.Actions.reset();
+                window.setTimeout(function(){
+                    $('#assistPanel').load('views/main/assist/info.html').fadeIn(400);
+                })
             }
         })();
-        $(document).ready(function(){
-            $('#openlayerBtns').load('views/actions.html');
-            $('#openlayerFrame .panel').on('click', '.close', function(){
-                $(this).closest('.panel').fadeOut(400);
-            });
-            (function initMap(){
-                if (typeof Hly != 'undefined') {
-                    //地图初始化
-                    GIS$.mapInit();
-                    //地图数据刷新
-                    GIS$.mapDataRefresh();
-                    //点击事件挂接
-                    GIS$.mapClickEvent();
-                } else {
-                    setTimeout(initMap);
-                }
-            })();
-        });
     </script>
