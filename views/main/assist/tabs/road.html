@@ -3,7 +3,7 @@
         <dt class="tab_panel_title">
             <label class="circle orange">近</label>三天轨迹
         </dt>
-        <dd class="tab_panel_detail" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
+        <dd class="list_item" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
             <p class="strong">{{item.LbsUserBaseInfo.USER_NAME}}</p>
             <p>{{item.StartTime}}</p>
             <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
@@ -15,7 +15,7 @@
                 <dt class="tab_panel_title">
                     <label class="circle blue">基</label>本信息
                 </dt>
-                <dd class="tab_panel_detail">
+                <dd class="list_item">
                     <p>{{DetailInfo.BaseInfo.StartTime}}</p>
                     <p>{{DetailInfo.BaseInfo.TimeLength}}小时&emsp;{{DetailInfo.BaseInfo.Distance}}公里</p>
                 </dd>
@@ -24,7 +24,7 @@
                 <dt class="tab_panel_title">
                     <label class="circle green">轨</label>迹播放
                 </dt>
-                <dd class="tab_panel_detail">
+                <dd class="list_item">
                     <audio class="audio" controls></audio>
                 </dd>
             </dl>
@@ -32,7 +32,7 @@
                 <dt class="tab_panel_title">
                     <label class="circle orange">轨</label>迹点
                 </dt>
-                <dd class="tab_panel_detail" v-for="(item,index) in DetailInfo.GpsDisplayPoints" :key="index">
+                <dd class="list_item" v-for="(item,index) in DetailInfo.GpsDisplayPoints" :key="index">
                     <p><i class="icons"></i><span>{{item.COLLECTTIME}}</span></p>
                     <p>{{item.ADDRESS}}</p>
                     <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
@@ -109,7 +109,3 @@
         })
     })();
 </script>
-<style>
-    #assist_tab_road dd{padding: .6em 0; border-bottom: 1px solid #eee;}
-    #assist_tab_road dd p.strong{color: #555;}
-</style>

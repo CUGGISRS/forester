@@ -1,8 +1,75 @@
-<dl class="tab_panel">
-    <dt class="tab_panel_title">
-        <label class="circle">详</label>细信息
-    </dt>
-    <dd class="tab_panel_detail">
-        <i class="icons"></i>考勤
-    </dd>
-</dl>
+<div id="vue_tab_attend" class="h100 scroll">
+    <dl class="datetimes">
+        <dt class="thead flex acenter jcenter">
+            <button><i class="iconfont icon-arrLeft-fill"></i></button>
+            <span class="currdate">2017-09</span>
+            <button><i class="iconfont icon-sanx-up"></i></button>
+        </dt>
+        <dd class="flex header columns7">
+            <span class="colum" v-for="i in 7" :key="i">{{weeks[i - 1][1]}}</span>
+        </dd>
+        <dd class="flex tbody wrap columns7">
+            <span class="colum" v-for="(d, idx) in days" :key="idx">{{ d.d }}</span>
+        </dd>
+    </dl>
+</div>
+<script>
+    (function(){
+        new Vue({
+            el: '#vue_tab_attend',
+            data: {
+                options: {},
+                year: 2017,
+                month: 9,
+                day: 16,
+                days: [
+                    { y: 2017, m: 9, d: 1 },
+                    { y: 2017, m: 9, d: 2 },
+                    { y: 2017, m: 9, d: 3 },
+                    { y: 2017, m: 9, d: 4 },
+                    { y: 2017, m: 9, d: 5 },
+                    { y: 2017, m: 9, d: 6 },
+                    { y: 2017, m: 9, d: 7 },
+                    { y: 2017, m: 9, d: 8 },
+                    { y: 2017, m: 9, d: 9 },
+                    { y: 2017, m: 9, d: 10 }
+                ],
+                weeks: [[0, '日'],[1, '一'],[2, '二'],[3, '三'],[4, '四'],[5, '五'],[6, '六']]
+            },
+            watch: {
+                month: function(v, o){
+                    if(v < 1) {
+                        this.month = 12;
+                        this.year -= 1;
+                    } else if (v > 12) {
+                        this.month = 1;
+                        this.year += 1;
+                    }
+                }
+            },
+            created: function () {
+                this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
+                if (this.options.userId) {
+                    this.getList();
+                } else {
+                    console.log('缺少必要的userId！');
+                }
+                this.creatMonth();
+            },
+            methods: {
+                creatMonth: function () {
+
+                },
+                getList: function () {
+                    var self = this;
+                    $.get(QueryAttendance_Ctrl + 'GetAttendanceByMonth', {
+                        userId: self.options.userId,
+                        month: '2017/9'
+                    }).done(function (d) {
+                        console.log('getattendbymonth:', d);
+                    });
+                }
+            }
+        })
+    })();
+</script>

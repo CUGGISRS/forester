@@ -4,6 +4,8 @@ var QueryUser_Ctrl = IPServer + '/gdhly/QueryUser/'
 var QueryGPSInfo_Ctrl = IPServer + '/gdhly/QueryGPSInfo/'
 var QueryPatrolarea_Ctrl = IPServer + '/gdhly/QueryPatrolarea/'
 var ManagePatrol_Ctrl = IPServer + '/gdhly/ManagePatrol/'
+var QueryAttendance_Ctrl = IPServer + '/gdhly/QueryAttendance/'
+
 var TIMEOUT = '1000000';
 var MENUS = [
     {

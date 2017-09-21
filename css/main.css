@@ -742,30 +742,58 @@ body {
 #assistPanel .tabdetail .tab_panel_title .circle.blue {
   background: #3997D6;
 }
-#assistPanel .tabdetail .tab_panel_detail {
+#assistPanel .tabdetail .list_item {
+  position: relative;
+  padding: .6em 0;
+  margin-left: -webkit-calc(1.5em + 8px);
+  margin-left: calc(1.5em + 8px);
+}
+#assistPanel .tabdetail .list_item .strong {
+  color: #555;
+}
+#assistPanel .tabdetail .list_item + .list_item:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: -webkit-calc(100% + 1.5em + 8px);
+  width: calc(100% + 1.5em + 8px);
+  left: -webkit-calc(0px - 1.5em - 8px);
+  left: calc(0px - 1.5em - 8px);
+  height: 1px;
+  background-color: #eee;
+}
+#assistPanel .tabdetail .list_item .audio {
+  margin-left: -webkit-calc(0px - 1.5em - 4px);
+  margin-left: calc(0px - 1.5em - 4px);
+  width: -webkit-calc(100% + 1.5em);
+  width: calc(100% + 1.5em);
+}
+#assistPanel .tabdetail .list_item .icons {
+  position: absolute;
+  left: -24px;
+}
+#assistPanel .tabdetail ul.num li {
+  list-style: decimal outside;
+}
+#assistPanel .tabdetail .list_item_padding {
   position: relative;
   padding-left: -webkit-calc(1.5em + 8px);
   padding-left: calc(1.5em + 8px);
   padding-right: 10px;
   line-height: 1.6;
 }
-#assistPanel .tabdetail .tab_panel_detail .icons {
+#assistPanel .tabdetail .list_item_padding .icons {
   position: absolute;
   left: 4px;
 }
-#assistPanel .tabdetail .tab_panel_detail .audio {
+#assistPanel .tabdetail .list_item_padding .table {
   margin-left: -webkit-calc(0px - 1.5em - 4px);
   margin-left: calc(0px - 1.5em - 4px);
   width: -webkit-calc(100% + 1.5em);
   width: calc(100% + 1.5em);
 }
-#assistPanel .tabdetail .tab_panel_detail .table {
-  margin-left: -webkit-calc(0px - 1.5em - 4px);
-  margin-left: calc(0px - 1.5em - 4px);
-  width: -webkit-calc(100% + 1.5em);
-  width: calc(100% + 1.5em);
-}
-#assistPanel .tabdetail .tab_panel_detail .table th {
+#assistPanel .tabdetail .list_item_padding .table th {
   background: #F7F7F7;
   border: 1px solid #E2E2E2;
   padding: 4px 1em;
@@ -773,11 +801,11 @@ body {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-#assistPanel .tabdetail .tab_panel_detail .table td {
+#assistPanel .tabdetail .list_item_padding .table td {
   border: 1px solid #E2E2E2;
   padding: 4px 1em;
 }
-#assistPanel .tabdetail .tab_panel_detail .table label {
+#assistPanel .tabdetail .list_item_padding .table label {
   display: block;
   white-space: nowrap;
 }
@@ -790,4 +818,39 @@ body {
   background: transparent;
   color: #666;
   cursor: pointer;
+}
+.datetimes .thead {
+  line-height: 30px;
+  height: 30px;
+  border-bottom: 1px solid #eee;
+}
+.datetimes .thead button {
+  border: 0;
+  background: transparent;
+  padding: 0 1em;
+}
+.datetimes .thead .currdate {
+  padding: 0 1em;
+}
+.datetimes .columns7 {
+  margin: 0 1em;
+  line-height: 24px;
+}
+.datetimes .columns7 .colum {
+  position: relative;
+  font-size: 12px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 5px 3px;
+  width: -webkit-calc(14.28% - 6px);
+  width: calc(14.28% - 6px);
+  border-radius: 3px;
+}
+.datetimes .header {
+  color: #3997D6;
+}
+.datetimes .tbody .colum {
+  color: #333;
+  border: 1px solid #efefef;
 }
