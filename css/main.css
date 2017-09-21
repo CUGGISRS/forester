@@ -356,30 +356,30 @@ body {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-#mainPanel .query form {
+#mainPanel .query .searchinput {
   border: 1px solid #eee;
   border-radius: 3px;
   -webkit-box-shadow: 0 0 4px 1px #eee inset;
   box-shadow: 0 0 4px 1px #eee inset;
 }
-#mainPanel .query form input,
-#mainPanel .query form button {
+#mainPanel .query .searchinput input,
+#mainPanel .query .searchinput button {
   border: 0;
   background: transparent;
 }
-#mainPanel .query form input {
+#mainPanel .query .searchinput input {
   padding: 4px 5px;
   width: 100%;
   outline: none;
 }
-#mainPanel .query form button {
+#mainPanel .query .searchinput button {
   background: #6DA1D5;
   padding: 0 6px;
   width: 3em;
   border-radius: 3px;
   margin-bottom: -1px;
 }
-#mainPanel .query form button .icons {
+#mainPanel .query .searchinput button .icons {
   vertical-align: middle;
 }
 #mainPanel .query .tabs span {
@@ -441,6 +441,55 @@ body {
 }
 #mainPanel .resultContext dd.selected {
   background-color: #F6F6F6;
+}
+#mainPanel .querywhere .backouter {
+  padding: 6px;
+  border-top: 1px solid #eee;
+}
+#mainPanel .querywhere .backouter .back {
+  border: 0;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+}
+#mainPanel .querywhere .query {
+  padding: 1em 0;
+  margin: 0 12px;
+}
+#mainPanel .querywhere .label {
+  width: 3.5em;
+  text-align: right;
+  padding-right: 5px;
+}
+#mainPanel .querywhere .group {
+  padding: 10px 0;
+  line-height: 28px;
+}
+#mainPanel .querywhere .group .input select,
+#mainPanel .querywhere .group .input .l-text,
+#mainPanel .querywhere .group .input input {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #eee;
+  height: 28px;
+  width: 100%;
+}
+#mainPanel .querywhere .group .input .l-trigger,
+#mainPanel .querywhere .group .input .l-trigger-hover,
+#mainPanel .querywhere .group .input .l-trigger-pressed {
+  margin-right: 4px;
+}
+#mainPanel .querywhere .group button {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  background: #fff;
+  padding: 5px 1em;
+}
+#mainPanel .querywhere .group button.submit {
+  border-color: #3997D6;
+  background: #3997D6;
+  color: #fff;
+  margin-right: 1em;
 }
 #openlayerBtns {
   right: 70px;

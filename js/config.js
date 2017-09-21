@@ -115,7 +115,7 @@ var SECONDMENUS = [
     {
         id: 1,
         name: '轨迹',
-        link: 'views/blank.html',
+        link: 'views/main/road.html',
         clsName: 'icon_01',
         cached: false,
         panelMenus: [

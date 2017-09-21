@@ -228,7 +228,7 @@ body{
         padding: 10px 10px 0;
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
-        form{
+        .searchinput{
             border: 1px solid #eee; border-radius: 3px;
             -webkit-box-shadow: 0 0 4px 1px #eee inset;
                     box-shadow: 0 0 4px 1px #eee inset;
@@ -302,6 +302,52 @@ body{
             }
             &.selected{
                 background-color: #F6F6F6;
+            }
+        }
+    }
+    .querywhere{
+        .backouter{
+            padding: 6px; border-top: 1px solid #eee;
+            .back{
+                border: 0; background: transparent; color: #666; cursor: pointer;
+            }
+        }
+        .query{
+            padding: 1em 0;
+            margin: 0 12px;
+        }
+        .label{
+            width: 3.5em;
+            text-align: right;
+            padding-right: 5px;
+        }
+        .group{
+            padding: 10px 0;
+            line-height: 28px;
+            .input{
+                select,
+                .l-text,
+                input{
+                    -webkit-box-sizing: border-box;
+                            box-sizing: border-box;
+                    border: 1px solid #eee;
+                    height: 28px;
+                    width: 100%;
+                }
+                .l-trigger, 
+                .l-trigger-hover, 
+                .l-trigger-pressed{ margin-right: 4px; }
+            }
+            button{
+                border: 1px solid #ddd;
+                border-radius: 3px;
+                background: #fff; padding: 5px 1em;
+                &.submit{
+                    border-color: #3997D6;
+                    background: #3997D6;
+                    color: #fff;
+                    margin-right: 1em;
+                }
             }
         }
     }

@@ -1,0 +1,139 @@
+<div id="vue-querywhere" class="flex column h100 querywhere">
+    <div class="title bbox flex acenter">
+        <i class="icons"></i>
+        <span class="flex_1">路径查询</span>
+        <button class="close"><i class="iconfont icon-x"></i></button>
+    </div>
+    <div class="query flex_1" v-show="loading < 1">
+        <form action="." @submit.prevent="filterQuery">
+            <p class="flex group">
+                <label class="label">省</label>
+                <span class="flex_1 input">
+                    <select v-model="form.province" class="w100">
+                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                    </select>
+                </span>
+            </p>
+            <p class="flex group">
+                <label class="label">市</label>
+                <span class="flex_1 input">
+                    <select v-model="form.city" class="w100">
+                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                    </select>
+                </span>
+            </p>
+            <p class="flex group">
+                <label class="label">县</label>
+                <span class="flex_1 input">
+                    <select v-model="form.county" class="w100">
+                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                    </select>
+                </span>
+            </p>
+            <p class="flex group">
+                <label class="label">村</label>
+                <span class="flex_1 input">
+                    <select v-model="form.village" class="w100">
+                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                    </select>
+                </span>
+            </p>
+            <p class="flex group">
+                <label class="label">护林员</label>
+                <span class="flex_1 input">
+                    <input type="text" v-model="form.user" class="w100">
+                </span>
+            </p>
+            <p class="flex group">
+                <label class="label">类型</label>
+                <span class="flex_1 input">
+                    <select v-model="form.type" class="w100">
+                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                    </select>
+                </span>
+            </p>
+            <p class="flex group">
+                <label class="label">日期</label>
+                <span class="flex_1 flex column">
+                    <span class="input"><input type="text" :id="btimeId" class="w100"></span>
+                    <span class="tcenter">至</span>
+                    <span class="input"><input type="text" :id="etimeId" class="w100"></span>
+                </span>
+            </p>
+            <p class="tcenter group">
+                <button type="submit" class="submit"><i class="icons vcenter"></i> 查询</button>
+                <button type="reset"><i class="icons vcenter"></i> 清除</button>
+            </p>
+        </form>
+    </div>
+    <div class="result flex_1 flex column" v-show="loading >= 1">
+        <div class="backouter flex">
+            <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
+            <span class="flex_1"></span>
+            <span>
+                搜索出结果 <label>13</label> 条
+            </span>
+        </div>
+        <dl class="flex_1 scroll">
+            <dt class="tcenter" v-if="loading == 1">加载中...</dt>
+            <dd v-for="(item,index) in 10" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
+                <p class="whitespace">我是结果</p>
+                <p class="whitespace">面积&emsp;10000亩</p>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<script>
+    (function () {
+        new Vue({
+            el: '#vue-querywhere',
+            data: {
+                loading: false,
+                resultsIdx: -1,
+                results: [],
+                btimeId: 'btime' + +new Date(),
+                etimeId: 'etime' + +new Date(),
+                form: {
+                    province: '',
+                    city: '',
+                    county: '',
+                    village: '',
+                    btime: '',
+                    etime: '',
+                    user: '',
+                    type: ''
+                }
+            },
+            mounted: function () {
+                $('#' + this.btimeId).ligerDateEditor();
+                $('#' + this.etimeId).ligerDateEditor();
+            },
+            methods: {
+                filterQuery: function () {
+                    var self = this;
+                    this.loading = 1;
+                    this.form.btime = $('#' + this.btimeId).val();
+                    this.form.etime = $('#' + this.etimeId).val();
+                    console.log('this.form', this.form);
+                    $.get(QueryUser_Ctrl + "GetLbsUsersByUserInfo", {
+                        userInfo: '刘',
+                        organId: 2,
+                        disconnectTimer: TIMEOUT
+                    }).done(function (data) {
+                        self.results = data;
+                        self.loading = 2;
+                    })
+                },
+                selectItem: function (idx) {
+                    this.resultsIdx = idx;
+                    var data = this.results[idx];
+                },
+                backList: function () {
+                    this.loading = 0;
+                    this.results = [];
+                }
+            }
+        });
+    })();
+</script>
