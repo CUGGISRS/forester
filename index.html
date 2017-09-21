@@ -22,14 +22,14 @@
                <dl>
                    <dd v-for="(item,index) in menus" :class="{'selected': index==selected}" @click="selected=index" class="tcenter">
                         <i class="icons icon_20" :class="item.clsName"></i>
-                        <label class="block" v-html="item.name">首页</label>
+                        <label class="block whitespace" v-html="item.name">首页</label>
                    </dd>
                </dl>
             </nav>
             <div class="sysinfo">
                 <dl>
-                    <dd class="tcenter">广东防火办</dd>
-                    <dd><i class="icons icon_08"></i>系统中心</dd>
+                    <dd class="tcenter whitespace">广东防火办</dd>
+                    <dd class="whitespace"><i class="icons icon_08"></i>系统中心</dd>
                     <dd><i class="icons icon_09"></i>注销</dd>
                 </dl>
             </div>

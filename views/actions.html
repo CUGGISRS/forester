@@ -20,12 +20,17 @@
                 </button>
                 <button class="item" @click="taggleBtn(4)" :class="{'selected': selected==4}">
                     <i class="icons icon_64"></i> 工具
+                    <dl class="toolDiv absolute bottom left w100 bbox bgfff" v-if="selected==4">
+                        <dd v-for="(item,index) in tools" @click="toolsManger(item)">
+                            <i class="icons" :class="item.clsName"></i> {{item.name}}
+                        </dd>
+                    </dl>
                 </button>
                 <button class="item" @click="taggleBtn(5)" :class="{'selected': selected==5}">
                     <i class="icons icon_65"></i> 全屏
                 </button>
             </div>
-            <form action="." @submit.prevent="gpsMeth" class="tabs_panel" v-if="selected==2">
+            <form v-if="selected==2" action="." @submit.prevent="gpsMeth" class="tabs_panel">
                 <dl class="gpsDiv">
                     <dt class="flex acenter jcenter columns3">
                         <button class="input" :class="{'selected': gpsIdx == 0}" @click="gpsIdx = 0">地名</button>
@@ -90,14 +95,57 @@
                     <dd class="btn tcenter">
                         <button type="submit">定位</button>
                     </dd>
-                </form>
-            </div>
-            <div class="tabs_panel" v-if="selected==3">
-                我是图层<br>
-                我是图层<br>
-                我是图层<br>
-                我是图层<br>
-                我是图层<br>
+                </dl>
+            </form>
+            <div v-if="selected==3" class="tabs_panel layersDiv">
+                <dl>
+                    <dt class="flex acenter" @click="expandDD(0)">
+                        <span class="flex_1">地图模式</span>
+                        <i class="iconfont" :class="layersDetail[0] ? 'icon-less' : 'icon-moreunfold'"></i>
+                    </dt>
+                    <dd class="flex" v-show="layersDetail[0]">
+                        <span class="modal_item" @click="layerManger('2d')" :class="{'selected': layerModal=='2d'}">
+                            <i class="modals modal_00"></i>
+                            二维
+                        </span>
+                        <span class="modal_item" @click="layerManger('3d')" :class="{'selected': layerModal=='3d'}">
+                            <i class="modals modal_01"></i>
+                            三维
+                        </span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="flex acenter" @click="expandDD(1)">
+                        <span class="flex_1">森林资源</span>
+                        <i class="iconfont" :class="layersDetail[1] ? 'icon-less' : 'icon-moreunfold'"></i>
+                    </dt>
+                    <dd class="flex wrap layermanger" v-show="layersDetail[1]">
+                        <label class="whitespace" v-for="(item,index) in layers[0]" :key="index">
+                            <input type="checkbox" class="hidden" @change="layerManger(item)">
+                            <i class="checkbox"></i>
+                            <span>
+                                <i class="icons vcenter" :class="item.clsName"></i>
+                                {{item.name}}
+                            </span>
+                        </label>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="flex acenter" @click="expandDD(2)">
+                        <span class="flex_1">防火专题</span>
+                        <i class="iconfont" :class="layersDetail[2] ? 'icon-less' : 'icon-moreunfold'"></i>
+                    </dt>
+                    <dd class="flex wrap layermanger" v-show="layersDetail[2]">
+                        <label class="whitespace" v-for="(item,index) in layers[1]" :key="index">
+                            <input type="checkbox" class="hidden" @change="layerManger(item)">
+                            <i class="checkbox"></i>
+                            <span>
+                                <i class="icons vcenter" :class="item.clsName"></i>
+                                {{item.name}}
+                            </span>
+                        </label>
+                    </dd>
+                </dl>
             </div>
         </div>
     </div>
@@ -108,6 +156,7 @@
             el: '#vue-actions',
             data: {
                 selected: -1,
+                layerModal: '2d',
                 gpsIdx: 0,
                 gps: [
                     {
@@ -124,6 +173,100 @@
                     {
                         edfm: '',
                         ndfm: ''
+                    }
+                ],
+                layersDetail: [true, true, true],
+                layers: [
+                    [
+                        {
+                            id: '0',
+                            name: '资源小班',
+                            clsName: 'icon_74'
+                        }
+                    ],
+                    [
+                        {
+                            id: '0',
+                            name: '防火隔离带',
+                            clsName: 'icon_75'
+                        },
+                        {
+                            id: '1',
+                            name: '暸望塔',
+                            clsName: 'icon_76'
+                        },
+                        {
+                            id: '2',
+                            name: '视频监控点',
+                            clsName: 'icon_77'
+                        },
+                        {
+                            id: '3',
+                            name: '物资储存库',
+                            clsName: 'icon_78'
+                        },
+                        {
+                            id: '4',
+                            name: '电讯设备',
+                            clsName: 'icon_79'
+                        },
+                        {
+                            id: '5',
+                            name: '消防专业队',
+                            clsName: 'icon_710'
+                        },
+                        {
+                            id: '6',
+                            name: '灭火取水点',
+                            clsName: 'icon_711'
+                        },
+                        {
+                            id: '7',
+                            name: '起降点',
+                            clsName: 'icon_712'
+                        },
+                        {
+                            id: '8',
+                            name: '防火检查站',
+                            clsName: 'icon_713'
+                        },
+                        {
+                            id: '9',
+                            name: '防范重点单位',
+                            clsName: 'icon_714'
+                        },
+                        {
+                            id: '10',
+                            name: '指挥机构',
+                            clsName: 'icon_74614'
+                        },
+                        {
+                            id: '11',
+                            name: '民用机场',
+                            clsName: 'icon_613'
+                        }
+                    ]
+                ],
+                tools: [
+                    {
+                        id: '0',
+                        name: '测距',
+                        clsName: 'icon_70'
+                    },
+                    {
+                        id: '1',
+                        name: '测面',
+                        clsName: 'icon_71'
+                    },
+                    {
+                        id: '2',
+                        name: '截图',
+                        clsName: 'icon_72'
+                    },
+                    {
+                        id: '3',
+                        name: '清空',
+                        clsName: 'icon_73'
                     }
                 ]
             },
@@ -149,6 +292,24 @@
                 },
                 gpsMeth: function(){
 
+                },
+                layerManger: function(item){
+                    if(item == '2d') {
+                        this.layerModal = '2d'
+                        GIS$.switch2D();
+                    } else if (item == '3d') {
+                        this.layerModal = '3d'
+                        GIS$.switch3D();
+                    } else {
+                        console.log('layermanger', item);
+                    }
+                },
+                expandDD: function (idx) {
+                    this.layersDetail[idx] = !this.layersDetail[idx]
+                    this.layersDetail = [].concat(this.layersDetail);
+                },
+                toolsManger: function(item){
+                    console.log('toolManger', item);
                 }
             }
         })

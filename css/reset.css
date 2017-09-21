@@ -217,6 +217,10 @@ textarea {
     text-align: left;
 }
 
+.vcenter{
+    vertical-align: -5px;
+}
+
 .fleft {
     float: left;
 }
@@ -260,6 +264,7 @@ textarea {
 
 .strong{ font-weight: 600; }
 .hidden{ display: none; }
+.bgfff{ background: #fff; }
 /*************ligerui.css重置****************/
 .l-tree-loading{
     margin-left: -12px;

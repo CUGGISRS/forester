@@ -38,6 +38,25 @@ body{
 .icon_64{ background-position: -80px -160px;}
 .icon_65{ background-position: -100px -160px;}
 
+.icon_613{ background-position: -260px -160px;}
+.icon_614{ background-position: -280px -160px;}
+
+.icon_70{ background-position: 0 -180px;}
+.icon_71{ background-position: -20px -180px;}
+.icon_72{ background-position: -40px -180px;}
+.icon_73{ background-position: -60px -180px;}
+.icon_74{ background-position: -80px -180px;}
+.icon_75{ background-position: -100px -180px;}
+.icon_76{ background-position: -120px -180px;}
+.icon_77{ background-position: -140px -180px;}
+.icon_78{ background-position: -160px -180px;}
+.icon_79{ background-position: -180px -180px;}
+.icon_710{ background-position: -200px -180px;}
+.icon_711{ background-position: -220px -180px;}
+.icon_712{ background-position: -240px -180px;}
+.icon_713{ background-position: -260px -180px;}
+.icon_714{ background-position: -280px -180px;}
+
 .selected{
     .icon_00{background-position: -80px -80px;}
     .icon_01{background-position: -100px -80px;}
@@ -200,9 +219,6 @@ body{
     height: calc(~"100vh - 100px");
     top: 15px; left: 20px;
     .title{
-        [type="checkbox"]{
-            display: none;
-        }
         label{
             margin-right: 4px;
         }
@@ -308,6 +324,7 @@ body{
         }
     }
     .item{
+        position: relative;
         border: 0; padding: 6px; line-height: 1;
         background: transparent; outline: none;
         .icons{
@@ -393,6 +410,61 @@ body{
                 background: #3997D6; border:0;
                 border-radius: 3px; color: #fff;
                 padding: 6px 2em;
+            }
+        }
+    }
+    .layersDiv{
+        .modals{
+            display: inline-block;
+            width: 104px; height: 64px;
+            background: url(../img/modal.png) no-repeat 0 0;
+        }
+        .modal_00{ background-position: 0 0;}
+        .modal_01{ background-position: -104px 0;}
+        .selected{
+            color: #3997D6;
+            .modal_00{ background-position: -208px 0;}
+            .modal_01{ background-position: -312px 0;}
+        }
+        .modal_item{
+            margin-right: 10px;
+            width: 104px;
+            text-align: center;
+        }
+        dl{
+            margin: 0 1em;
+        }
+        dt{
+            border-bottom: 1px solid #eee;
+            line-height: 30px;
+        }
+        dd{
+            margin: 10px 0;
+        }
+        .layermanger{
+            label{
+                position: relative;
+                width: 36%; font-size: 12px;
+                .vcenter{ vertical-align: -6px; }
+                &:nth-child(3n+2){
+                    width: 30%;
+                }
+                &:nth-child(3n+3){
+                    width: 34%;
+                }
+            }
+        }
+    }
+    .toolDiv{
+        -webkit-transform: translateY(100%);
+            -ms-transform: translateY(100%);
+                transform: translateY(100%);
+        border: 1px solid #e5e5e5;
+        dd{
+            line-height: 2;
+            color: #666;
+            &.selected{
+                background-color: #f1f1f1;
             }
         }
     }

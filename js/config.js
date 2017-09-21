@@ -18,37 +18,37 @@ var MENUS = [
     {
         id: 1,
         name: '统计图表',
-        link: 'views/blank',
+        link: '//www.mi.com/',
         type: 'iframe',
         cached: false,
-        needCache: false,
+        needCache: true,
         clsName: 'icon_21'
     },
     {
         id: 2,
         name: '通知公告',
-        link: 'views/blank',
+        link: '//www.baidu.com/',
         type: 'iframe',
         cached: false,
-        needCache: false,
+        needCache: true,
         clsName: 'icon_22'
     },
     {
         id: 3,
         name: '巡护林管理',
-        link: 'views/blank',
+        link: '//www.google.com/',
         type: 'iframe',
         cached: false,
-        needCache: false,
+        needCache: true,
         clsName: 'icon_23'
     },
     {
         id: 4,
         name: '护林员管理',
-        link: 'views/blank',
+        link: '//www.jd.com',
         type: 'iframe',
         cached: false,
-        needCache: false,
+        needCache: true,
         clsName: 'icon_24'
     }
 ];
