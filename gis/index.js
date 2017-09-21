@@ -168,249 +168,12 @@
     /**
      * 显示人员轨迹
      */
-    function showGj() {
+    function showGj(info) {
         getHlyThemeService();
         //详情里面的轨迹信息
-        hlyLayerService.showGj({
-            "LineId": "9788968f-60f0-4bc1-a7fc-05ace3066763",
-            "UserName": "李四",
-            "StartTime": "2017/9/13 8:43:06",
-            "TimeLength": "0.409722222222222",
-            "Distance": "38.28",
-            "GpsInfos": [{
-                    "LONGITUDE": 116.41844535497866,
-                    "LATITUDE": 39.94919415232978,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41844535497866,
-                    "LATITUDE": 39.94919415232978,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41844535497866,
-                    "LATITUDE": 39.94919415232978,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41858353924842,
-                    "LATITUDE": 39.94919228936592,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41858353924842,
-                    "LATITUDE": 39.94919228936592,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41858353924842,
-                    "LATITUDE": 39.94919228936592,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "0"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41861958117785,
-                    "LATITUDE": 39.9492413232974140,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41844535497866,
-                    "LATITUDE": 39.94919415232978,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41858353924842,
-                    "LATITUDE": 39.94919228936592,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41858353924842,
-                    "LATITUDE": 39.94919228936592,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41858353924842,
-                    "LATITUDE": 39.94919228936592,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41858353924842,
-                    "LATITUDE": 39.94919228936592,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41858353924842,
-                    "LATITUDE": 39.94919228936592,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41845136066132,
-                    "LATITUDE": 39.94921215755596,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                },
-                {
-                    "LONGITUDE": 116.41851243946692,
-                    "LATITUDE": 39.94923121725669,
-                    "ISVALID": "1"
-                }
-            ]
-        });
+        hlyLayerService.showGj(info);
     }
-
+    GIS$.showGj = showGj;
     /**
      * 关闭轨迹
      */
@@ -698,24 +461,18 @@
     /**
      * 显示巡护区
      */
-    function showXhq() {
-        $.get(serviceUrlConfig.GetPatrolAreaForEdit, {
-            patrolAreaId: "28acd124-bd52-4a59-9ba1-2b54c0d5fd13"
-        }, function (data) {
-            getHlyThemeService();
-            hlyLayerService.showXhq(data);
-            //关联页面显示
-            hlyLayerService.on("KeyPointPointermove", function (e) {
-                if (e.pointerOn) {
-                    var keyPointId = e.itemId;
-                    $("#keyPointId").text("地图选中的关键点ID：" + keyPointId);
-                } else {
-                    $("#keyPointId").text("");
-                }
-            });
-
+    function showXhq(data) {
+        getHlyThemeService();
+        hlyLayerService.showXhq(data);
+        //关联页面显示
+        hlyLayerService.on("KeyPointPointermove", function (e) {
+            if (e.pointerOn) {
+                var keyPointId = e.itemId;
+                console.log('showXhq, KeyPointPointermove', keyPointId);
+            }
         });
     }
+    GIS$.showXhq = showXhq;
 
     /**
      * 选择关键点

@@ -1,5 +1,5 @@
-<div id="assist_tab_road" class="h100 scroll">
-    <dl v-if="!lineId" class="tab_panel">
+<div id="assist_tab_road" class="h100">
+    <dl v-show="!lineId" class="tab_panel h100 scroll">
         <dt class="tab_panel_title">
             <label class="circle orange">近</label>三天轨迹
         </dt>
@@ -9,7 +9,7 @@
             <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
         </dd>
     </dl>
-    <div v-else class="flex column h100">
+    <div v-if="lineId" class="flex column h100 scroll">
         <div class="flex_1 scroll">
             <dl class="tab_panel">
                 <dt class="tab_panel_title">
@@ -33,7 +33,7 @@
                     <label class="circle orange">轨</label>迹点
                 </dt>
                 <dd class="list_item" v-for="(item,index) in DetailInfo.GpsDisplayPoints" :key="index">
-                    <p><i class="icons"></i><span>{{item.COLLECTTIME}}</span></p>
+                    <p><i class="icons"></i><span>{{item.COLLECTTIME.Date()}}</span></p>
                     <p>{{item.ADDRESS}}</p>
                     <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
                 </dd>
@@ -89,6 +89,7 @@
                     $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
                         lineId: self.lineId
                     }).done(function (d) {
+                        //GIS$.showGj($.extend({GpsInfos: d.GpsInfos}, self.DetailInfo.BaseInfo));
                         self.DetailInfo.GpsDisplayPoints = d.GpsDisplayPoints || [];
                         self.DetailInfo.GpsInfos = d.GpsInfos || [];
                     });

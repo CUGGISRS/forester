@@ -28,7 +28,7 @@
                 <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
                     <h3><i class="icons" :class="(item.Provider || 'NETWORK') + (item.IsOnline ? ' online' : '')"></i><span>{{item.DEPARTMENT_NAME}}</span></h3>
                     <p class="whitespace">{{item.USER_NAME}}&emsp;{{item.PHONE_NUM}}</p>
-                    <p class="whitespace">面积&emsp;{{item.Area}}亩</p>
+                    <p class="whitespace">面积&emsp;{{(item.Area || 0).toFixed(2)}}亩</p>
                 </dd>
             </dl>
         </div>
@@ -52,22 +52,6 @@
                 offline: function (v) {
                     treeEve.reload()
                 }
-            },
-            beforeCreate: function () {
-                (function initTheme(){
-                    if (typeof Hly != 'undefined' && typeof hlyMap != 'undefined') {
-                        /**
-                         * 切换到护林员专题
-                         */
-                        GIS$.hlyThemeOnShow();
-                        /**
-                         * 关闭护林员专题时调用
-                         */
-                        Page.destroyed = GIS$.onClose;
-                    } else {
-                        setTimeout(initTheme);
-                    }
-                })();
             },
             mounted: mounted,
             methods: {
