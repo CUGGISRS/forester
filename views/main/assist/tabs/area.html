@@ -37,7 +37,7 @@
                     </dd>
                 </dl>
             </div>
-            <div v-if="options.userId" class="backouter">
+            <div v-if="options.userId && lists.length > 1" class="backouter">
                 <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
             </div>
         </div>
@@ -78,7 +78,12 @@
                         $.get(QueryPatrolarea_Ctrl + 'GetPatrolAreaByUserId', {
                             userId: self.options.userId
                         }).done(function (d) {
-                            self.lists = d || [];
+                            var lists = d || [];
+                            if(lists.length == 1) {
+                                self.areaId = d[0].ID;
+                            } else {
+                                self.lists = lists;
+                            }
                         });
                     },
                     getInfo: function(){

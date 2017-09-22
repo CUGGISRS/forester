@@ -62,11 +62,11 @@
                     })();
                 },
                 mounted: function () {
-                    this.selectMenu(0);
+                    this.selectMenu(sessionStorage.getItem('_2_nav_selected_') || 0);
                 },
                 methods: {
                     selectMenu: function(idx) {
-                        this.selected = idx;
+                        this.selected = parseInt(idx, 10);
                     }
                 }
             });

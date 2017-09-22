@@ -1,7 +1,7 @@
 <div id="vue-querywhere" class="flex column h100 querywhere">
     <div class="title bbox flex acenter">
         <i class="icons"></i>
-        <span class="flex_1">路径查询</span>
+        <span class="flex_1">{{tabName}}查询</span>
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
     <div class="query flex_1" v-show="loading < 1">
@@ -10,7 +10,7 @@
                 <label class="label">省</label>
                 <span class="flex_1 input">
                     <select v-model="form.province" class="w100">
-                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                        <option v-for="i in options.province" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
                     </select>
                 </span>
             </p>
@@ -18,7 +18,7 @@
                 <label class="label">市</label>
                 <span class="flex_1 input">
                     <select v-model="form.city" class="w100">
-                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                        <option v-for="i in options.city" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
                     </select>
                 </span>
             </p>
@@ -26,33 +26,48 @@
                 <label class="label">县</label>
                 <span class="flex_1 input">
                     <select v-model="form.county" class="w100">
-                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                        <option v-for="i in options.county" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
                     </select>
                 </span>
             </p>
             <p class="flex group">
-                <label class="label">村</label>
+                <label class="label">乡</label>
                 <span class="flex_1 input">
                     <select v-model="form.village" class="w100">
-                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                        <option v-for="i in options.village" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
                     </select>
                 </span>
             </p>
-            <p class="flex group">
+            <p class="flex group" v-if="tabId != 4">
                 <label class="label">护林员</label>
                 <span class="flex_1 input">
-                    <input type="text" v-model="form.user" class="w100">
+                    <input type="text" v-model="form.user" placeholder="请输入护林员姓名或电话" class="w100">
                 </span>
             </p>
-            <p class="flex group">
+            <p class="flex group" v-if="tabId == 3">
                 <label class="label">类型</label>
                 <span class="flex_1 input">
                     <select v-model="form.type" class="w100">
+                        <option value="">--请选择--</option>
                         <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
                     </select>
                 </span>
             </p>
-            <p class="flex group">
+            <template v-if="tabId == 2">
+                <p class="flex group">
+                    <label class="label">编号</label>
+                    <span class="flex_1 input">
+                        <input type="text" v-model="form.areanum" class="w100">
+                    </span>
+                </p>
+                <p class="flex group">
+                    <label class="label">名称</label>
+                    <span class="flex_1 input">
+                        <input type="text" v-model="form.areaname" class="w100">
+                    </span>
+                </p>
+            </template>
+            <p class="flex group" v-if="tabId != 2">
                 <label class="label">日期</label>
                 <span class="flex_1 flex column">
                     <span class="input"><input type="text" :id="btimeId" class="w100"></span>
@@ -86,14 +101,17 @@
 
 <script>
     (function () {
+        var tabId = sessionStorage.getItem('_2_nav_selected_') || 1;
+        document.getElementById('vue-querywhere').setAttribute('id', 'vue-querywhere-' + tabId);
         new Vue({
-            el: '#vue-querywhere',
+            el: '#vue-querywhere-' + tabId,
             data: {
                 loading: false,
                 resultsIdx: -1,
                 results: [],
                 btimeId: 'btime' + +new Date(),
                 etimeId: 'etime' + +new Date(),
+                cascade: ['province', 'city', 'county', 'village'],
                 form: {
                     province: '',
                     city: '',
@@ -102,14 +120,61 @@
                     btime: '',
                     etime: '',
                     user: '',
-                    type: ''
+                    type: '',
+                    areanum: '',
+                    areaname: ''
+                },
+                options: {
+                    province: [],
+                    city: [],
+                    county: [],
+                    village: []
+                },
+                tabId: tabId,
+                tabName: SECONDMENUS[tabId].name
+            },
+            watch: {
+                'form.province': function (v) {
+                    this.initDistrict('city');
+                },
+                'form.city': function () {
+                    this.initDistrict('county');
+                },
+                'form.county': function () {
+                    this.initDistrict('village');
                 }
+            },
+            created: function () {
+                this.initDistrict('province');
             },
             mounted: function () {
                 $('#' + this.btimeId).ligerDateEditor();
                 $('#' + this.etimeId).ligerDateEditor();
             },
             methods: {
+                initDistrict: function(key) {
+                    var self = this;
+                    var level = this.cascade.indexOf(key);
+                    var val = !level ? Prov_Code.OrganID : self.form[this.cascade[level - 1]];
+                    var url = level > 0 ? 'GetHomeSubOrganList' : 'GetHomeRootOrgan';
+                    if(key && level != -1) {
+                        this.cascade.forEach(function(item, idx) {
+                            if(idx < level) return;
+                            console.log('clear', item);
+                            self.form[item] = '';
+                            self.options[item] = [];
+                        }, this);
+                    }
+                    if(level && !val) return;
+
+                    $.get(Home_Ctrl + url, {
+                        organId: val,
+                        disconnectTimer: TIMEOUT
+                    }).done(function (d) {
+                        self.options[key] = [{ "OrganID": "", "OrganName": "--请选择--" }].concat(d);
+                        level < 1 && (self.form.province = Prov_Code.OrganID);
+                    });
+                },
                 filterQuery: function () {
                     var self = this;
                     this.loading = 1;

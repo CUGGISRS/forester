@@ -5,7 +5,7 @@ var QueryGPSInfo_Ctrl = IPServer + '/gdhly/QueryGPSInfo/'
 var QueryPatrolarea_Ctrl = IPServer + '/gdhly/QueryPatrolarea/'
 var ManagePatrol_Ctrl = IPServer + '/gdhly/ManagePatrol/'
 var QueryAttendance_Ctrl = IPServer + '/gdhly/QueryAttendance/'
-
+var Prov_Code = { "OrganID": 2, "OrganName": "广东省" };
 var TIMEOUT = '1000000';
 var MENUS = [
     {
@@ -115,7 +115,7 @@ var SECONDMENUS = [
     {
         id: 1,
         name: '轨迹',
-        link: 'views/main/road.html',
+        link: 'views/main/query.html',
         clsName: 'icon_01',
         cached: false,
         panelMenus: [
@@ -128,7 +128,7 @@ var SECONDMENUS = [
     {
         id: 2,
         name: '巡护区',
-        link: 'views/blank.html',
+        link: 'views/main/query.html',
         clsName: 'icon_02',
         cached: false,
         panelMenus: [
@@ -141,7 +141,7 @@ var SECONDMENUS = [
     {
         id: 3,
         name: '报警',
-        link: 'views/blank.html',
+        link: 'views/main/query.html',
         clsName: 'icon_39',
         cached: false,
         panelMenus: [
@@ -154,7 +154,7 @@ var SECONDMENUS = [
     {
         id: 4,
         name: '热点',
-        link: 'views/blank.html',
+        link: 'views/main/query.html',
         clsName: 'icon_05',
         cached: false,
         panelMenus: [
@@ -167,7 +167,7 @@ var SECONDMENUS = [
     {
         id: 5,
         name: '考勤',
-        link: 'views/blank.html',
+        link: 'views/main/query.html',
         clsName: 'icon_07',
         cached: false,
     }

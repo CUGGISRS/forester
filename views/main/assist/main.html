@@ -45,7 +45,7 @@
             },
             created: function () {
                 var self = this;
-                var data = JSON.parse(sessionStorage.getItem('_panel_main_options_') || '{"OrganID": 2, "OrganName": "广东省"}');
+                var data = JSON.parse(sessionStorage.getItem('_panel_main_options_') || JSON.stringify(Prov_Code));
                 $.get(Home_Ctrl + 'GetHomeStatistics?organId=' + data.OrganID).done(function (d) {
                     self.RealTimeInfoForDay = d.RealTimeInfoForDay;
                     self.StatisticsInfoForMonth = d.StatisticsInfoForMonth;

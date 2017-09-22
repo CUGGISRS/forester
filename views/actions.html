@@ -18,7 +18,7 @@
                 <button class="item" @click="taggleBtn(3)" :class="{'selected': selected==3}">
                     <i class="icons icon_63"></i> 图层
                 </button>
-                <button class="item" @click="taggleBtn(4)" :class="{'selected': selected==4}">
+                <button v-if="layerModal == '2d'" class="item" @click="taggleBtn(4)" :class="{'selected': selected==4}">
                     <i class="icons icon_64"></i> 工具
                     <dl class="toolDiv absolute bottom left w100 bbox bgfff" v-if="selected==4">
                         <dd v-for="(item,index) in tools" @click="toolsManger(item)">
@@ -274,6 +274,9 @@
                 selected: function (v) {
                     this.loadPanel(v == 0);
                 }
+            },
+            mounted: function () {
+                this.selected = 0;
             },
             methods: {
                 taggleBtn: function (i) {

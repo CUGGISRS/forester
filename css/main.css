@@ -473,6 +473,7 @@ body {
   border: 1px solid #eee;
   height: 28px;
   width: 100%;
+  text-indent: 5px;
 }
 #mainPanel .querywhere .group .input .l-trigger,
 #mainPanel .querywhere .group .input .l-trigger-hover,
