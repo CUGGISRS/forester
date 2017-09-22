@@ -14,7 +14,7 @@
             <input type="text" v-model="filterWord" placeholder="请输入人名/电话查询" class="flex_1">
             <button type="submit"><i class="icons icon_30"></i></button>
         </form>
-        <div class="tabs flex acenter jcenter">
+        <div class="tabsarea flex acenter jcenter">
             <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="tabIdx=0">组织机构</span>
             <span class="flex_1" :class="{'selected': tabIdx == 1}" @click="tabIdx=1">查询结果</span>
         </div>

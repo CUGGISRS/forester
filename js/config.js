@@ -1,10 +1,12 @@
 var IPServer = 'http://180.76.134.119'
 var Home_Ctrl = IPServer + '/gdhly/Home/';
-var QueryUser_Ctrl = IPServer + '/gdhly/QueryUser/'
-var QueryGPSInfo_Ctrl = IPServer + '/gdhly/QueryGPSInfo/'
-var QueryPatrolarea_Ctrl = IPServer + '/gdhly/QueryPatrolarea/'
-var ManagePatrol_Ctrl = IPServer + '/gdhly/ManagePatrol/'
-var QueryAttendance_Ctrl = IPServer + '/gdhly/QueryAttendance/'
+var QueryUser_Ctrl = IPServer + '/gdhly/QueryUser/';
+var QueryGPSInfo_Ctrl = IPServer + '/gdhly/QueryGPSInfo/';
+var QueryPatrolarea_Ctrl = IPServer + '/gdhly/QueryPatrolarea/';
+var QueryAttendance_Ctrl = IPServer + '/gdhly/QueryAttendance/';
+var QueryAlrma_Ctrl = IPServer + '/gdhly/QueryAlrma/';
+var QueryHotSpot_Ctrl = IPServer + '/gdhly/QueryHotSpot/';
+var ManagePatrol_Ctrl = IPServer + '/gdhly/ManagePatrol/';
 var Prov_Code = { "OrganID": 2, "OrganName": "广东省" };
 var TIMEOUT = '1000000';
 var MENUS = [

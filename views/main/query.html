@@ -1,7 +1,7 @@
 <div id="vue-querywhere" class="flex column h100 querywhere">
     <div class="title bbox flex acenter">
         <i class="icons"></i>
-        <span class="flex_1">{{tabName}}查询</span>
+        <span class="flex_1">{{pageName}}查询</span>
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
     <div class="query flex_1" v-show="loading < 1">
@@ -38,13 +38,13 @@
                     </select>
                 </span>
             </p>
-            <p class="flex group" v-if="tabId != 4">
+            <p class="flex group" v-if="pageId != 4">
                 <label class="label">护林员</label>
                 <span class="flex_1 input">
                     <input type="text" v-model="form.user" placeholder="请输入护林员姓名或电话" class="w100">
                 </span>
             </p>
-            <p class="flex group" v-if="tabId == 3">
+            <p class="flex group" v-if="pageId == 3">
                 <label class="label">类型</label>
                 <span class="flex_1 input">
                     <select v-model="form.type" class="w100">
@@ -53,7 +53,7 @@
                     </select>
                 </span>
             </p>
-            <template v-if="tabId == 2">
+            <template v-if="pageId == 2">
                 <p class="flex group">
                     <label class="label">编号</label>
                     <span class="flex_1 input">
@@ -67,7 +67,7 @@
                     </span>
                 </p>
             </template>
-            <p class="flex group" v-if="tabId != 2">
+            <p class="flex group" v-if="pageId != 2">
                 <label class="label">日期</label>
                 <span class="flex_1 flex column">
                     <span class="input"><input type="text" :id="btimeId" class="w100"></span>
@@ -85,14 +85,18 @@
         <div class="backouter flex">
             <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
             <span class="flex_1"></span>
-            <span>
-                搜索出结果 <label>13</label> 条
+            <span class="tipresult">
+                搜索出结果 <label>{{results.length}}</label> 条
             </span>
         </div>
-        <dl class="flex_1 scroll">
+        <div v-if="pageId == 5" class="tabsarea flex acenter jcenter">
+            <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="filterAttend(0)">按日期排序</span>
+            <span class="flex_1" :class="{'selected': tabIdx == 1}" @click="filterAttend(1)">按人名排序</span>
+        </div>
+        <dl class="flex_1 scroll resultContext">
             <dt class="tcenter" v-if="loading == 1">加载中...</dt>
-            <dd v-for="(item,index) in 10" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
-                <p class="whitespace">我是结果</p>
+            <dd v-for="(item,index) in results.length" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
+                <h3 class="whitespace">我是结果</h3>
                 <p class="whitespace">面积&emsp;10000亩</p>
             </dd>
         </dl>
@@ -101,14 +105,15 @@
 
 <script>
     (function () {
-        var tabId = sessionStorage.getItem('_2_nav_selected_') || 1;
-        document.getElementById('vue-querywhere').setAttribute('id', 'vue-querywhere-' + tabId);
+        var pageId = sessionStorage.getItem('_2_nav_selected_') || 1;
+        document.getElementById('vue-querywhere').setAttribute('id', 'vue-querywhere-' + pageId);
         new Vue({
-            el: '#vue-querywhere-' + tabId,
+            el: '#vue-querywhere-' + pageId,
             data: {
                 loading: false,
                 resultsIdx: -1,
                 results: [],
+                tabIdx: 0,
                 btimeId: 'btime' + +new Date(),
                 etimeId: 'etime' + +new Date(),
                 cascade: ['province', 'city', 'county', 'village'],
@@ -130,8 +135,8 @@
                     county: [],
                     village: []
                 },
-                tabId: tabId,
-                tabName: SECONDMENUS[tabId].name
+                pageId: pageId,
+                pageName: SECONDMENUS[pageId].name
             },
             watch: {
                 'form.province': function (v) {
@@ -142,6 +147,11 @@
                 },
                 'form.county': function () {
                     this.initDistrict('village');
+                }
+            },
+            computed: {
+                organId: function(){
+                    return this.form.village || this.form.county || this.form.city || this.form.province;
                 }
             },
             created: function () {
@@ -181,14 +191,85 @@
                     this.form.btime = $('#' + this.btimeId).val();
                     this.form.etime = $('#' + this.etimeId).val();
                     console.log('this.form', this.form);
-                    $.get(QueryUser_Ctrl + "GetLbsUsersByUserInfo", {
-                        userInfo: '刘',
-                        organId: 2,
-                        disconnectTimer: TIMEOUT
-                    }).done(function (data) {
-                        self.results = data;
+                    switch(pageId) {
+                        case "1" :
+                            this.filterRoad(); break;
+                        case "2" :
+                            this.filterArea(); break;
+                        case "3" :
+                            this.filter119(); break;
+                        case "4" :
+                            this.filterHot(); break;
+                        case "5" :
+                            this.filterAttend(); break;
+                    }
+                },
+                //查询轨迹
+                filterRoad: function() {
+                    var self = this;
+                    $.get(QueryGPSInfo_Ctrl + 'GetUserContrailListByCondition', {
+                        organId: self.organId,
+                        userNameOrPhone: self.form.user,
+                        sTime: self.form.btime,
+                        eTime: self.form.etime
+                    }).done(function (d) {
+                        self.results = d || [];
                         self.loading = 2;
-                    })
+                    });
+                },
+                //查询巡护区
+                filterArea: function() {
+                    var self = this;
+                    $.get(QueryPatrolarea_Ctrl + 'GetPatrolAreaByCondition', {
+                        organId: self.organId,
+                        userNameOrPhone: self.form.user,
+                        code: self.form.areanum,
+                        name: self.form.areaname
+                    }).done(function (d) {
+                        self.results = d || [];
+                        self.loading = 2;
+                    });
+                },
+                //查询报警
+                filter119: function() {
+                    var self = this;
+                    $.get(QueryAlrma_Ctrl + 'GetAlarmsByCondition', {
+                        organId: self.organId,
+                        userNameOrPhone: self.form.user,
+                        alarmType: self.form.type,
+                        sTime: self.form.btime,
+                        eTime: self.form.etime
+                    }).done(function (d) {
+                        self.results = d || [];
+                        self.loading = 2;
+                    });
+                },
+                //查询热点
+                filterHot: function() {
+                    var self = this;
+                    $.get(QueryHotSpot_Ctrl + 'GetHotspotList', {
+                        organId: self.organId,
+                        sTime: self.form.btime,
+                        eTime: self.form.etime
+                    }).done(function (d) {
+                        self.results = d || [];
+                        self.loading = 2;
+                    });
+                },
+                //查询考勤(Time, User)
+                filterAttend: function(type) {
+                    var self = this;
+                    var types = ['Time', 'User'];
+                    $.get(QueryAttendance_Ctrl + 'GetAttendanceListTo' + types[type || 0], {
+                        organId: self.organId,
+                        userNameOrPhone: self.form.user,
+                        sTime: self.form.btime,
+                        eTime: self.form.etime
+                    }).done(function (d) {
+                        self.results = d || [];
+                        self.tabIdx = type;
+                        self.loading = 2;
+                    });
                 },
                 selectItem: function (idx) {
                     this.resultsIdx = idx;

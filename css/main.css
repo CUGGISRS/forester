@@ -382,14 +382,14 @@ body {
 #mainPanel .query .searchinput button .icons {
   vertical-align: middle;
 }
-#mainPanel .query .tabs span {
+#mainPanel .tabsarea span {
   position: relative;
   display: inline-block;
   cursor: pointer;
   line-height: 2.4;
   text-align: center;
 }
-#mainPanel .query .tabs span.selected:after {
+#mainPanel .tabsarea span.selected:after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -424,6 +424,11 @@ body {
   border: 0;
   background: transparent;
 }
+#mainPanel .resultContext {
+  padding: 0 3px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 #mainPanel .resultContext dd {
   padding: 10px 20px 10px 3em;
   border-bottom: 1px solid #E6E5EA;
@@ -437,20 +442,31 @@ body {
 #mainPanel .resultContext dd .icons {
   margin-left: -24px;
   margin-right: 4px;
-  vertical-align: -4px;
+  vertical-align: -6px;
 }
 #mainPanel .resultContext dd.selected {
   background-color: #F6F6F6;
 }
 #mainPanel .querywhere .backouter {
-  padding: 6px;
-  border-top: 1px solid #eee;
+  padding: 6px 3px;
+  margin: 0 6px;
+  border-bottom: 1px solid #eee;
 }
 #mainPanel .querywhere .backouter .back {
   border: 0;
   background: transparent;
   color: #666;
   cursor: pointer;
+}
+#mainPanel .querywhere .backouter .tipresult {
+  opacity: .6;
+}
+#mainPanel .querywhere .backouter .tipresult label {
+  color: #3997D6;
+}
+#mainPanel .querywhere .tabsarea {
+  border-bottom: 1px solid #E6E5EA;
+  margin: 0 6px;
 }
 #mainPanel .querywhere .query {
   padding: 1em 0;

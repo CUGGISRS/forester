@@ -246,21 +246,21 @@ body{
                 .icons{ vertical-align: middle; }
             }
         }
-        .tabs{
-            span{
-                position: relative;
-                display: inline-block; cursor: pointer;
-                line-height: 2.4; text-align: center;
-                &.selected:after{
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    left: 50%;
-                    width: 5em;
-                    height: 4px;
-                    background: #6CA1D3;
-                    margin-left: -2.5em;
-                }
+    }
+    .tabsarea{
+        span{
+            position: relative;
+            display: inline-block; cursor: pointer;
+            line-height: 2.4; text-align: center;
+            &.selected:after{
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 5em;
+                height: 4px;
+                background: #6CA1D3;
+                margin-left: -2.5em;
             }
         }
     }
@@ -287,6 +287,7 @@ body{
         }
     }
     .resultContext{
+        padding: 0 3px; -webkit-box-sizing: border-box; box-sizing: border-box;
         dd{
             padding: 10px 20px 10px 3em;
             border-bottom: 1px solid #E6E5EA;
@@ -298,7 +299,7 @@ body{
             .icons{
                 margin-left: -24px;
                 margin-right: 4px;
-                vertical-align: -4px;
+                vertical-align: -6px;
             }
             &.selected{
                 background-color: #F6F6F6;
@@ -307,10 +308,19 @@ body{
     }
     .querywhere{
         .backouter{
-            padding: 6px; border-top: 1px solid #eee;
+            padding: 6px 3px; margin: 0 6px; border-bottom: 1px solid #eee;
             .back{
                 border: 0; background: transparent; color: #666; cursor: pointer;
             }
+            .tipresult{
+                opacity: .6;
+                label{
+                    color: #3997D6;
+                }
+            }
+        }
+        .tabsarea{
+            border-bottom: 1px solid #E6E5EA; margin: 0 6px;
         }
         .query{
             padding: 1em 0;
