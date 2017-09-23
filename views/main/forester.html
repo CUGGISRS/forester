@@ -28,7 +28,7 @@
                 <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
                     <h3><i class="icons" :class="(item.Provider || 'NETWORK') + (item.IsOnline ? ' online' : '')"></i><span>{{item.DEPARTMENT_NAME}}</span></h3>
                     <p class="whitespace">{{item.USER_NAME}}&emsp;{{item.PHONE_NUM}}</p>
-                    <p class="whitespace">面积&emsp;{{(item.Area||'').toFixed(2)}}亩</p>
+                    <p class="whitespace">面积&emsp;{{item.Area}}亩</p>
                 </dd>
             </dl>
         </div>
@@ -142,7 +142,7 @@
                             $('.placeholder', e.target).replaceWith(function () {
                                 return '<label>' + this.innerHTML + '</label>' +
                                     '<label>电话：' + d.UserInfo.PHONE_NUM + '</label>' +
-                                    '<label>面积：' + (d.Area||'').toFixed(2) + '亩</label>';
+                                    '<label>面积：' + d.Area + '亩</label>';
                             });
                         });
                     } else {

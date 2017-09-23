@@ -1,6 +1,6 @@
 <div id="vue-panel-info" class="flex column h100">
     <div class="title bbox flex acenter">
-        <span class="flex_1">护林员</span>
+        <span class="flex_1">{{ nav_selected_2.name }}</span>
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
     <div class="detail bbox flex acenter jcenter">
@@ -32,12 +32,16 @@
 
 <script>
     (function(){
+        var _menus = SECONDMENUS.filter(function(i){
+            return i.id == sessionStorage.getItem('_2_nav_selected_temp_');
+        })[0];
         new Vue({
             el: '#vue-panel-info',
             data: {
                 info: {},
                 selected: -1,
-                menus: SECONDMENUS[sessionStorage.getItem('_2_nav_selected_') || 0].panelMenus || []
+                menus: _menus.panelMenus || [],
+                nav_selected_2: _menus
             },
             created: function () {
                 this.info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');

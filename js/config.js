@@ -11,7 +11,7 @@ var Prov_Code = { "OrganID": 2, "OrganName": "广东省" };
 var TIMEOUT = '1000000';
 var MENUS = [
     {
-        id: 0,
+        id: 'home',
         name: '首页',
         link: 'views/main/index.html',
         type: 'load',
@@ -20,16 +20,16 @@ var MENUS = [
         clsName: 'icon_20'
     },
     {
-        id: 1,
+        id: 'report',
         name: '统计图表',
-        link: '//www.mi.com/',
+        link: 'views/blank.html',
         type: 'iframe',
         cached: false,
         needCache: true,
         clsName: 'icon_21'
     },
     {
-        id: 2,
+        id: 'notify',
         name: '通知公告',
         link: '//www.baidu.com/',
         type: 'iframe',
@@ -38,16 +38,16 @@ var MENUS = [
         clsName: 'icon_22'
     },
     {
-        id: 3,
+        id: 'areamange',
         name: '巡护林管理',
-        link: '//www.google.com/',
+        link: 'views/blank.html',
         type: 'iframe',
         cached: false,
         needCache: true,
         clsName: 'icon_23'
     },
     {
-        id: 4,
+        id: 'forestermange',
         name: '护林员管理',
         link: '//www.jd.com',
         type: 'iframe',
@@ -102,7 +102,7 @@ var PANELMENUS = [
 ];
 var SECONDMENUS = [
     {
-        id: 0,
+        id: 'forester',
         name: '护林员', //名字
         link: 'views/main/forester.html', //主面板链接
         clsName: 'icon_00', //图标
@@ -115,7 +115,7 @@ var SECONDMENUS = [
         ]
     },
     {
-        id: 1,
+        id: 'road',
         name: '轨迹',
         link: 'views/main/query.html',
         clsName: 'icon_01',
@@ -128,7 +128,7 @@ var SECONDMENUS = [
         ]
     },
     {
-        id: 2,
+        id: 'area',
         name: '巡护区',
         link: 'views/main/query.html',
         clsName: 'icon_02',
@@ -141,7 +141,7 @@ var SECONDMENUS = [
         ]
     },
     {
-        id: 3,
+        id: '119',
         name: '报警',
         link: 'views/main/query.html',
         clsName: 'icon_39',
@@ -154,7 +154,7 @@ var SECONDMENUS = [
         ]
     },
     {
-        id: 4,
+        id: 'hot',
         name: '热点',
         link: 'views/main/query.html',
         clsName: 'icon_05',
@@ -167,7 +167,7 @@ var SECONDMENUS = [
         ]
     },
     {
-        id: 5,
+        id: 'attend',
         name: '考勤',
         link: 'views/main/query.html',
         clsName: 'icon_07',

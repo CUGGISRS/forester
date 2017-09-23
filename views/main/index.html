@@ -1,7 +1,7 @@
 <div class="flex column h100">
         <header id="secondMenu">
             <dl>
-                <dd v-for="(item,index) in menus" @click="selectMenu(index)" :key="index" :class="{'selected': selected == index}">
+                <dd v-for="(item,index) in menus" @click="selectMenu(item.id)" :key="item.id" :class="{'selected': selected == item.id}">
                     <i class="icons" :class="item.clsName"></i>{{item.name}}
                 </dd>
             </dl>
@@ -20,15 +20,19 @@
                 el: '#secondMenu',
                 data: {
                     menus: SECONDMENUS,
-                    selected: -1
+                    selected: ''
                 },
                 watch: {
                     selected: function(val, o) {
-                        var item = this.menus[this.selected], targetId;
+                        var self = this, targetId;
+                        var item = this.menus.filter(function(item){
+                            return item.id == val;
+                        })[0];
                         if(!item) return;
                         //离开时清除原有专题
                         Page.destroyed && (Page.destroyed(), Page.destroyed = null);
-                        sessionStorage.setItem('_2_nav_selected_', val || 0);
+                        sessionStorage.setItem('_2_nav_selected_', val);
+                        sessionStorage.setItem('_2_nav_selected_temp_', val);
                         //清除不同面板下副面板的选中项
                         sessionStorage.removeItem('_panel_nav_selected_');
                         targetId = 'mainPanel_item_' + item.id;
@@ -62,19 +66,14 @@
                     })();
                 },
                 mounted: function () {
-                    this.selectMenu(sessionStorage.getItem('_2_nav_selected_') || 0);
+                    this.selectMenu(sessionStorage.getItem('_2_nav_selected_') || 'forester');
                 },
                 methods: {
                     selectMenu: function(idx) {
-                        this.selected = parseInt(idx, 10);
+                        this.selected = idx;
                     }
                 }
             });
-
-            //选择二级菜单
-            Page.chooseNav = function(idx){
-                nav2Vue.selected = idx;
-            }
 
             Page.showInfo = function () {
                 Page.Actions.reset();

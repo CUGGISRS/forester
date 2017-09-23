@@ -3,11 +3,14 @@
         el: '#app',
         data: {
             menus: MENUS,
-            selected: -1
+            selected: ''
         },
         watch: {
             selected: function(v, o) {
-                var menu = this.menus[v], targetId;
+                var self = this, targetId;
+                var menu = this.menus.filter(function(item){
+                    return item.id == v;
+                })[0];
                 if(!menu) return;
                 if (menu.needCache && menu.cached) {
                     $('#menu_items_' + menu.type + '_' + menu.id).show().siblings().hide();
@@ -25,11 +28,14 @@
             }
         },
         created: function () {
-            this.selected = 0;
+            this.selected = 'home';
         },
         methods: {
             creatElement: function(name){
-                var menu = this.menus[this.selected];
+                var self = this;
+                var menu = this.menus.filter(function(item){
+                    return item.id == self.selected;
+                })[0];
                 menu.cached = true;
                 name = 'menu_items_' + menu.type + '_' + name;
                 if (menu.type == 'load') {

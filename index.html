@@ -20,7 +20,7 @@
             </div>
             <nav class="flex_1">
                <dl>
-                   <dd v-for="(item,index) in menus" :class="{'selected': index==selected}" @click="selected=index" class="tcenter">
+                   <dd v-for="(item,index) in menus" :class="{'selected': item.id==selected}" @click="selected=item.id" class="tcenter">
                         <i class="icons icon_20" :class="item.clsName"></i>
                         <label class="block whitespace" v-html="item.name">首页</label>
                    </dd>

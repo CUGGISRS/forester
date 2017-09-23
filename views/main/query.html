@@ -38,13 +38,13 @@
                     </select>
                 </span>
             </p>
-            <p class="flex group" v-if="pageId != 4">
+            <p class="flex group" v-if="pageId != 'hot'">
                 <label class="label">护林员</label>
                 <span class="flex_1 input">
                     <input type="text" v-model="form.user" placeholder="请输入护林员姓名或电话" class="w100">
                 </span>
             </p>
-            <p class="flex group" v-if="pageId == 3">
+            <p class="flex group" v-if="pageId == '119'">
                 <label class="label">类型</label>
                 <span class="flex_1 input">
                     <select v-model="form.type119" class="w100">
@@ -53,7 +53,7 @@
                     </select>
                 </span>
             </p>
-            <template v-if="pageId == 2">
+            <template v-if="pageId == 'area'">
                 <p class="flex group">
                     <label class="label">编号</label>
                     <span class="flex_1 input">
@@ -67,7 +67,7 @@
                     </span>
                 </p>
             </template>
-            <p class="flex group" v-if="pageId != 2">
+            <p class="flex group" v-if="pageId != 'area'">
                 <label class="label">日期</label>
                 <span class="flex_1 flex column">
                     <span class="input"><input type="text" :id="btimeId" class="w100"></span>
@@ -89,33 +89,33 @@
                 搜索出结果 <label>{{results.length}}</label> 条
             </span>
         </div>
-        <div v-if="pageId == 5" class="tabsarea flex acenter jcenter">
+        <div v-if="pageId == 'attend'" class="tabsarea flex acenter jcenter">
             <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="filterAttend(0)">按日期排序</span>
             <span class="flex_1" :class="{'selected': tabIdx == 1}" @click="filterAttend(1)">按人名排序</span>
         </div>
-        <dl class="flex_1 scroll resultContext" :class="{'liketable': pageId == 5}">
+        <dl class="flex_1 scroll resultContext" :class="{'liketable': pageId == 'attend'}">
             <dt class="tcenter" v-if="loading == 1"><i class="loading"></i></dt>
             <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
-                <template v-if="pageId == 1">
+                <template v-if="pageId == 'road'">
                     <h3 class="whitespace">{{item.LbsUserBaseInfo.USER_NAME}}</h3>
                     <p>{{item.StartTime}}</p>
                     <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
                 </template>
-                <template v-else-if="pageId == 2">
+                <template v-else-if="pageId == 'area'">
                     <h3 class="whitespace">{{item.AreaOrgan}}（{{item.AreaName}}）</h4>
-                    <p>{{(item.Area||'').toFixed(2)}}亩&emsp;{{item.AreaOrgan}}</p>
+                    <p>{{item.Area}}亩&emsp;{{item.AreaOrgan}}</p>
                 </template>
-                <template v-else-if="pageId == 3">
+                <template v-else-if="pageId == '119'">
                     <h3 class="whitespace">{{item.AlarmOrgan}}</h4>
                     <p>{{item.LbsUserBaseInfo.USER_NAME}}（{{ type119(item.ALARMTYPE) }}）</p>
                     <p>{{ item.ALARMTIME.Date('yyyy-MM-dd hh:mm:ss') }}</p>
                 </template>
-                <template v-else-if="pageId == 4">
+                <template v-else-if="pageId == 'hot'">
                     <h3 class="whitespace">{{item.HOTSPOT_NO}}（{{item.HOTSPOT_SOURCE}}）</h4>
                     <p>上报时间&ensp;{{ item.REPORT_TIME.Date('yyyy-MM-dd hh:mm') }}</p>
                     <p>{{item.HOTSPOT_SITE }}</p>
                 </template>
-                <template v-else-if="pageId == 5">
+                <template v-else-if="pageId == 'attend'">
                     <h3 class="flex">
                         <span class="flex_1">{{item.AttendanceTimeOrName}}</span>
                         <i class="iconfont opacity4" :class="index==resultsIdx ? 'icon-shousuo-copy' : 'icon-zhankai-copy'"></i>
@@ -126,7 +126,7 @@
                         <li class="flex tr" v-for="(r,ridx) in item.records" :key="ridx">
                             <div class="th"><label>{{ r.AttendanceTimeOrName.split(' ')[0] }}</label></div>
                             <div v-if="r.State == '3'" class="th flex_1">
-                                <p>{{r.TimeLength}}小时&emsp;{{(r.Distance||'').toFixed(2)}}km</p>
+                                <p>{{r.TimeLength}}小时&emsp;{{r.Distance}}km</p>
                                 <p>{{r.LinesInfos.join('_')}}</p>
                                 <p>
                                     <button @click.prevent="showLineMap(1)" class="linebtn">15.20</button>
@@ -146,8 +146,12 @@
 
 <script>
     (function () {
-        var pageId = sessionStorage.getItem('_2_nav_selected_') || 1;
+        var _2_nav_selected;
+        var pageId = sessionStorage.getItem('_2_nav_selected_') || 'road';
         document.getElementById('vue-querywhere').setAttribute('id', 'vue-querywhere-' + pageId);
+        _2_nav_selected = SECONDMENUS.filter(function(i){
+            return i.id == pageId;
+        })[0];
         new Vue({
             el: '#vue-querywhere-' + pageId,
             data: {
@@ -178,7 +182,7 @@
                     type119: TYPE119
                 },
                 pageId: pageId,
-                pageName: SECONDMENUS[pageId].name
+                pageName: _2_nav_selected.name
             },
             watch: {
                 'form.province': function (v) {
@@ -241,15 +245,15 @@
                     this.form.etime = $('#' + this.etimeId).val();
                     console.log('this.form', this.form);
                     switch(pageId) {
-                        case "1" :
+                        case "road" :
                             this.filterRoad(); break;
-                        case "2" :
+                        case "area" :
                             this.filterArea(); break;
-                        case "3" :
+                        case "119" :
                             this.filter119(); break;
-                        case "4" :
+                        case "hot" :
                             this.filterHot(); break;
-                        case "5" :
+                        case "attend" :
                             this.filterAttend(); break;
                     }
                 },
@@ -327,7 +331,7 @@
                     this.resultsIdx = idx;
                     var data = this.results[idx];
                     switch(this.pageId) {
-                        case '5':
+                        case 'attend':
                             this.tabIdx ? this.selectAttendUser(data) : this.selectAttendTime(data); break;
                     }
                 },

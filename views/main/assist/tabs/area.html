@@ -5,7 +5,7 @@
             </dt>
             <dd class="list_item" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
                 <p class="strong">{{item.AreaOrgan}}（{{item.AreaName}}）</p>
-                <p>{{(item.Area||0).toFixed(2)}}亩&emsp;{{item.AreaOrgan}}</p>
+                <p>{{item.Area}}亩&emsp;{{item.AreaOrgan}}</p>
             </dd>
         </dl>
         <div v-if="areaId" class="flex column h100 scroll">

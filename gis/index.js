@@ -57,7 +57,6 @@
             switch (e.layerType) {
                 case "报警图层":
                     console.log("报警图层：" + e.itemId);
-                    Page.chooseNav(3);
                     break;
                 case "反馈图层":
                     console.log("反馈图层：" + e.itemId);
@@ -70,7 +69,6 @@
                     });
                     break;
                 case "热点图层":
-                    Page.chooseNav(4);
                     console.log("热点图层：" + e.itemId);
                     break;
             }
