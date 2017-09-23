@@ -37,6 +37,7 @@
                     var self = this;
                     var options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
                     if (!options.userId) return console.log('缺少必要的userId！');
+                    //error，巡护区时，没有时间段
                     $.get(QueryAlrma_Ctrl + 'GetAlarmsByOrgan', {
                         sTime: form.btime,
                         eTime: form.etime,

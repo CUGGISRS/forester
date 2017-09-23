@@ -64,10 +64,10 @@
                 },
                 created: function () {
                     this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
-                    if (this.options.userId) {
-                        this.getList();
-                    } else if (this.options.areaId) {
+                    if (this.options.areaId) {
                         this.areaId = this.options.areaId;
+                    } else if (this.options.userId) {
+                        this.getList();
                     } else {
                         console.log('缺少必要的userId！');
                     }
@@ -91,11 +91,14 @@
                         $.get(ManagePatrol_Ctrl + 'GetPatrolAreaForEdit', {
                             patrolAreaId: self.areaId
                         }).done(function (d) {
-                            // GIS$.showXhq(d);
-                            self.DetailInfo.PatrolAreaInfo = d.PatrolAreaInfo;
-                            self.DetailInfo.PatrolAreaUsers = d.PatrolAreaUsers;
-                            self.DetailInfo.PatrolPoints = d.PatrolPoints;
+                            self.setInfo(d);
                         });
+                    },
+                    setInfo: function(d) {
+                        // GIS$.showXhq(d);
+                        this.DetailInfo.PatrolAreaInfo = d.PatrolAreaInfo;
+                        this.DetailInfo.PatrolAreaUsers = d.PatrolAreaUsers;
+                        this.DetailInfo.PatrolPoints = d.PatrolPoints;
                     },
                     selectItem: function(item){
                         this.areaId = item.ID;

@@ -9,7 +9,7 @@
             <p>{{ info.tel }}</p>
             <p>{{ info.address || '' }}</p>
         </div>
-        <div class="distrible flex_1" v-else>
+        <div class="distrible flex_1" v-else-if="info.kid == 'road'">
             <p class="flex">
                 <span class="flex_1">{{info.date.split(' ')[0]}}</span>
                 <span>{{info.time}}</span>
@@ -20,8 +20,17 @@
             </p>
             <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
         </div>
-        <div class="btnarea" :class="info.name ? 'aselfcenter' : 'aselfend'">
+        <div class="distrible flex_1" v-else-if="info.kid == 'area'">
             <p>
+                <span>{{info.areaname}}（{{info.areacode}}）</span>
+            </p>
+            <p>
+                <span>{{info.area}}亩</span>
+            </p>
+            <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
+        </div>
+        <div class="btnarea" :class="info.name ? 'aselfcenter' : 'aselfend'">
+            <p :style="!info.name? 'margin-bottom: 4px' : ''">
                 <i class="icons icon_31" @click="showDialog"></i>
                 <i class="icons icon_32" @click="showDialog"></i>
                 <i class="icons icon_33" @click="showDialog"></i>
@@ -55,10 +64,7 @@
                     name: '',
                     tel: '',
                     address: '',
-                    date: '',
-                    time: '',
-                    hour: '',
-                    km: ''
+                    kid: ''
                 },
                 selected: -1,
                 menus: _menus.panelMenus || [],
@@ -74,8 +80,9 @@
                     this.info.address = info.UserInfo.SNAME + info.UserInfo.XNAME;
                 } else if(info.LineInfo) {
                     this.info = info.LineInfo;
+                } else if(info.AreaInfo) {
+                    this.info = info.AreaInfo;
                 }
-
             },
             watch: {
                 selected: function (val) {

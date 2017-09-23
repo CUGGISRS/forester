@@ -795,9 +795,6 @@ i.loading {
 #assistPanel .detail .btnarea {
   width: 38%;
   text-align: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
 }
 #assistPanel .detail .btnarea button {
   border: 1px solid #fff;

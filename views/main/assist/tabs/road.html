@@ -76,9 +76,10 @@
             methods: {
                 getList: function () {
                     var self = this;
+                    //近三天的轨迹
                     $.get(QueryGPSInfo_Ctrl + 'GetUserContrailList', {
-                        sTime: '2017/1/1',
-                        eTime: '2017/10/19',
+                        sTime: '2017-01-01',
+                        eTime: '2017-10-10',
                         userId: self.options.userId
                     }).done(function (d) {
                         self.lists = d || [];
@@ -86,10 +87,6 @@
                 },
                 getInfo: function(){
                     var self = this;
-                    var info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
-                    if(info.LineInfo) {
-                        return this.setInfo(info.LineInfo);
-                    }
                     $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
                         lineId: self.lineId
                     }).done(function (d) {

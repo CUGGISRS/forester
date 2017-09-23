@@ -102,8 +102,8 @@
                     <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
                 </template>
                 <template v-else-if="pageId == 'area'">
-                    <h3 class="whitespace">{{item.AreaOrgan}}（{{item.AreaName}}）</h4>
-                    <p>{{item.Area}}亩&emsp;{{item.AreaOrgan}}</p>
+                    <h3 class="whitespace">{{item.AreaName}}（{{item.BH}}）</h4>
+                    <p>{{item.UserName}}&emsp;{{item.AreaOrgan}}</p>
                 </template>
                 <template v-else-if="pageId == '119'">
                     <h3 class="whitespace">{{item.AlarmOrgan}}</h4>
@@ -332,6 +332,7 @@
                     switch(this.pageId) {
                         case 'road':
                             this.showLineMap(data.LineId, {
+                                kid: 'road',
                                 date: data.StartTime,
                                 time: data.StartTime.split(' ')[1],
                                 hour: data.TimeLength,
@@ -339,6 +340,16 @@
                                 userName: data.LbsUserBaseInfo.USER_NAME,
                                 tel: data.LbsUserBaseInfo.PHONE_NUM,
                                 userId: data.LbsUserBaseInfo.ID
+                            }); break;
+                        case 'area':
+                            this.showAreaMap(data.ID, {
+                                kid: 'area',
+                                areaname: data.AreaName,
+                                areacode: data.BH,
+                                area: data.Area,
+                                userName: data.UserName,
+                                tel: 'unknow',
+                                userId: data.UserId
                             }); break;
                         case 'attend':
                             this.tabIdx ? this.selectAttendUser(data, idx) : this.selectAttendTime(data, idx); break;
@@ -384,19 +395,19 @@
                     });
                 },
                 showLineMap: function(lineId, lineinfo) {
-                    $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
-                        lineId: lineId
-                    }).done(function (d) {
-                        //地图上绘制路径线
-                        GIS$.showGj(d);
-                        //显示副面板信息
-                        Page.showInfo('road', { 
-                            lineId: lineId, userId: lineinfo.userId 
-                        }, {
-                            LineInfo: lineinfo,
-                            GpsDisplayPoints: d.GpsDisplayPoints,
-                            GpsInfos: d.GpsInfos
-                        });
+                    //显示副面板信息
+                    Page.showInfo('road', { 
+                        lineId: lineId, userId: lineinfo.userId 
+                    }, {
+                        LineInfo: lineinfo
+                    });
+                },
+                showAreaMap: function(areaId, areainfo) {
+                    //显示副面板信息
+                    Page.showInfo('area', { 
+                        areaId: areaId, userId: areainfo.userId 
+                    }, {
+                        AreaInfo: areainfo
                     });
                 },
                 backList: function () {
