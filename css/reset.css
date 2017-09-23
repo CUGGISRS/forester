@@ -204,7 +204,11 @@ textarea {
         -ms-flex-item-align: center;
             align-self: center;
 }
-
+.aselfend{
+    -webkit-align-self: flex-end;
+        -ms-flex-item-align: end;
+            align-self: flex-end;
+}
 .tcenter {
     text-align: center;
 }

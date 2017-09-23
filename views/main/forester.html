@@ -69,29 +69,9 @@
                 selectItem: function (idx) {
                     this.resultsIdx = idx;
                     var data = this.results[idx];
-                    this.getInfoById({
+                    GIS$.getUserInfoAndToShow({
                         userId: data.ID,
                         isOnline: data.IsOnline
-                    });
-                },
-                getInfoById: function (options, fn) {
-                    $.get(QueryUser_Ctrl + 'GetUserInfoById', options).done(function (d) {
-                        //给副面板传值
-                        sessionStorage.setItem('_panel_info_', JSON.stringify(d));
-                        sessionStorage.setItem('_panel_info_options_', JSON.stringify(options));
-                        (typeof fn == 'function') && fn(d);
-                        //加载副面板
-                        Page.showInfo();
-                        var user = d.UserInfo || {};
-                        var gps = d.GpsInfo || {};
-                        GIS$.jumpToUser({
-                            UserId: user.ID,
-                            UserName: user.USER_NAME,
-                            Longitude: gps.LONGITUDE,
-                            Latitude: gps.LATITUDE,
-                            Provider: gps.PROVIDER,
-                            onlineState: gps.ONLINESTATE
-                        });
                     });
                 },
                 selectDepartArea: function(options){
@@ -135,7 +115,7 @@
                     if (!data) return;
                     if('UserId' in data) {
                         GIS$.clearUnitZone();
-                        self.getInfoById({
+                        GIS$.getUserInfoAndToShow({
                             userId: data.UserId,
                             isOnline: data.IsOnline
                         }, function (d) {

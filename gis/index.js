@@ -63,7 +63,7 @@
                     break;
                 case "护林员图层":
                     console.log("护林员图层：" + e.itemId);
-                    Page.Forester && Page.Forester.getInfoById({
+                    getUserInfoAndToShow({
                         userId: e.itemId,
                         isOnline: false
                     });
@@ -75,6 +75,30 @@
         });
     }
     GIS$.mapClickEvent = mapClickEvent;
+
+    /**
+     * 选中护林员并显示详情
+     */
+    function getUserInfoAndToShow(options, fn) {
+        $.get(QueryUser_Ctrl + 'GetUserInfoById', options).done(function (d) {
+            (typeof fn == 'function') && fn(d);
+            //加载副面板
+            Page.showInfo('forester', options, d);
+
+            var user = d.UserInfo || {};
+            var gps = d.GpsInfo || {};
+            GIS$.jumpToUser({
+                UserId: user.ID,
+                UserName: user.USER_NAME,
+                Longitude: gps.LONGITUDE,
+                Latitude: gps.LATITUDE,
+                Provider: gps.PROVIDER,
+                onlineState: gps.ONLINESTATE
+            });
+        });
+    }
+    GIS$.getUserInfoAndToShow = getUserInfoAndToShow;
+
     /**
      * 切换到三维
      */

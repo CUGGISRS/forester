@@ -4,18 +4,29 @@
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
     <div class="detail bbox flex acenter jcenter">
-        <div class="distrible flex_1">
-            <p>{{ info.UserInfo.USER_NAME }}</p>
-            <p>{{ info.UserInfo.PHONE_NUM }}</p>
-            <p>{{ info.UserInfo.SNAME }}{{ info.UserInfo.XNAME }}</p>
+        <div class="distrible flex_1" v-if="info.name">
+            <p>{{ info.name }}</p>
+            <p>{{ info.tel }}</p>
+            <p>{{ info.address || '' }}</p>
         </div>
-        <div class="btnarea">
+        <div class="distrible flex_1" v-else>
+            <p class="flex">
+                <span class="flex_1">{{info.date.split(' ')[0]}}</span>
+                <span>{{info.time}}</span>
+            </p>
+            <p class="flex">
+                <span class="flex_1">{{info.hour}}小时</span>
+                <span>{{info.km}}公里</span>
+            </p>
+            <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
+        </div>
+        <div class="btnarea" :class="info.name ? 'aselfcenter' : 'aselfend'">
             <p>
                 <i class="icons icon_31" @click="showDialog"></i>
                 <i class="icons icon_32" @click="showDialog"></i>
                 <i class="icons icon_33" @click="showDialog"></i>
             </p>
-            <p>
+            <p v-if="info.UserInfo">
                 <button>跟踪</button>
             </p>
         </div>
@@ -32,20 +43,39 @@
 
 <script>
     (function(){
+        var _options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
         var _menus = SECONDMENUS.filter(function(i){
-            return i.id == sessionStorage.getItem('_2_nav_selected_temp_');
+            return i.id == _options.pageId;
         })[0];
+        if(!_menus) return $('#vue-panel-info').load('views/500.html');
         new Vue({
             el: '#vue-panel-info',
             data: {
-                info: {},
+                info: {
+                    name: '',
+                    tel: '',
+                    address: '',
+                    date: '',
+                    time: '',
+                    hour: '',
+                    km: ''
+                },
                 selected: -1,
                 menus: _menus.panelMenus || [],
-                nav_selected_2: _menus
+                nav_selected_2: _menus,
+                options: _options
             },
             created: function () {
-                this.info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
+                var info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
                 this.selected = sessionStorage.getItem('_panel_nav_selected_') || 0;
+                if(info.UserInfo) {
+                    this.info.name = info.UserInfo.USER_NAME;
+                    this.info.tel = info.UserInfo.PHONE_NUM;
+                    this.info.address = info.UserInfo.SNAME + info.UserInfo.XNAME;
+                } else if(info.LineInfo) {
+                    this.info = info.LineInfo;
+                }
+
             },
             watch: {
                 selected: function (val) {

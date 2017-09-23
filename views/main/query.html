@@ -95,7 +95,7 @@
         </div>
         <dl class="flex_1 scroll resultContext" :class="{'liketable': pageId == 'attend'}">
             <dt class="tcenter" v-if="loading == 1"><i class="loading"></i></dt>
-            <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
+            <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :id="pageId + '_' + index" :class="{'selected': index==resultsIdx}">
                 <template v-if="pageId == 'road'">
                     <h3 class="whitespace">{{item.LbsUserBaseInfo.USER_NAME}}</h3>
                     <p>{{item.StartTime}}</p>
@@ -125,16 +125,14 @@
                     <ul v-if="index==resultsIdx" class="recordtable">
                         <li class="flex tr" v-for="(r,ridx) in item.records" :key="ridx">
                             <div class="th"><label>{{ r.AttendanceTimeOrName.split(' ')[0] }}</label></div>
-                            <div v-if="r.State == '3'" class="th flex_1">
+                            <div v-if="r.State == '1'" class="th flex_1">
                                 <p>{{r.TimeLength}}小时&emsp;{{r.Distance}}km</p>
-                                <p>{{r.LinesInfos.join('_')}}</p>
                                 <p>
-                                    <button @click.prevent="showLineMap(1)" class="linebtn">15.20</button>
-                                    <button @click.prevent="showLineMap(2)" class="linebtn">15.30</button>
+                                    <button v-for="(line, idx) in r.LinesInfos" @click.prevent="selectLineTime(index, ridx, idx)" class="linebtn">{{line.StartTime}}</button>
                                 </p>
                             </div>
                             <div v-else class="th flex_1">
-                                <label class="warncolor">请假、未巡护</label>
+                                <label class="warncolor">{{ r.State == '2' ? '请假' : '旷工' }}</label>
                             </div>
                         </li>
                     </ul>
@@ -220,7 +218,6 @@
                     if(key && level != -1) {
                         this.cascade.forEach(function(item, idx) {
                             if(idx < level) return;
-                            console.log('clear', item);
                             self.form[item] = '';
                             self.options[item] = [];
                         }, this);
@@ -243,7 +240,8 @@
                     this.loading = 1;
                     this.form.btime = $('#' + this.btimeId).val();
                     this.form.etime = $('#' + this.etimeId).val();
-                    console.log('this.form', this.form);
+                    sessionStorage.setItem('_panel_query_form_', JSON.stringify(this.form));
+
                     switch(pageId) {
                         case "road" :
                             this.filterRoad(); break;
@@ -314,7 +312,9 @@
                     var self = this;
                     var types = ['Time', 'User'];
                     this.loading = 1;
-                    $.get(QueryAttendance_Ctrl + 'GetAttendanceListTo' + types[type || 0], {
+                    self.results = [];
+                    self.tabIdx = type || 0;
+                    $.get(QueryAttendance_Ctrl + 'GetAttendanceListTo' + types[self.tabIdx], {
                         organId: self.organId,
                         userNameOfPhone: self.form.user,
                         sTime: self.form.btime,
@@ -324,27 +324,53 @@
                         self.results = (d || []).map(function(item){
                             return (item.records = [], item);
                         });
-                        self.tabIdx = type || 0;
                     });
                 },
                 selectItem: function (idx) {
                     this.resultsIdx = idx;
                     var data = this.results[idx];
                     switch(this.pageId) {
+                        case 'road':
+                            this.showLineMap(data.LineId, {
+                                date: data.StartTime,
+                                time: data.StartTime.split(' ')[1],
+                                hour: data.TimeLength,
+                                km: data.Distance,
+                                userName: data.LbsUserBaseInfo.USER_NAME,
+                                tel: data.LbsUserBaseInfo.PHONE_NUM,
+                                userId: data.LbsUserBaseInfo.ID
+                            }); break;
                         case 'attend':
-                            this.tabIdx ? this.selectAttendUser(data) : this.selectAttendTime(data); break;
+                            this.tabIdx ? this.selectAttendUser(data, idx) : this.selectAttendTime(data, idx); break;
                     }
                 },
-                selectAttendTime: function (data) {
+                selectLineTime: function (index, ridx, idx) {
+                    var data = this.results[index];
+                    var record = data.records[ridx];
+                    var line = record.LinesInfos[idx];
+                    this.showLineMap(line.LineId, {
+                        date: this.tabIdx ? record.AttendanceTimeOrName : data.AttendanceTimeOrName,
+                        time: line.StartTime,
+                        hour: record.TimeLength,
+                        km: record.Distance,
+                        userName: !this.tabIdx ? record.AttendanceTimeOrName : data.AttendanceTimeOrName,
+                        tel: record.PhoneNum,
+                        userId: record.UserId
+                    });
+                },
+                selectAttendTime: function (data, idx) {
                     var self = this;
                     !data.records.length && $.get(QueryAttendance_Ctrl + 'GetUserAttendanceList', {
                         userNameOfPhone: self.form.user,
                         time: data.AttendanceTimeOrName
                     }).done(function (d) {
                         data.records = d || [];
+                        self.$nextTick(function () {
+                            document.getElementById(self.pageId + '_' + idx).scrollIntoView();
+                        })
                     });
                 },
-                selectAttendUser: function (data) {
+                selectAttendUser: function (data, idx) {
                     var self = this;
                     !data.records.length && $.get(QueryAttendance_Ctrl + 'GetTimeAttendanceList', {
                         userId: data.UserId,
@@ -352,10 +378,26 @@
                         eTime: self.form.etime
                     }).done(function (d) {
                         data.records = d || [];
+                        self.$nextTick(function () {
+                            document.getElementById(self.pageId + '_' + idx).scrollIntoView();
+                        })
                     });
                 },
-                showLineMap: function(lineId) {
-
+                showLineMap: function(lineId, lineinfo) {
+                    $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
+                        lineId: lineId
+                    }).done(function (d) {
+                        //地图上绘制路径线
+                        GIS$.showGj(d);
+                        //显示副面板信息
+                        Page.showInfo('road', { 
+                            lineId: lineId, userId: lineinfo.userId 
+                        }, {
+                            LineInfo: lineinfo,
+                            GpsDisplayPoints: d.GpsDisplayPoints,
+                            GpsInfos: d.GpsInfos
+                        });
+                    });
                 },
                 backList: function () {
                     this.loading = 0;

@@ -11,7 +11,7 @@
     </dl>
     <div v-if="lineId" class="flex column h100 scroll">
         <div class="flex_1 scroll">
-            <dl class="tab_panel">
+            <dl class="tab_panel" v-if="DetailInfo.BaseInfo">
                 <dt class="tab_panel_title">
                     <label class="circle blue">基</label>本信息
                 </dt>
@@ -39,7 +39,7 @@
                 </dd>
             </dl>
         </div>
-        <div v-if="options.userId" class="backouter">
+        <div v-if="DetailInfo.BaseInfo" class="backouter">
             <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
         </div>
     </div>
@@ -53,7 +53,7 @@
                 options: {},
                 lineId: '',
                 DetailInfo: {
-                    BaseInfo: {},
+                    BaseInfo: null,
                     GpsDisplayPoints: [],
                     GpsInfos: []
                 }
@@ -65,10 +65,10 @@
             },
             created: function () {
                 this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
-                if (this.options.userId) {
-                    this.getList();
-                } else if (this.options.lineId) {
+                if (this.options.lineId) {
                     this.lineId = this.options.lineId;
+                } else if (this.options.userId) {
+                    this.getList();
                 } else {
                     console.log('缺少必要的userId！');
                 }
@@ -86,13 +86,20 @@
                 },
                 getInfo: function(){
                     var self = this;
+                    var info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
+                    if(info.LineInfo) {
+                        return this.setInfo(info.LineInfo);
+                    }
                     $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
                         lineId: self.lineId
                     }).done(function (d) {
-                        // GIS$.showGj($.extend({GpsInfos: d.GpsInfos}, self.DetailInfo.BaseInfo));
-                        self.DetailInfo.GpsDisplayPoints = d.GpsDisplayPoints || [];
-                        self.DetailInfo.GpsInfos = d.GpsInfos || [];
+                        self.setInfo(d);
                     });
+                },
+                setInfo: function(info) {
+                    // GIS$.showGj(info);
+                    this.DetailInfo.GpsDisplayPoints = info.GpsDisplayPoints || [];
+                    this.DetailInfo.GpsInfos = info.GpsInfos || [];
                 },
                 selectItem: function(item){
                     this.lineId = item.LineId;

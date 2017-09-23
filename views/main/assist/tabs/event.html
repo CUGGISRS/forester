@@ -1,8 +1,64 @@
-<dl class="tab_panel">
-    <dt class="tab_panel_title">
-        <label class="circle">详</label>细信息
-    </dt>
-    <dd class="list_item_padding">
-        <i class="icons"></i>事件
-    </dd>
-</dl>
+<div id="assist_tab_event">
+    <dl class="tab_panel">
+        <dt class="tab_panel_title">
+            <label class="circle red">报</label>警信息（48小时内）
+        </dt>
+        <dd class="list_item_padding" v-for="(item,index) in AlarmInfoList" :key="index">
+            {{item.ALARMTIME.Date('yyyy-MM-dd hh:ss')}}（{{type119(item.ALARMTYPE)}}）
+        </dd>
+    </dl>
+    <dl class="tab_panel">
+        <dt class="tab_panel_title">
+            <label class="circle orange">热</label>点信息
+        </dt>
+        <dd class="list_item_padding" v-for="(item,index) in HotList" :key="index">
+            <h3>{{item.LATITUDE}}</h3>
+            <p>{{item.REPORT_TIME.Date('yyyy-MM-dd hh:ss')}}（{{item.HOTSPOT_SOURCE}}）</p>
+        </dd>
+    </dl>
+</div>
+<script>
+    (function () {
+        new Vue({
+            el: '#assist_tab_event',
+            data: {
+                AlarmInfoList: [],
+                HotList: []
+            },
+            created: function () {
+                var form = JSON.parse(sessionStorage.getItem('_panel_query_form_') || '{}');
+                this.getInfo(form);
+            },
+            methods: {
+                type119: function (i) {
+                    return TYPE119[i] || '其它'
+                },
+                getInfo: function (form) {
+                    var self = this;
+                    var options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
+                    if (!options.userId) return console.log('缺少必要的userId！');
+                    $.get(QueryAlrma_Ctrl + 'GetAlarmsByOrgan', {
+                        sTime: form.btime,
+                        eTime: form.etime,
+                        userId: options.userId
+                    }).done(function (d) {
+                        self.AlarmInfoList = d;
+                    });
+
+                    $.get(QueryHotSpot_Ctrl + 'GetHotSpotListByUserId', {
+                        sTime: form.btime,
+                        eTime: form.etime,
+                        userId: options.userId
+                    }).done(function (d) {
+                        self.HotList = d;
+                    });
+                }
+            }
+        })
+    })();
+</script>
+<style>
+    #assist_tab_event dd {
+        padding: 6px 0; font-size: 13px;
+    }
+</style>

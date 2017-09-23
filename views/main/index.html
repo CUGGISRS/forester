@@ -32,7 +32,6 @@
                         //离开时清除原有专题
                         Page.destroyed && (Page.destroyed(), Page.destroyed = null);
                         sessionStorage.setItem('_2_nav_selected_', val);
-                        sessionStorage.setItem('_2_nav_selected_temp_', val);
                         //清除不同面板下副面板的选中项
                         sessionStorage.removeItem('_panel_nav_selected_');
                         targetId = 'mainPanel_item_' + item.id;
@@ -75,7 +74,14 @@
                 }
             });
 
-            Page.showInfo = function () {
+            Page.showInfo = function (pageId, options, data) {
+                console.log(data);
+                //副面板简要信息
+                sessionStorage.setItem('_panel_info_', JSON.stringify(data));
+                //副面板关键id信息（护林员id，路径id，巡护区id，热点id等）
+                sessionStorage.setItem('_panel_info_options_', JSON.stringify($.extend({ pageId: pageId }, options)));
+
+                //关闭简要信息
                 Page.Actions.reset();
                 window.setTimeout(function(){
                     $('#assistPanel').load('views/main/assist/info.html').fadeIn(400);
