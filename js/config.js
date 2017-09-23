@@ -174,7 +174,7 @@ var SECONDMENUS = [
         cached: false,
     }
 ];
-
+var TYPE119 = ['一键报警', '毁林案件', '火情火灾', '破坏林业设施', '野生动植物', '病虫害'];
 var serviceUrlConfig = {
     GetOnlineUserForMapList: "gis/Demo/data/QueryUser/GetOnlineUserForMapList.json",
     //GetOnlineUserForMapList:"http://172.30.3.205:8095/QueryUser/GetOnlineUserForMapList",
@@ -214,4 +214,7 @@ String.prototype.Date = function (fmt) {
     for (var k in o)
     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+};
+String.prototype.toFixed = function(l){
+    return parseFloat(this || 0).toFixed(l || 2);
 };

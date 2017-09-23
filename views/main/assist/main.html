@@ -16,7 +16,7 @@
             <dd class="whitespace">护林员总数：{{StatisticsInfoForMonth.UserNum}}人</dd>
             <dd class="whitespace">专职护林员：{{StatisticsInfoForMonth.FullTimeUserNum}}人</dd>
             <dd class="whitespace">兼职护林员：{{StatisticsInfoForMonth.PartTimeUserNum}}人</dd>
-            <dd class="whitespace">巡护区面积：{{StatisticsInfoForMonth.PatrolAreaTotalArea}}亩</dd>
+            <dd class="whitespace">巡护区面积：{{StatisticsInfoForMonth.PatrolAreaTotalArea.toFixed(2)}}亩</dd>
             <dd class="whitespace">巡护区个数：{{StatisticsInfoForMonth.PatrolAreaNum}}块</dd>
             <dd class="whitespace">人均面积：{{StatisticsInfoForMonth.AreaOfPerson}}亩/人</dd>
             <dd class="whitespace">报警反馈：{{StatisticsInfoForMonth.AlarmNum}}起</dd>
@@ -35,7 +35,9 @@
             el: '#vue-assist-main',
             data: {
                 RealTimeInfoForDay: {},
-                StatisticsInfoForMonth: {},
+                StatisticsInfoForMonth: {
+                    PatrolAreaTotalArea: 0
+                },
                 RateInfo: {
                     AttendanceRate: {},
                     MaxAttendanceRate: {},

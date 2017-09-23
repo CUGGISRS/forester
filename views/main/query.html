@@ -47,9 +47,9 @@
             <p class="flex group" v-if="pageId == 3">
                 <label class="label">类型</label>
                 <span class="flex_1 input">
-                    <select v-model="form.type" class="w100">
-                        <option value="">--请选择--</option>
-                        <option v-for="(i, index) in 7" :key="index" :value="i">{{i}}</option>
+                    <select v-model="form.type119" class="w100">
+                        <option value="">--全部类型--</option>
+                        <option v-for="(i, index) in options.type119" :key="index" :value="index">{{i}}</option>
                     </select>
                 </span>
             </p>
@@ -76,8 +76,8 @@
                 </span>
             </p>
             <p class="tcenter group">
-                <button type="submit" class="submit"><i class="icons vcenter"></i> 查询</button>
-                <button type="reset"><i class="icons vcenter"></i> 清除</button>
+                <button type="submit" class="submit"><i class="icons icon_30 vcenter"></i> 查询</button>
+                <button type="reset"><i class="icons icon_73 vcenter"></i> 清除</button>
             </p>
         </form>
     </div>
@@ -93,11 +93,52 @@
             <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="filterAttend(0)">按日期排序</span>
             <span class="flex_1" :class="{'selected': tabIdx == 1}" @click="filterAttend(1)">按人名排序</span>
         </div>
-        <dl class="flex_1 scroll resultContext">
-            <dt class="tcenter" v-if="loading == 1">加载中...</dt>
-            <dd v-for="(item,index) in results.length" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
-                <h3 class="whitespace">我是结果</h3>
-                <p class="whitespace">面积&emsp;10000亩</p>
+        <dl class="flex_1 scroll resultContext" :class="{'liketable': pageId == 5}">
+            <dt class="tcenter" v-if="loading == 1"><i class="loading"></i></dt>
+            <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
+                <template v-if="pageId == 1">
+                    <h3 class="whitespace">{{item.LbsUserBaseInfo.USER_NAME}}</h3>
+                    <p>{{item.StartTime}}</p>
+                    <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
+                </template>
+                <template v-else-if="pageId == 2">
+                    <h3 class="whitespace">{{item.AreaOrgan}}（{{item.AreaName}}）</h4>
+                    <p>{{(item.Area||'').toFixed(2)}}亩&emsp;{{item.AreaOrgan}}</p>
+                </template>
+                <template v-else-if="pageId == 3">
+                    <h3 class="whitespace">{{item.AlarmOrgan}}</h4>
+                    <p>{{item.LbsUserBaseInfo.USER_NAME}}（{{ type119(item.ALARMTYPE) }}）</p>
+                    <p>{{ item.ALARMTIME.Date('yyyy-MM-dd hh:mm:ss') }}</p>
+                </template>
+                <template v-else-if="pageId == 4">
+                    <h3 class="whitespace">{{item.HOTSPOT_NO}}（{{item.HOTSPOT_SOURCE}}）</h4>
+                    <p>上报时间&ensp;{{ item.REPORT_TIME.Date('yyyy-MM-dd hh:mm') }}</p>
+                    <p>{{item.HOTSPOT_SITE }}</p>
+                </template>
+                <template v-else-if="pageId == 5">
+                    <h3 class="flex">
+                        <span class="flex_1">{{item.AttendanceTimeOrName}}</span>
+                        <i class="iconfont opacity4" :class="index==resultsIdx ? 'icon-shousuo-copy' : 'icon-zhankai-copy'"></i>
+                    </h3>
+                    <p>总出勤率&emsp;{{item.TotalRate}}%</p>
+                    <p>总时长&emsp;{{item.TotalTimeLength}}小时</p>
+                    <ul v-if="index==resultsIdx" class="recordtable">
+                        <li class="flex tr" v-for="(r,ridx) in item.records" :key="ridx">
+                            <div class="th"><label>{{ r.AttendanceTimeOrName.split(' ')[0] }}</label></div>
+                            <div v-if="r.State == '3'" class="th flex_1">
+                                <p>{{r.TimeLength}}小时&emsp;{{(r.Distance||'').toFixed(2)}}km</p>
+                                <p>{{r.LinesInfos.join('_')}}</p>
+                                <p>
+                                    <button @click.prevent="showLineMap(1)" class="linebtn">15.20</button>
+                                    <button @click.prevent="showLineMap(2)" class="linebtn">15.30</button>
+                                </p>
+                            </div>
+                            <div v-else class="th flex_1">
+                                <label class="warncolor">请假、未巡护</label>
+                            </div>
+                        </li>
+                    </ul>
+                </template>
             </dd>
         </dl>
     </div>
@@ -125,7 +166,7 @@
                     btime: '',
                     etime: '',
                     user: '',
-                    type: '',
+                    type119: '',
                     areanum: '',
                     areaname: ''
                 },
@@ -133,7 +174,8 @@
                     province: [],
                     city: [],
                     county: [],
-                    village: []
+                    village: [],
+                    type119: TYPE119
                 },
                 pageId: pageId,
                 pageName: SECONDMENUS[pageId].name
@@ -158,8 +200,12 @@
                 this.initDistrict('province');
             },
             mounted: function () {
-                $('#' + this.btimeId).ligerDateEditor();
-                $('#' + this.etimeId).ligerDateEditor();
+                $('#' + this.btimeId).ligerDateEditor({
+                    initValue: String(new Date().setMonth(new Date().getMonth() - 1)).Date()
+                });
+                $('#' + this.etimeId).ligerDateEditor({
+                    initValue: String(+new Date()).Date()
+                });
             },
             methods: {
                 initDistrict: function(key) {
@@ -184,6 +230,9 @@
                         self.options[key] = [{ "OrganID": "", "OrganName": "--请选择--" }].concat(d);
                         level < 1 && (self.form.province = Prov_Code.OrganID);
                     });
+                },
+                type119: function(i){
+                    return TYPE119[i] || '其它'
                 },
                 filterQuery: function () {
                     var self = this;
@@ -213,8 +262,8 @@
                         sTime: self.form.btime,
                         eTime: self.form.etime
                     }).done(function (d) {
-                        self.results = d || [];
                         self.loading = 2;
+                        self.results = d || [];
                     });
                 },
                 //查询巡护区
@@ -226,8 +275,8 @@
                         code: self.form.areanum,
                         name: self.form.areaname
                     }).done(function (d) {
-                        self.results = d || [];
                         self.loading = 2;
+                        self.results = d || [];
                     });
                 },
                 //查询报警
@@ -236,12 +285,12 @@
                     $.get(QueryAlrma_Ctrl + 'GetAlarmsByCondition', {
                         organId: self.organId,
                         userNameOrPhone: self.form.user,
-                        alarmType: self.form.type,
+                        alarmType: self.form.type119,
                         sTime: self.form.btime,
                         eTime: self.form.etime
                     }).done(function (d) {
-                        self.results = d || [];
                         self.loading = 2;
+                        self.results = d || [];
                     });
                 },
                 //查询热点
@@ -252,28 +301,57 @@
                         sTime: self.form.btime,
                         eTime: self.form.etime
                     }).done(function (d) {
-                        self.results = d || [];
                         self.loading = 2;
+                        self.results = d || [];
                     });
                 },
                 //查询考勤(Time, User)
                 filterAttend: function(type) {
                     var self = this;
                     var types = ['Time', 'User'];
+                    this.loading = 1;
                     $.get(QueryAttendance_Ctrl + 'GetAttendanceListTo' + types[type || 0], {
                         organId: self.organId,
-                        userNameOrPhone: self.form.user,
+                        userNameOfPhone: self.form.user,
                         sTime: self.form.btime,
                         eTime: self.form.etime
                     }).done(function (d) {
-                        self.results = d || [];
-                        self.tabIdx = type;
                         self.loading = 2;
+                        self.results = (d || []).map(function(item){
+                            return (item.records = [], item);
+                        });
+                        self.tabIdx = type || 0;
                     });
                 },
                 selectItem: function (idx) {
                     this.resultsIdx = idx;
                     var data = this.results[idx];
+                    switch(this.pageId) {
+                        case '5':
+                            this.tabIdx ? this.selectAttendUser(data) : this.selectAttendTime(data); break;
+                    }
+                },
+                selectAttendTime: function (data) {
+                    var self = this;
+                    !data.records.length && $.get(QueryAttendance_Ctrl + 'GetUserAttendanceList', {
+                        userNameOfPhone: self.form.user,
+                        time: data.AttendanceTimeOrName
+                    }).done(function (d) {
+                        data.records = d || [];
+                    });
+                },
+                selectAttendUser: function (data) {
+                    var self = this;
+                    !data.records.length && $.get(QueryAttendance_Ctrl + 'GetTimeAttendanceList', {
+                        userId: data.UserId,
+                        sTime: self.form.btime,
+                        eTime: self.form.etime
+                    }).done(function (d) {
+                        data.records = d || [];
+                    });
+                },
+                showLineMap: function(lineId) {
+
                 },
                 backList: function () {
                     this.loading = 0;

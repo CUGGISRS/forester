@@ -288,7 +288,7 @@
                 },
                 loadPanel: function (bol) {
                     this.selected = bol ? 0 : this.selected;
-                    bol ? $('#assistPanel').load('views/main/assist/main.html?' + +new Date).fadeIn(400) : $('#assistPanel').hide();
+                    bol ? $('#assistPanel').load('views/main/assist/main.html?').fadeIn(400) : $('#assistPanel').hide();
                 },
                 reset: function () {
                     this.selected = -1;

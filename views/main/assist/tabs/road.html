@@ -77,8 +77,8 @@
                 getList: function () {
                     var self = this;
                     $.get(QueryGPSInfo_Ctrl + 'GetUserContrailList', {
-                        sTime: '2017/8/1',
-                        eTime: '2017/9/19',
+                        sTime: '2017/1/1',
+                        eTime: '2017/10/19',
                         userId: self.options.userId
                     }).done(function (d) {
                         self.lists = d || [];
@@ -89,7 +89,7 @@
                     $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
                         lineId: self.lineId
                     }).done(function (d) {
-                        //GIS$.showGj($.extend({GpsInfos: d.GpsInfos}, self.DetailInfo.BaseInfo));
+                        // GIS$.showGj($.extend({GpsInfos: d.GpsInfos}, self.DetailInfo.BaseInfo));
                         self.DetailInfo.GpsDisplayPoints = d.GpsDisplayPoints || [];
                         self.DetailInfo.GpsInfos = d.GpsInfos || [];
                     });

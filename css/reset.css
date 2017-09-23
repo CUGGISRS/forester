@@ -265,6 +265,10 @@ textarea {
 .strong{ font-weight: 600; }
 .hidden{ display: none; }
 .bgfff{ background: #fff; }
+.opacity4{ opacity: .4; }
+.opacity5{ opacity: .5; }
+.opacity6{ opacity: .6; }
+.opacity7{ opacity: .7; }
 /*************ligerui.css重置****************/
 .l-tree-loading{
     margin-left: -12px;

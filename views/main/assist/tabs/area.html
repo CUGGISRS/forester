@@ -5,7 +5,7 @@
             </dt>
             <dd class="list_item" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
                 <p class="strong">{{item.AreaOrgan}}（{{item.AreaName}}）</p>
-                <p>{{(item.Area || 0).toFixed(2)}}亩&emsp;{{item.AreaOrgan}}</p>
+                <p>{{(item.Area||0).toFixed(2)}}亩&emsp;{{item.AreaOrgan}}</p>
             </dd>
         </dl>
         <div v-if="areaId" class="flex column h100 scroll">
@@ -16,9 +16,9 @@
                     </dt>
                     <dd class="list_item">
                         <p>巡护区：{{DetailInfo.PatrolAreaInfo.AREANAME}}</p>
-                        <p>面积：{{(DetailInfo.PatrolAreaInfo.AREA || 0).toFixed(2)}}亩</p>
-                        <p>公益林：{{(DetailInfo.PatrolAreaInfo.STL || 0).toFixed(2)}}亩</p>
-                        <p>用材林：{{(DetailInfo.PatrolAreaInfo.YCL || 0).toFixed(2)}}亩</p>
+                        <p>面积：{{DetailInfo.PatrolAreaInfo.AREA}}亩</p>
+                        <p>公益林：{{DetailInfo.PatrolAreaInfo.STL}}亩</p>
+                        <p>用材林：{{DetailInfo.PatrolAreaInfo.YCL}}亩</p>
                         <p>树种组成：{{DetailInfo.PatrolAreaInfo.YSSZ}}</p>
                         <p>备注：{{DetailInfo.PatrolAreaInfo.REMARK}}</p>
                     </dd>
@@ -91,7 +91,7 @@
                         $.get(ManagePatrol_Ctrl + 'GetPatrolAreaForEdit', {
                             patrolAreaId: self.areaId
                         }).done(function (d) {
-                            //GIS$.showXhq(d);
+                            // GIS$.showXhq(d);
                             self.DetailInfo.PatrolAreaInfo = d.PatrolAreaInfo;
                             self.DetailInfo.PatrolAreaUsers = d.PatrolAreaUsers;
                             self.DetailInfo.PatrolPoints = d.PatrolPoints;
