@@ -101,7 +101,10 @@
                     var self = this;
                     var options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
                     if(!options.userId) return console.log('缺少必要的userId！');
-                    $.get(QueryUser_Ctrl + 'GetUserInfoById', options).done(function (d) {
+                    $.get(QueryUser_Ctrl + 'GetUserInfoById', {
+                        userId: options.userId,
+                        isOnline: options.isOnline || false
+                    }).done(function (d) {
                         self.setInfo(d);
                     });
                 },

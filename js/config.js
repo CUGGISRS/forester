@@ -90,8 +90,8 @@ var PANELMENUS = [
     {
         id: 5,
         name: '报警',
-        link: 'views/main/assist/tabs/119.html',
-        clsName: 'icon_04'
+        link: 'views/main/assist/tabs/c119.html',
+        clsName: 'icon_39'
     },
     {
         id: 6,
@@ -141,7 +141,7 @@ var SECONDMENUS = [
         ]
     },
     {
-        id: '119',
+        id: 'c119',
         name: '报警',
         link: 'views/main/query.html',
         clsName: 'icon_39',

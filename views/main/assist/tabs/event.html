@@ -26,29 +26,28 @@
                 HotList: []
             },
             created: function () {
-                var form = JSON.parse(sessionStorage.getItem('_panel_query_form_') || '{}');
-                this.getInfo(form);
+                this.getInfo();
             },
             methods: {
                 type119: function (i) {
                     return TYPE119[i] || '其它'
                 },
-                getInfo: function (form) {
+                getInfo: function () {
                     var self = this;
                     var options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
                     if (!options.userId) return console.log('缺少必要的userId！');
                     //error，巡护区时，没有时间段
                     $.get(QueryAlrma_Ctrl + 'GetAlarmsByOrgan', {
-                        sTime: form.btime,
-                        eTime: form.etime,
+                        sTime: '2017-01-01',
+                        eTime: '2017-10-10',
                         userId: options.userId
                     }).done(function (d) {
                         self.AlarmInfoList = d;
                     });
 
                     $.get(QueryHotSpot_Ctrl + 'GetHotSpotListByUserId', {
-                        sTime: form.btime,
-                        eTime: form.etime,
+                        sTime: '2017-01-01',
+                        eTime: '2017-10-10',
                         userId: options.userId
                     }).done(function (d) {
                         self.HotList = d;

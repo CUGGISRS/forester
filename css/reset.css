@@ -273,6 +273,8 @@ textarea {
 .opacity5{ opacity: .5; }
 .opacity6{ opacity: .6; }
 .opacity7{ opacity: .7; }
+.imgcover{ -o-object-fit: cover; object-fit: cover; }
+.bgcover{ background-size: cover; }
 /*************ligerui.css重置****************/
 .l-tree-loading{
     margin-left: -12px;

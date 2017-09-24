@@ -44,7 +44,7 @@
                     <input type="text" v-model="form.user" placeholder="请输入护林员姓名或电话" class="w100">
                 </span>
             </p>
-            <p class="flex group" v-if="pageId == '119'">
+            <p class="flex group" v-if="pageId == 'c119'">
                 <label class="label">类型</label>
                 <span class="flex_1 input">
                     <select v-model="form.type119" class="w100">
@@ -105,7 +105,7 @@
                     <h3 class="whitespace">{{item.AreaName}}（{{item.BH}}）</h4>
                     <p>{{item.UserName}}&emsp;{{item.AreaOrgan}}</p>
                 </template>
-                <template v-else-if="pageId == '119'">
+                <template v-else-if="pageId == 'c119'">
                     <h3 class="whitespace">{{item.AlarmOrgan}}</h4>
                     <p>{{item.LbsUserBaseInfo.USER_NAME}}（{{ type119(item.ALARMTYPE) }}）</p>
                     <p>{{ item.ALARMTIME.Date('yyyy-MM-dd hh:mm:ss') }}</p>
@@ -247,7 +247,7 @@
                             this.filterRoad(); break;
                         case "area" :
                             this.filterArea(); break;
-                        case "119" :
+                        case "c119" :
                             this.filter119(); break;
                         case "hot" :
                             this.filterHot(); break;
@@ -351,6 +351,34 @@
                                 tel: 'unknow',
                                 userId: data.UserId
                             }); break;
+                        case 'c119':
+                            this.showC119Map(data.ID, {
+                                kid: 'c119',
+                                alarmname: this.type119(data.ALARMTYPE),
+                                alarmcode: data.ALARMTYPE,
+                                date: data.ALARMTIME.Date('yyyy-MM-dd hh:mm'),
+                                organ: data.AlarmOrgan,
+                                lat: data.LATITUDE,
+                                lon: data.LONGITUDE,
+                                conent: data.DESCRIPTION,
+                                userName: data.LbsUserBaseInfo.USER_NAME,
+                                tel: data.LbsUserBaseInfo.PHONE_NUM,
+                                userId: data.USER_ID
+                            }); break;
+                        case 'hot':
+                            this.showHotMap(data.ID, {
+                                kid: 'hot',
+                                alarmname: this.type119(data.ALARMTYPE),
+                                alarmcode: data.ALARMTYPE,
+                                date: data.ALARMTIME.Date('yyyy-MM-dd hh:mm'),
+                                organ: data.AlarmOrgan,
+                                lat: data.LATITUDE,
+                                lon: data.LONGITUDE,
+                                conent: data.DESCRIPTION,
+                                userName: data.LbsUserBaseInfo.USER_NAME,
+                                tel: data.LbsUserBaseInfo.PHONE_NUM,
+                                userId: data.USER_ID
+                            }); break;
                         case 'attend':
                             this.tabIdx ? this.selectAttendUser(data, idx) : this.selectAttendTime(data, idx); break;
                     }
@@ -360,6 +388,7 @@
                     var record = data.records[ridx];
                     var line = record.LinesInfos[idx];
                     this.showLineMap(line.LineId, {
+                        kid: 'road',
                         date: this.tabIdx ? record.AttendanceTimeOrName : data.AttendanceTimeOrName,
                         time: line.StartTime,
                         hour: record.TimeLength,
@@ -408,6 +437,22 @@
                         areaId: areaId, userId: areainfo.userId 
                     }, {
                         AreaInfo: areainfo
+                    });
+                },
+                showC119Map: function(c119Id, c119info) {
+                    //显示副面板信息
+                    Page.showInfo('c119', { 
+                        c119Id: c119Id, userId: c119info.userId 
+                    }, {
+                        C119Info: c119info
+                    });
+                },
+                showHotMap: function(hotId, hotinfo) {
+                    //显示副面板信息
+                    Page.showInfo('hot', { 
+                        hotId: hotId, userId: hotinfo.userId 
+                    }, {
+                        HotInfo: hotinfo
                     });
                 },
                 backList: function () {

@@ -29,6 +29,15 @@
             </p>
             <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
         </div>
+        <div class="distrible flex_1" v-else-if="info.kid == 'c119'">
+            <p>
+                <span>{{info.alarmname}}</span>
+            </p>
+            <p>
+                <span>{{info.date}}</span>
+            </p>
+            <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
+        </div>
         <div class="btnarea" :class="info.name ? 'aselfcenter' : 'aselfend'">
             <p :style="!info.name? 'margin-bottom: 4px' : ''">
                 <i class="icons icon_31" @click="showDialog"></i>
@@ -82,6 +91,8 @@
                     this.info = info.LineInfo;
                 } else if(info.AreaInfo) {
                     this.info = info.AreaInfo;
+                } else if(info.C119Info) {
+                    this.info = info.C119Info;
                 }
             },
             watch: {
