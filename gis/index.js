@@ -118,20 +118,10 @@
         //地图初始化
         hlyMapService = new Hly.HlyMapService({
             serviceUrlConfig: serviceUrlConfig,
-            baseMapUrls: [{
-                name: "广东影像图",
-                url: 'http://localhost/广东影像地图切片',
-                type: 'EsriOffline',
-                format: "png",
-                project: "EPSG:4326"
-            }],
+            baseMapUrls: BASEMAPURLS,
             mapContainer: 'openlayerContent',
-            terrainProviderUrl: "http://localhost:8035/ContTmsTerrain",
-            xhqMapUrls: {
-                "广东省": "http://localhost/测试地图切片/PatrolArea/Layers/_alllayers",
-                "阳山县": "http://localhost/测试地图切片/PatrolArea_ysx",
-                "兴宁市": "http://localhost/测试地图切片/PatrolArea_xns",//县级市
-            },
+            terrainProviderUrl: TERRAINPROVIDERURL,
+            xhqMapUrls: XHQMAPURLS,
         });
         hlyMapService.init();
         hlyMap = hlyMapService.hlyMap;

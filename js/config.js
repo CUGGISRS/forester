@@ -192,37 +192,21 @@ var serviceUrlConfig = {
     getPatrolAreaForEdit: "gis/Demo/data/GetPatrolAreaForEdit.json",
     getPatrolAreaByLocation: "gis/Demo/data/GetPatrolAreaByLocation.json"
 };
+var BASEMAPURLS = [{
+    name: "广东影像图",
+    url: 'http://localhost/广东影像地图切片',
+    type: 'EsriOffline',
+    format: "png",
+    project: "EPSG:4326"
+}];
+var TERRAINPROVIDERURL = 'http://localhost:8035/ContTmsTerrain';
+var XHQMAPURLS = {
+    "广东省": "http://localhost/测试地图切片/PatrolArea/Layers/_alllayers",
+    "阳山县": "http://localhost/测试地图切片/PatrolArea_ysx",
+    "兴宁市": "http://localhost/测试地图切片/PatrolArea_xns",//县级市
+};
+var BASEURL = "gis/js/Map";
+
 var GIS$ = {};
 var hlyMap;
 var hlyMapService;
-
-
-
-/**
- * 公共函数
- */
-String.prototype.Date = function (fmt) {
-    var val = this || '';
-    fmt = fmt || 'yyyy-MM-dd';
-    val = val.match(/\d+/g);
-    if(!val) return '';
-    val = new Date(val.length > 1 ? val.map(function(i){
-        return i.length == 1 ? '0' + i : i
-    }).join('-') : parseFloat(val[0]));
-    var o = {
-        "M+": val.getMonth() + 1, //月份 
-        "d+": val.getDate(), //日 
-        "h+": val.getHours(), //小时 
-        "m+": val.getMinutes(), //分 
-        "s+": val.getSeconds(), //秒 
-        "q+": Math.floor((val.getMonth() + 3) / 3), //季度 
-        "S": val.getMilliseconds() //毫秒 
-    };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (val.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-};
-String.prototype.toFixed = function(l){
-    return parseFloat(this || 0).toFixed(l || 2);
-};
