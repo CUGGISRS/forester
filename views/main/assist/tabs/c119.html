@@ -49,7 +49,7 @@
                 getList: function () {
                     var self = this;
                     $.get(QueryAlrma_Ctrl + 'GetAlarmInfo', {
-                        alarmId: '0e18e9c9-3812-4bce-8d09-c6c0fb621492' || self.options.c119Id
+                        alarmId: self.options.c119Id
                     }).done(function (d) {
                         self.attments = d || [];
                     });

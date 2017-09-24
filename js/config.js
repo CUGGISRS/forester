@@ -198,6 +198,7 @@ String.prototype.Date = function (fmt) {
     var val = this || '';
     fmt = fmt || 'yyyy-MM-dd';
     val = val.match(/\d+/g);
+    if(!val) return '';
     val = new Date(val.length > 1 ? val.map(function(i){
         return i.length == 1 ? '0' + i : i
     }).join('-') : parseFloat(val[0]));

@@ -4,29 +4,41 @@
                 <label class="circle blue">定</label>位信息
             </dt>
             <dd class="list_item_padding">
-                {{info.organ}}
+                {{detail.HOTSPOT_SITE}}
             </dd>
             <dd class="list_item_padding">
-                E{{info.lon}}&emsp; N{{info.lat}}
+                E{{detail.LONGITUDE}}&emsp; N{{detail.LATITUDE}}
             </dd>
         </dl>
         <dl class="tab_panel">
             <dt class="tab_panel_title">
-                <label class="circle red">内</label>容描述
+                <label class="circle green">详</label>细信息
             </dt>
             <dd class="list_item_padding">
-                {{info.conent}}
+               面积： {{detail.FIRE_AREA}}像素（烟云{{detail.SMOKE_FLAG}}）
             </dd>
-            <dd class="list_item_padding flex wrap columns2">
-                <span class="colum" v-for="(item,index) in attments" :key="index">
-                    <template v-if="item.FILE_TYPE=='1'">
-                        <img :src="item.FILE_PATH" class="w100 imgcover" alt="">
-                        <i class="iconfont icon-fangda absolute bottom right"></i>
-                    </template>
-                    <template v-else>
-                        <i class="iconfont absolute bottom right placeholder" :class="item.FILE_TYPE=='2' ? 'icon-shipin' : 'icon-yinle1'"></i>
-                    </template>
-                </span>
+            <dd class="list_item_padding">
+               是否连续： {{detail.CONTINUE_FLAG}}
+            </dd>
+            <dd class="list_item_padding">
+               地类： {{detail.SITE_TYPE}}
+            </dd>
+            <dd class="list_item_padding">
+               接收时间： {{(detail.RECIVE_TIME||'').Date('yyyy-MM-dd hh:mm')}}
+            </dd>
+            <dd class="list_item_padding">
+               上报时间： {{(detail.REPORT_TIME||'').Date('yyyy-MM-dd hh:mm')}}
+            </dd>
+            <dd class="list_item_padding">
+               推送时间： {{(detail.PUSH_TIME||'').Date('yyyy-MM-dd hh:mm')}}
+            </dd>
+        </dl>
+        <dl class="tab_panel">
+            <dt class="tab_panel_title">
+                <label class="circle orange">监</label>测图像
+            </dt>
+            <dd class="list_item_padding" v-if="detail.IMAGEURL">
+                <a :href="detail.IMAGEURL" style="color:#3997D6;" target="_blank">监测图像</a>
             </dd>
         </dl>
     </div>
@@ -35,23 +47,20 @@
             new Vue({
                 el: '#assist_tab_hot',
                 data: {
-                    info: {},
-                    attments: []
+                    detail: {}
                 },
                 created: function () {
-                    var info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
                     this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
-                    this.info = info.C119Info || {};
                     //获取附件
                     this.getList();
                 },
                 methods: {
                     getList: function () {
                         var self = this;
-                        $.get(QueryAlrma_Ctrl + 'GetAlarmInfo', {
-                            alarmId: '0e18e9c9-3812-4bce-8d09-c6c0fb621492' || self.options.c119Id
+                        $.get(QueryHotSpot_Ctrl + 'GetHotspotById', {
+                            hotspotId: self.options.hotId
                         }).done(function (d) {
-                            self.attments = d || [];
+                            self.detail = d || [];
                         });
                     }
                 }

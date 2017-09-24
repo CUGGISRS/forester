@@ -366,17 +366,16 @@
                                 userId: data.USER_ID
                             }); break;
                         case 'hot':
-                            this.showHotMap(data.ID, {
+                            this.showHotMap(data.HOTSPOT_ID, {
                                 kid: 'hot',
-                                alarmname: this.type119(data.ALARMTYPE),
-                                alarmcode: data.ALARMTYPE,
-                                date: data.ALARMTIME.Date('yyyy-MM-dd hh:mm'),
-                                organ: data.AlarmOrgan,
+                                hotname: data.HOTSPOT_NO,
+                                hotsource: data.HOTSPOT_SOURCE,
+                                date: data.REPORT_TIME.Date('yyyy-MM-dd hh:mm'),
+                                organ: data.HOTSPOT_SITE,
                                 lat: data.LATITUDE,
                                 lon: data.LONGITUDE,
-                                conent: data.DESCRIPTION,
-                                userName: data.LbsUserBaseInfo.USER_NAME,
-                                tel: data.LbsUserBaseInfo.PHONE_NUM,
+                                //userName: data.LbsUserBaseInfo.USER_NAME,
+                                //tel: data.LbsUserBaseInfo.PHONE_NUM,
                                 userId: data.USER_ID
                             }); break;
                         case 'attend':
