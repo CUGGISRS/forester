@@ -86,6 +86,7 @@
             el: '#assist_tab_forester',
             data: {
                 info: {
+                    options: {},
                     UserInfo: {},
                     GpsInfo: {},
                     AlarmInfoList: [],
@@ -94,16 +95,19 @@
             },
             created: function () {
                 var info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
-                info.UserInfo ? this.setInfo(info) : this.getInfo();
+                this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
+                if(info.UserInfo) {
+                    this.setInfo(info)
+                } else {
+                    this.getInfo()
+                }
             },
             methods: {
                 getInfo: function () {
                     var self = this;
-                    var options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
-                    if(!options.userId) return console.log('缺少必要的userId！');
                     $.get(QueryUser_Ctrl + 'GetUserInfoById', {
-                        userId: options.userId,
-                        isOnline: options.isOnline || false
+                        userId: self.options.userId,
+                        isOnline: self.options.isOnline || false
                     }).done(function (d) {
                         self.setInfo(d);
                     });

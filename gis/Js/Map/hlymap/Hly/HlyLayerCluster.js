@@ -14,23 +14,18 @@ define([
      */
     var HlyLayerCluster = function (option) {
         var iconsUrl = baseUtil.getMapIconsUrl();
-        this._imageHeight = 90;
         var that = this;
-        Cesium.loadImage(iconsUrl).then(function (image) {
-            that._image = image;
-            that._imageHeight = image.height;
-        })
 
         //配置项处理
         this._options = baseUtil.assign({
             distance: 30,
             //聚合点图标
             clusterIcon: {
-                offset: [240, 0],//位置
+                offset: [229, 46],//位置
                 url: iconsUrl,//图片资源
                 anchor: [1, 1],//图标位置对应的地图点
                 size: [40, 40],//截取大小
-                opacity: .8//透明度
+                opacity: 1//透明度
             },
             //离散点图标
             pointIcon: {
@@ -38,21 +33,21 @@ define([
                 GPS: {
                     online: {
                         normal: {
-                            offset: [160, 0],//位置
+                            offset: [331, 140],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
                             size: [40, 40],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [152, 40],//位置
+                            offset: [136, 86],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [152, 40],//位置
+                            offset: [136, 86],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
@@ -61,21 +56,21 @@ define([
                     },
                     offline: {
                         normal: {
-                            offset: [200, 0],//位置
+                            offset: [371, 140],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
                             size: [40, 40],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [152, 40],//位置
+                            offset: [274, 86],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [152, 40],//位置
+                            offset: [274, 86],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
@@ -87,21 +82,21 @@ define([
                 NETWORK: {
                     online: {
                         normal: {
-                            offset: [0, 0],//位置
+                            offset: [171, 140],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
                             size: [40, 40],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [60, 40],//位置
+                            offset: [44, 86],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [60, 40],//位置
+                            offset: [44, 86],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
@@ -110,21 +105,21 @@ define([
                     },
                     offline: {
                         normal: {
-                            offset: [40, 0],//位置
+                            offset: [211, 140],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
                             size: [40, 40],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [60, 40],//位置
+                            offset: [182, 86],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [60, 40],//位置
+                            offset: [182, 86],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
@@ -171,6 +166,8 @@ define([
      */
     HlyLayerCluster.prototype.init = function () {
         var that = this;
+        this._image = baseUtil.getMapImage();
+        this._imageHeight = this._image.height;
         var styleFun = function (clusterFeature, resolution) {
             var size;
             if (clusterFeature) {
@@ -250,7 +247,7 @@ define([
         this._vectorSource.on("addfeature", function (e) {
             //添加对象到三维聚合数据源
             var feature = e.feature;
-            that._addEntity(that._clusterDataSource, feature,that._olLayer);
+            that._addEntity(that._clusterDataSource, feature, that._olLayer);
         });
         this._vectorSource.on("removefeature", function (e) {
             //移除对象到三维聚合数据源
@@ -279,7 +276,7 @@ define([
             var modelLayer = new Cesium.CustomDataSource();
             for (var i = 0; i < features.length; i++) {
                 var feature = features[i];
-                this._addEntity(modelLayer, feature,layer);
+                this._addEntity(modelLayer, feature, layer);
             }
             //聚合配置
             var pixelRange = 50;
@@ -302,7 +299,8 @@ define([
                 } else {
                     removeListener = modelLayer.clustering.clusterEvent.addEventListener(function (clusteredEntities, cluster) {
                         var clusterIconUrl = baseUtil.getImageFromText(that._image, clusterOffset[0],
-                            clusterOffset[1], clusterSize[0], clusterSize[1], clusteredEntities.length.toString(), "18px 微软雅黑");
+                            clusterOffset[1], clusterSize[0], clusterSize[1], clusteredEntities.length.toString(), "18px 微软雅黑",
+                            clusterSize[0] / 2, clusterSize[1] / 2 + 7);
 
                         cluster.billboard.show = true;
                         cluster.billboard.image = clusterIconUrl;
@@ -331,7 +329,7 @@ define([
      * @param feature
      * @private
      */
-    HlyLayerCluster.prototype._addEntity = function (modelLayer, feature,olLayer) {
+    HlyLayerCluster.prototype._addEntity = function (modelLayer, feature, olLayer) {
         var provider = feature.get("Provider");
         var onlineState = feature.get("onlineState") ? feature.get("onlineState") : "online";
         var iconState = feature.get("iconState") ? feature.get("iconState") : "normal";
@@ -385,8 +383,7 @@ define([
      * @param feature
      * @private
      */
-    HlyLayerCluster.prototype._removeEntity=function (modelLayer, feature)
-    {
+    HlyLayerCluster.prototype._removeEntity = function (modelLayer, feature) {
         modelLayer.entities.remove(feature.cesiumEntity);
     };
 

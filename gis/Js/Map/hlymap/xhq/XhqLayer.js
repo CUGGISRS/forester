@@ -16,6 +16,7 @@ define([
             style: this._styleFunction
         }, option));
         this.LayerType = "巡护区图层";
+        this.set("altitudeMode", "clampToGround");
     };
 
     ol.inherits(XhqLayer, BaseLayer);
@@ -32,25 +33,38 @@ define([
         if (feature[iconState]) {
             return feature[iconState];
         }
-        var borderColorOption = {
-            normal: "white",
-            selected: "yellow",
-            highlight: "#4fedd1",
+        var borderWidthOption = {
+            normal: 4,
+            selected: 6,
+            highlight: 6,
         };
-        var borderColor = borderColorOption[iconState];
+        var width = borderWidthOption[iconState];
 
-        var width = 4;
-        var style = [
-            new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: borderColor,
-                    width: width
-                })
-            })];
+        var style = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: "rgba(255,255,255,.8)",
+                width: width
+            })
+        });
 
         feature[iconState] = style;
         return style;
     };
+
+    /**
+     * 获取三维线对象宽度（米）
+     * @param feature
+     */
+    XhqLayer.prototype.getCorridorGeometryWidth = function (feature) {
+        //最佳显示
+        var extent = feature.getGeometry().getExtent();
+        //转换成3857
+        extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857")
+        var resolution = (extent[2]-extent[0]) / baseUtil.defaultGraphicShowWith;
+        return resolution * 8;
+    };
+
+
 
     return XhqLayer;
 });

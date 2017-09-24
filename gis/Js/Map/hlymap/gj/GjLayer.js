@@ -16,6 +16,7 @@ define([
             style: this._styleFunction
         }, option));
         this.LayerType = "轨迹图层";
+        this.set("altitudeMode", "clampToGround");
     };
 
     ol.inherits(GjLayer, BaseLayer);
@@ -34,25 +35,26 @@ define([
             return feature[iconState + validTag];
         }
 
-        var validColor = "#ff4141";
-        var invalidColor = "#4fedd1";
+        var invalidColor = "rgba(255,65,65,.8)";
+        var validColor = "rgba(79,237,209,.8)";
         var fillColor = validTag == "1" ? validColor : invalidColor;
 
-        var borderColorOption = {
-            normal: "transparent",
-            selected: "yellow",
-            highlight: "white",
+        var widthOption = {
+            normal: 4,
+            selected: 8,
+            highlight: 8,
         };
-        var borderColor = borderColorOption[iconState];
+        var width = widthOption[iconState];
 
-        var width = 4;
         var style = [
-           /* new ol.style.Style({
+/*
+            new ol.style.Style({
                 stroke: new ol.style.Stroke({
                     color: borderColor,
                     width: width + 2
                 })
-            }),*/
+            }),
+*/
             new ol.style.Style({
                 stroke: new ol.style.Stroke({
                     color: fillColor,
@@ -62,6 +64,20 @@ define([
 
         feature[iconState + validTag] = style;
         return style;
+    };
+
+    /**
+     * 获取三维线对象宽度（米）
+     * @param feature
+     */
+    GjLayer.prototype.getCorridorGeometryWidth = function (feature) {
+        var lineItem=feature.valueItem;
+        //最佳显示
+        var extent = lineItem.singleLine.getExtent();
+        //转换成3857
+        extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857")
+        var resolution = (extent[2] - extent[0]) / baseUtil.defaultGraphicShowWith;
+        return resolution * 8;
     };
 
     return GjLayer;

@@ -7,8 +7,9 @@ define([
     'core/ThemeBaseService',
     'core/FeatureContainerManager',
     'hlymap/gj/TrackSimulate',
+    'hlymap/Hly/UserLockOnService',
 ], function (baseUtil, defineProperties, ThemeBaseService,
-             FeatureContainerManager, TrackSimulate) {
+             FeatureContainerManager, TrackSimulate, UserLockOnService) {
 
     /**
      * 护林员专题业务服务
@@ -34,34 +35,34 @@ define([
     HlyThemeService.prototype.init = function () {
         //业务临时图层初始化并加载
         //1、加载在线人员实时聚合图层
-        var hlyLayerCluster = this._layerManage.newHlyLayerCluster(this._clusterDistance,this._contMap.scene);
+        var hlyLayerCluster = this._layerManage.newHlyLayerCluster(this._clusterDistance, this._contMap.scene);
         this._hlyLayer = hlyLayerCluster.layer;
         this._hlyLayer.hlyLayerCluster = hlyLayerCluster;
         this._hlyLayer.isThemeLayer = true;
         this._hlyLayer.isCluster = true;
 
-        this._contMap.layerManager.addLayer(this._hlyLayer, true);
+        this._layerManage.themePointLayerGroup.getLayers().push(this._hlyLayer);
 
         //2、加载（实时）24小时反馈图层
         this._fkLayer = this._layerManage.newFkLayer();
         this._fkLayer.isThemeLayer = true;
-        this._contMap.layerManager.addLayer(this._fkLayer, true);
+        this._layerManage.themePointLayerGroup.getLayers().push(this._fkLayer);
 
         //中间图层初始化
         //1、临时巡护区图层
         this._xhqLayer = this._layerManage.newXhqLayer();
-        this._contMap.layerManager.addLayer(this._xhqLayer, true);
+        this._layerManage.themePlyLayerGroup.getLayers().push(this._xhqLayer);
         //2、临时轨迹图层
         this._gjTmpLayer = this._layerManage.newGjLayer();
-        this._contMap.layerManager.addLayer(this._gjTmpLayer, true);
+        this._layerManage.themePlyLayerGroup.getLayers().push(this._gjTmpLayer);
         //3、临时关键点图层
-        this._gjdTmpLayer =this._layerManage.newGjdLayer() ;
-        this._contMap.layerManager.addLayer(this._gjdTmpLayer, true);
+        this._gjdTmpLayer = this._layerManage.newGjdLayer();
+        this._layerManage.themePointLayerGroup.getLayers().push(this._gjdTmpLayer);
         //4、临时图层
         this._tmpLayer = new ol.layer.Vector({
             source: new ol.source.Vector(),
         });
-        this._contMap.layerManager.addLayer(this._tmpLayer, true);
+        this._layerManage.themePlyLayerGroup.getLayers().push(this._tmpLayer);
 
         this._layerManage.tempLayers.hlyTmpLayers = {
             tmpLayer: this._tmpLayer,
@@ -152,56 +153,36 @@ define([
      * @param userId 护林员Id
      */
     HlyThemeService.prototype.lockOn = function (userId) {
-        //取消所有锁定
-        this.unLockOn();
         //首次先飞到
-        this._lockOnFeature = this._LayerDataSource.getFeatureById(userId);
-        var that = this;
-        this._onUserLockOnEventCallback = function () {
-            var foundedFeature = that._lockOnFeature;
-            var pointGeometry = foundedFeature.getGeometry();
-            //地图跳转
-            that._hlyMap.contMap.viewControl.jumpTo(pointGeometry.getCoordinates());
-            that._hlyMap._contMap.viewControl.setResolution(8.583069007761132E-5);
-        };
+        this._lockOnFeature = this._getLayerDataSource().getFeatureById(userId);
+        this._contMap.viewControl.jumpTo(this._lockOnFeature.getGeometry());
+        this._contMap.viewControl.setResolution(8.583069007761132E-5);
 
-        this._onUserLockOnEventCallback();
-        //位置变更时地图缩放追踪
-        this._lockOnFeature.on("change:geometry", this._onUserLockOnEventCallback);
-
-        //定时更新数据
-        this._lockOnCode = setInterval(function () {
-            //获取用户位置信息
-            $.get(that._option.getUserGpsInfoUrl, {
-                userId: userId
-            }, function (gpsInfo) {
-                var foundedFeature = that._lockOnFeature;
-                //更新图标位置
-                if (foundedFeature) {
-                    foundedFeature.setGeometry(new ol.geom.Point([gpsInfo.LONGITUDE, gpsInfo.LATITUDE]));
-                }
+        //跟踪不同对象，则释放掉以前的进行重置
+        if (this._userLockOnService && this._userLockOnService.userFeature !== this._lockOnFeature) {
+            this._userLockOnService.dispose();
+            this._userLockOnService = null;
+        }
+        if (!this._userLockOnService) {
+            //初始化并启动新的跟踪
+            this._userLockOnService = new UserLockOnService({
+                userFeature: this._lockOnFeature,
+                hlyMap: this._hlyMap,
+                getUserGpsInfoUrl:this._option.getUserGpsInfoUrl
             });
-        }, 3000);
-    }
+            this._userLockOnService.init();
+        }
+        this._userLockOnService.lockOn();
+    };
 
     /**
      * 取消锁定（追踪）护林员
      */
     HlyThemeService.prototype.unLockOn = function () {
-        //取消位置变更时地图缩放追踪
-        if (this._onUserLockOnEventCallback) {
-            var foundedFeature = this._lockOnFeature;
-            foundedFeature.un("change:geometry", this._onUserLockOnEventCallback);
-            this._lockOnFeature = null;
-            this._onUserLockOnEventCallback = null;
+        if (this._userLockOnService) {
+            this._userLockOnService.unLockOn();
         }
-
-        //取消定时更新数据
-        if (this._lockOnCode) {
-            clearInterval(this._lockOnCode);
-            this._lockOnCode = null;
-        }
-    }
+    };
 
     /*========================================轨迹业务===========================================*/
 
@@ -254,23 +235,49 @@ define([
             this.showGj(gjItem);
             lineItem = gjItem;
         }
+        //轨迹图层隐藏
+        this._gjTmpLayer.setVisible(false);
+        this._tmpLayer.setVisible(false);
         //模拟
         if (!this._trackSimulate) {
             //未创建
             var iconsUrl = baseUtil.getMapIconsUrl();
             this._trackSimulate = new TrackSimulate({
                 contMap: this._hlyMap.contMap,
-                tmpLayer: this._tmpLayer,
                 trackLine: lineItem.singleLine,
-                markerStyle: new ol.style.Style({
+                simulateMarkerStyle: new ol.style.Style({
                     image: new ol.style.Icon({
                         anchor: [.5, 1],//图标位置对应的地图点
                         src: iconsUrl,
                         scale: 1,
-                        offset: [0, 90],
-                        size: [16, 21],
+                        offset: [176, 0],
+                        size: [30, 37],
+                    }),
+                    text: new ol.style.Text({
+                        font: '18px 微软雅黑',    //字体与大小
+                        fill: new ol.style.Fill({    //文字填充色
+                            color: 'red'
+                        }),
+                        text: "",
+                        textAlign: 'left',
+                        offsetX: 15,
+                        offsetY: -20,
+                        stroke: new ol.style.Stroke({
+                            color: "white",
+                            width: 2
+                        })
                     })
-                })
+                }),
+                startMarkerStyle: new ol.style.Style({
+                    image: new ol.style.Icon({
+                        anchor: [.5, 1],//图标位置对应的地图点
+                        src: iconsUrl,
+                        scale: 1,
+                        offset: [367, 0],
+                        size: [33, 46],
+                    })
+                }),
+                lineFeatures: lineItem.features
             });
             this._trackSimulate.init();
         }
@@ -296,6 +303,9 @@ define([
             this._trackSimulate.dispose();
             this._trackSimulate = null;
         }
+        //轨迹图层显示
+        this._gjTmpLayer.setVisible(true);
+        this._tmpLayer.setVisible(true);
     };
 
     /*========================================巡护区业务===========================================*/
@@ -354,10 +364,7 @@ define([
      * 获取纯临时图层（实现）
      * @private
      */
-    HlyThemeService.prototype._getTmpLayer=function () {
-        if (!this._tmpLayer) {
-            this._LayerDataSource = this._tmpLayer.getSource();
-        }
+    HlyThemeService.prototype._getTmpLayer = function () {
         return this._tmpLayer;
     }
 
@@ -420,6 +427,10 @@ define([
         for (var i = 0; i < patrolPoints.length; i++) {
             var point = patrolPoints[i];
             tmpSource.addDataItem(point);
+
+            //设置关键点顺序
+            point.feature.set("index", i);
+
             //添加到容器
             this._featureContainerManager.addFeatureItem(zoneItem.ID, zoneItem, point.feature, tmpSource, "巡护区");
         }
@@ -444,7 +455,7 @@ define([
                 anchor: [.5, 1],//图标位置对应的地图点
                 src: iconsUrl,
                 scale: 1,
-                offset: [198, 40],
+                offset: [367, 0],
                 size: [33, 46],
             })
         }));
@@ -456,7 +467,7 @@ define([
                 anchor: [.5, 1],//图标位置对应的地图点
                 src: iconsUrl,
                 scale: 1,
-                offset: [231, 40],
+                offset: [0, 46],
                 size: [33, 46],
             })
         }));

@@ -87,11 +87,12 @@
                 selected: -1,
                 menus: _menus.panelMenus || [],
                 nav_selected_2: _menus,
-                options: _options
+                options: _options,
+                cacheds: [false, false, false, false, false]
             },
             created: function () {
                 var info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
-                this.selected = sessionStorage.getItem('_panel_nav_selected_') || 0;
+                this.selected = 0;
                 if(info.UserInfo) {
                     this.info.name = info.UserInfo.USER_NAME;
                     this.info.tel = info.UserInfo.PHONE_NUM;
@@ -106,15 +107,26 @@
                     this.info = info.HotInfo;
                 }
             },
-            watch: {
-                selected: function (val) {
-                    sessionStorage.setItem('_panel_nav_selected_', val);
-                    $('#panelnavdetail').load(this.menus[val].link);
+            mounted: function () {
+                var self = this;
+                var nav_selected_2 = sessionStorage.getItem('_2_nav_selected_');
+                var old_idx = sessionStorage.getItem('_panel_nav_selected_');
+                this.selectNav(0);
+                if(this.info.kid == nav_selected_2) {
+                    self.selectNav(old_idx || 0);
                 }
             },
             methods: {
-                selectNav: function(idx){
-                    this.selected = idx;
+                selectNav: function(val){
+                    this.selected = val;
+                    var item = this.menus[val], targetId;
+                    sessionStorage.setItem('_panel_nav_selected_', val);
+                    targetId = 'infoPanel_item_' + item.id;
+                    if (!this.cacheds[val]) {
+                        this.cacheds[val] = true;
+                        $('#panelnavdetail').append($('<div id="'+ targetId +'" class="h100 w100 hidden"></div>').load(item.link));
+                    }
+                    $('#' + targetId).show().siblings().hide();
                 },
                 showDialog: function () {
                     $.ligerDialog.open({

@@ -1,0 +1,47 @@
+[
+  {
+    "HOTSPOT_ID": "5789004",
+    "HOTSPOT_NO": "GD-20",
+    "LATITUDE": 24.2025,
+    "LONGITUDE": 113.8350,
+    "HOTSPOT_SOURCE": "卫星监测",
+    "HOTSPOT_SITE": "英德市",
+    "REPORT_TIME": "\/Date(1498002180000)\/"
+  },
+  {
+    "HOTSPOT_ID": "5810401",
+    "HOTSPOT_NO": "GD-1",
+    "LATITUDE": 23.4280,
+    "LONGITUDE": 114.3239,
+    "HOTSPOT_SOURCE": "卫星监测",
+    "HOTSPOT_SITE": "博罗县",
+    "REPORT_TIME": "\/Date(1498002180000)\/"
+  },
+  {
+    "HOTSPOT_ID": "5810402",
+    "HOTSPOT_NO": "GD-2",
+    "LATITUDE": 24.1401,
+    "LONGITUDE": 114.9753,
+    "HOTSPOT_SOURCE": "卫星监测",
+    "HOTSPOT_SITE": "河源市区",
+    "REPORT_TIME": "\/Date(1498002240000)\/"
+  },
+  {
+    "HOTSPOT_ID": "5813201",
+    "HOTSPOT_NO": "GD-1",
+    "LATITUDE": 22.2205,
+    "LONGITUDE": 112.8261,
+    "HOTSPOT_SOURCE": "卫星监测",
+    "HOTSPOT_SITE": "台山市",
+    "REPORT_TIME": "\/Date(1498002300000)\/"
+  },
+  {
+    "HOTSPOT_ID": "5809502",
+    "HOTSPOT_NO": "GD-2",
+    "LATITUDE": 24.3084,
+    "LONGITUDE": 113.9436,
+    "HOTSPOT_SOURCE": "卫星监测",
+    "HOTSPOT_SITE": "翁源县",
+    "REPORT_TIME": "\/Date(1498002180000)\/"
+  }
+]

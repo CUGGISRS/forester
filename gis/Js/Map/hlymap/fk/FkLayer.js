@@ -26,11 +26,11 @@ define([
         var iconsUrl = baseUtil.getMapIconsUrl();
         return {
             normal: {
-                offset: [360, 0],//位置
+                offset: [268,0],//位置
                 url: iconsUrl,//图片资源
                 anchor: [.5, .5],//图标位置对应的地图点
-                size: [40, 40],//截取大小
-                opacity: .8,//透明度
+                size: [33, 27],//截取大小
+                opacity: 1,//透明度
             },
             selected: {
                 offset: [360, 0],//位置
@@ -40,11 +40,11 @@ define([
                 opacity: .8,//透明度
             },
             highlight: {
-                offset: [360, 0],//位置
+                offset: [301,0],//位置
                 url: iconsUrl,//图片资源
                 anchor: [.5, .5],//图标位置对应的地图点
-                size: [40, 40],//截取大小
-                opacity: .8,//透明度
+                size: [33, 27],//截取大小
+                opacity: 1,//透明度
             },
         };
     };

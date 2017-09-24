@@ -43,5 +43,29 @@ define([
         layerDataSource.refresh(data);
     };
 
+    /**
+     * 刷新护林员地图数据
+     * @param data
+     * @constructor
+     */
+    MapDataLoader.prototype.RefreshHlyData = function (data) {
+        //获取数据源
+        var layerDataSource = this._layerManage.hlyLayer.getSource().getSource();
+        //刷新数据源
+        layerDataSource.refresh(data);
+    };
+
+    /**
+     * 刷新反馈地图数据
+     * @param data
+     * @constructor
+     */
+    MapDataLoader.prototype.RefreshFkData = function (data) {
+        //获取数据源
+        var layerDataSource = this._layerManage.fkLayer.getSource();
+        //刷新数据源
+        layerDataSource.refresh(data);
+    };
+
     return MapDataLoader;
 });

@@ -1,25 +1,16 @@
 /**
  * Created by chenlong on 2017/9/15.
  */
-define(function () {
+define([
+    'core/BusinessItem',
+], function (BusinessItem) {
 
     /**
-     * 要素容器管理器
+     * 要素容器管理器（移除时包括移除地图图形）
      * @constructor
      */
     var FeatureContainerManager = function () {
         this._featureContainer = {};
-
-        //结构
-        /*this._featureContainer[moudle].push({
-            bid: itemId,
-            features: [
-                {
-                    feature: feature,
-                    layer: layer
-                }
-            ]
-        });*/
     };
 
     /**
@@ -29,9 +20,10 @@ define(function () {
      * @param dataSource
      * @param moudle
      * @param addToDataSource 添加到数据源，默认不添加
+     * @param isPermanentTypeItem 是否为常驻类型对象，默认为否
      */
-    FeatureContainerManager.prototype.addFeatureItem = function (itemId,item, feature, dataSource,
-                                                                 moudle,addToDataSource) {
+    FeatureContainerManager.prototype.addFeatureItem = function (itemId, item, feature, dataSource,
+                                                                 moudle, addToDataSource,isPermanentTypeItem) {
         //模块容器初始化
         if (!this._featureContainer[moudle]) {
             this._featureContainer[moudle] = [];
@@ -39,25 +31,15 @@ define(function () {
         var existObj = this.exist(itemId, moudle);
         var bItem;
         if (!existObj) {
-            bItem = {
-                bid: itemId,
-                item:item,
-                features: []
-            };
+            bItem = new BusinessItem(itemId, item, moudle,isPermanentTypeItem);
             //没有给业务对象，则初始化
             this._featureContainer[moudle].push(bItem);
         }
         else {
-            bItem=existObj.bItem;
+            bItem = existObj.bItem;
         }
         //添加
-        if(addToDataSource){
-            dataSource.addFeature(feature);
-        }
-        bItem.features.push({
-            feature: feature,
-            dataSource: dataSource
-        });
+        bItem.addFeature(feature, dataSource, addToDataSource);
     };
 
     /**
@@ -72,7 +54,7 @@ define(function () {
         }
         for (var i = 0; i < this._featureContainer[moudle].length; i++) {
             var bItem = this._featureContainer[moudle][i];
-            if (bItem.bid == itemId) {
+            if (bItem.itemId == itemId) {
                 return {
                     bItem: bItem,
                     index: i
@@ -87,14 +69,11 @@ define(function () {
      * @param itemId
      * @param moudle
      */
-    FeatureContainerManager.prototype.removeMapBusinessItem=function (itemId, moudle) {
+    FeatureContainerManager.prototype.removeMapBusinessItem = function (itemId, moudle) {
         var existObj = this.exist(itemId, moudle);
         if (existObj) {
             //从地图移除
-            for (var i = 0; i < existObj.bItem.features.length; i++) {
-                var featureItem = existObj.bItem.features[i];
-                featureItem.dataSource.removeFeature(featureItem.feature);
-            }
+            existObj.bItem.dispose();
             //从容器中移除
             this._featureContainer[moudle].splice(existObj.index, 1);
         }
@@ -103,19 +82,16 @@ define(function () {
     /**
      * 移除所有业务对象
      */
-    FeatureContainerManager.prototype.clear=function () {
+    FeatureContainerManager.prototype.clear = function () {
         //地图对象移除
-        for(moudleName in this._featureContainer){
+        for (moudleName in this._featureContainer) {
             for (var i = 0; i < this._featureContainer[moudleName].length; i++) {
                 var bItem = this._featureContainer[moudleName][i];
-                for (var j = 0; j < bItem.features.length; j++) {
-                    var featureItem = bItem.features[j];
-                    featureItem.dataSource.removeFeature(featureItem.feature);
-                }
+                bItem.dispose();
             }
         }
         //对象容器重置
-        this._featureContainer={};
+        this._featureContainer = {};
     }
 
     return FeatureContainerManager;

@@ -29,24 +29,24 @@ define([
         //中间图层初始化
         //1、临时巡护区图层
         this._xhqLayer = this._layerManage.newXhqLayer();
-        this._contMap.layerManager.addLayer(this._xhqLayer, true);
-        //2、临时轨迹图层
-        this._gjTmpLayer = this._layerManage.newGjLayer();
-        this._contMap.layerManager.addLayer(this._gjTmpLayer, true);
-        //3、临时关键点图层
+        this._layerManage.themePlyLayerGroup.getLayers().push(this._xhqLayer);
+        //2、临时关键点图层
         this._gjdTmpLayer = this._layerManage.newGjdLayer();
-        this._contMap.layerManager.addLayer(this._gjdTmpLayer, true);
+        this._layerManage.themePointLayerGroup.getLayers().push(this._gjdTmpLayer);
+        //3、临时轨迹图层
+        this._gjTmpLayer = this._layerManage.newGjLayer();
+        this._layerManage.themePlyLayerGroup.getLayers().push(this._gjTmpLayer);
         //4、临时图层
         this._tmpLayer = new ol.layer.Vector({
             source: new ol.source.Vector(),
         });
-        this._contMap.layerManager.addLayer(this._tmpLayer, true);
+        this._layerManage.themePlyLayerGroup.getLayers().push(this._tmpLayer);
         //5、报警点临时图层
         this._bjTmpLayer = this._layerManage.newBjLayer();
-        this._contMap.layerManager.addLayer(this._bjTmpLayer, true);
+        this._layerManage.themePointLayerGroup.getLayers().push(this._bjTmpLayer);
         //6、热点临时图层
         this._rdTmpLayer = this._layerManage.newRdLayer();
-        this._contMap.layerManager.addLayer(this._rdTmpLayer, true);
+        this._layerManage.themePointLayerGroup.getLayers().push(this._rdTmpLayer);
 
         this._layerManage.tempLayers.gjTmpLayers = {
             tmpLayer: this._tmpLayer,
@@ -341,6 +341,10 @@ define([
         for (var i = 0; i < patrolPoints.length; i++) {
             var point = patrolPoints[i];
             tmpSource.addDataItem(point);
+
+            //设置关键点顺序
+            point.feature.set("index",i);
+
             //添加到容器
             this._featureContainerManager.addFeatureItem(zoneItem.ID, zoneItem, point.feature, tmpSource, "巡护区");
         }

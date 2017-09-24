@@ -1,0 +1,389 @@
+[
+  {
+    "LineId": "92154c02-fef4-424a-b36c-6b8cb87dbcb8",
+    "UserName": "李四",
+    "StartTime": "2017/9/13 11:27:44",
+    "TimeLength": "0.0188888888888889",
+    "Distance": "3.14",
+    "GpsInfos": [
+      {
+        "LONGITUDE": 116.41846037301548,
+        "LATITUDE": 39.9492091665830960,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41843734523664,
+        "LATITUDE": 39.94918714469260,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41843734523664,
+        "LATITUDE": 39.94918714469260,
+        "ISVALID": "1"
+      }
+    ]
+  },
+  {
+    "LineId": "cafa210e-48cf-414d-b3c7-e4414d4ba140",
+    "UserName": "李四",
+    "StartTime": "2017/9/13 9:08:25",
+    "TimeLength": "0.191666666666667",
+    "Distance": "0",
+    "GpsInfos": [
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41866469902430,
+        "LATITUDE": 39.94879038602595,
+        "ISVALID": "1"
+      }
+    ]
+  },
+  {
+    "LineId": "9788968f-60f0-4bc1-a7fc-05ace3066763",
+    "UserName": "李四",
+    "StartTime": "2017/9/13 8:43:06",
+    "TimeLength": "0.409722222222222",
+    "Distance": "38.28",
+    "GpsInfos": [
+      {
+        "LONGITUDE": 116.41844535497866,
+        "LATITUDE": 39.94919415232978,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41844535497866,
+        "LATITUDE": 39.94919415232978,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41844535497866,
+        "LATITUDE": 39.94919415232978,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41858353924842,
+        "LATITUDE": 39.94919228936592,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41858353924842,
+        "LATITUDE": 39.94919228936592,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41858353924842,
+        "LATITUDE": 39.94919228936592,
+        "ISVALID": "0"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "0"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "0"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "0"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "0"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "0"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "0"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41861958117785,
+        "LATITUDE": 39.9492413232974140,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41844535497866,
+        "LATITUDE": 39.94919415232978,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41858353924842,
+        "LATITUDE": 39.94919228936592,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41858353924842,
+        "LATITUDE": 39.94919228936592,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41858353924842,
+        "LATITUDE": 39.94919228936592,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41858353924842,
+        "LATITUDE": 39.94919228936592,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41858353924842,
+        "LATITUDE": 39.94919228936592,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41845136066132,
+        "LATITUDE": 39.94921215755596,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      },
+      {
+        "LONGITUDE": 116.41851243946692,
+        "LATITUDE": 39.94923121725669,
+        "ISVALID": "1"
+      }
+    ]
+  }
+]

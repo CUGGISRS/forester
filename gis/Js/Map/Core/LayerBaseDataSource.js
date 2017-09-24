@@ -33,6 +33,7 @@ define([
             var item = data[i];
             //检查
             var existItem = this._itemExist(item);
+            existItem = existItem ? existItem.oldItem : null;
             if (existItem) {
                 //对象存在，则更新feature
                 baseUtil.assign(existItem, item);
@@ -56,8 +57,8 @@ define([
                 var feature = item.feature;
                 var iconState = feature.get("iconState") ? feature.get("iconState") : "normal";
                 if (iconState === 'normal') {
-                    //当前为normal情况的
-                    this.removeFeature(feature);
+                    //当前为normal情况的，执行移除
+                    this.removeDateItem(item);
                 }
             }
         }
@@ -85,6 +86,9 @@ define([
         feature.setProperties(item, true);
         feature.setId(this._getItemId(item));
         feature.set("iconState", "normal");
+        //所属值对象
+        feature.valueItem=item;
+
         this._onAddFeature(feature, item);
 
         item.feature = feature;
@@ -93,9 +97,23 @@ define([
         //三维贴地
         feature.setProperties({"altitudeMode": "clampToGround"}, true);
         this.addFeature(feature);
+
         return feature;
     }
 
+    /**
+     * 移除对象
+     * @param itemId
+     */
+    LayerBaseDataSource.prototype.removeDataItem = function (item) {
+        var existItem = this._itemExist(item);
+        if (existItem) {
+            //从地图移除
+            this.removeFeature(existItem.oldItem.feature);
+            //从_data移除
+            this._data.splice(existItem.index, 1);
+        }
+    }
     /**
      * 高亮显示
      * @param featureId
@@ -183,7 +201,10 @@ define([
         for (var i = 0; i < this._data.length; i++) {
             var oldItem = this._data[i];
             if (this._getItemId(oldItem) === itemId) {
-                return oldItem;
+                return {
+                    oldItem: oldItem,
+                    index: i
+                };
             }
         }
         return;

@@ -114,7 +114,6 @@
                     var data = e.data;
                     if (!data) return;
                     if('UserId' in data) {
-                        GIS$.clearUnitZone();
                         GIS$.getUserInfoAndToShow({
                             userId: data.UserId,
                             isOnline: data.IsOnline

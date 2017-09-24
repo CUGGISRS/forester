@@ -53,12 +53,6 @@
                         if (typeof Hly != 'undefined') {
                             //地图初始化
                             GIS$.mapInit();
-                            //地图数据刷新
-                            GIS$.mapDataRefresh();
-                            //点击事件挂接
-                            GIS$.mapClickEvent();
-                            //加载护林员专栏
-                            GIS$.hlyThemeOnShow();
                         } else {
                             setTimeout(initMap);
                         }
@@ -75,7 +69,6 @@
             });
 
             Page.showInfo = function (pageId, options, data) {
-                console.log(data);
                 //副面板简要信息
                 sessionStorage.setItem('_panel_info_', JSON.stringify(data));
                 //副面板关键id信息（护林员id，路径id，巡护区id，热点id等）

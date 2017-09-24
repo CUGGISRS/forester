@@ -280,6 +280,16 @@
                         self.loading = 2;
                         self.results = d || [];
                     });
+                    $.get(Home_Ctrl + 'GetOrganGeometry', {
+                        organId: self.organId
+                    }).done(function (d) {
+                        GIS$.jumpToUnitZone(d);
+                    });
+                    if(this.form.province == this.organId || this.form.city == this.organId){
+                        GIS$.onSearchAllXhqWithinProvinceAndCity();
+                    } else if(this.form.county == this.organId){
+                        GIS$.onSearchAllXhqWithinCounty();
+                    }
                 },
                 //查询报警
                 filter119: function() {
@@ -348,7 +358,7 @@
                                 areacode: data.BH,
                                 area: data.Area,
                                 userName: data.UserName,
-                                tel: 'unknow',
+                                tel: data.PhoneNum,
                                 userId: data.UserId
                             }); break;
                         case 'c119':
@@ -374,8 +384,8 @@
                                 organ: data.HOTSPOT_SITE,
                                 lat: data.LATITUDE,
                                 lon: data.LONGITUDE,
-                                //userName: data.LbsUserBaseInfo.USER_NAME,
-                                //tel: data.LbsUserBaseInfo.PHONE_NUM,
+                                userName: data.LbsUserBaseInfo.USER_NAME,
+                                tel: data.LbsUserBaseInfo.PHONE_NUM,
                                 userId: data.USER_ID
                             }); break;
                         case 'attend':

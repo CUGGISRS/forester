@@ -94,7 +94,7 @@
                     });
                 },
                 setInfo: function(info) {
-                    // GIS$.showGj(info);
+                    GIS$.DrawToMap('road', this.options, info);
                     this.DetailInfo.GpsDisplayPoints = info.GpsDisplayPoints || [];
                     this.DetailInfo.GpsInfos = info.GpsInfos || [];
                 },

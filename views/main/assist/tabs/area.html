@@ -95,7 +95,7 @@
                         });
                     },
                     setInfo: function(d) {
-                        // GIS$.showXhq(d);
+                        GIS$.DrawToMap('area', this.options, d);
                         this.DetailInfo.PatrolAreaInfo = d.PatrolAreaInfo;
                         this.DetailInfo.PatrolAreaUsers = d.PatrolAreaUsers;
                         this.DetailInfo.PatrolPoints = d.PatrolPoints;

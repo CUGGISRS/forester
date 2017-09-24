@@ -61,43 +61,50 @@ var PANELMENUS = [
         id: 0,
         name: '护林员',
         link: 'views/main/assist/tabs/forester.html',
-        clsName: 'icon_00'
+        clsName: 'icon_00',
+        cached: false
     },
     {
         id: 1,
         name: '轨迹',
         link: 'views/main/assist/tabs/road.html',
-        clsName: 'icon_01'
+        clsName: 'icon_01',
+        cached: false
     },
     {
         id: 2,
         name: '巡护区',
         link: 'views/main/assist/tabs/area.html',
-        clsName: 'icon_02'
+        clsName: 'icon_02',
+        cached: false
     },
     {
         id: 3,
         name: '考勤',
         link: 'views/main/assist/tabs/attend.html',
-        clsName: 'icon_07'
+        clsName: 'icon_07',
+        cached: false
     },
     {
         id: 4,
         name: '事件',
         link: 'views/main/assist/tabs/event.html',
-        clsName: 'icon_06'
+        clsName: 'icon_06',
+        cached: false
     },
     {
         id: 5,
         name: '报警',
         link: 'views/main/assist/tabs/c119.html',
-        clsName: 'icon_39'
+        clsName: 'icon_39',
+        cached: false
     },
     {
         id: 6,
         name: '热点',
         link: 'views/main/assist/tabs/hot.html',
-        clsName: 'icon_05'
+        clsName: 'icon_05',
+        cached: false
     }
 ];
 var SECONDMENUS = [
@@ -107,7 +114,7 @@ var SECONDMENUS = [
         link: 'views/main/forester.html', //主面板链接
         clsName: 'icon_00', //图标
         cached: false, //是否缓存了
-        panelMenus: [ //副面板菜单
+        panelMenus: [
             PANELMENUS[0],
             PANELMENUS[1],
             PANELMENUS[2],
@@ -176,18 +183,18 @@ var SECONDMENUS = [
 ];
 var TYPE119 = ['一键报警', '毁林案件', '火情火灾', '破坏林业设施', '野生动植物', '病虫害'];
 var serviceUrlConfig = {
-    GetOnlineUserForMapList: "gis/Demo/data/QueryUser/GetOnlineUserForMapList.json",
-    //GetOnlineUserForMapList:"http://172.30.3.205:8095/QueryUser/GetOnlineUserForMapList",
-    GetAlarmsByOrgan: "gis/Demo/data/GetAlarmsByOrgan.json",
-    GetHotspotList: "gis/Demo/data/GetHotspotList.json",
-    GetNoticesByOrgan: "gis/Demo/data/GetNoticesByOrgan.json",
-    GetUserGpsInfo: "gis/Demo/data/GetUserGpsInfo.json",
-    GetPatrolAreaForEdit: "gis/Demo/data/GetPatrolAreaForEdit.json",
-    GetPatrolAreaByLocation: "gis/Demo/data/GetPatrolAreaByLocation.json",
+    getOnlineUserForMapList: "gis/Demo/data/QueryUser/GetOnlineUserForMapList.json",
+    //getOnlineUserForMapList:"http://172.30.3.205:8095/QueryUser/GetOnlineUserForMapList",
+    getAlarmsByOrgan: "gis/Demo/data/GetAlarmsByOrgan.json",
+    getHotspotList: "gis/Demo/data/GetHotspotList.json",
+    getNoticesByOrgan: "gis/Demo/data/GetNoticesByOrgan.json",
+    getUserGpsInfo: "gis/Demo/data/GetUserGpsInfo.json",
+    getPatrolAreaForEdit: "gis/Demo/data/GetPatrolAreaForEdit.json",
+    getPatrolAreaByLocation: "gis/Demo/data/GetPatrolAreaByLocation.json"
 };
 var GIS$ = {};
 var hlyMap;
-var layerManage;
+var hlyMapService;
 
 
 

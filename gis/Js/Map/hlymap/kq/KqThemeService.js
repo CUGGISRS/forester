@@ -6,32 +6,26 @@ define([
     'core/defineProperties',
     'core/ThemeBaseService',
     'hlymap/gj/TrackSimulate',
-], function (baseUtil, defineProperties, ThemeBaseService, TrackSimulate) {
+], function (baseUtil, defineProperties, ThemeBaseService,TrackSimulate) {
 
     /**
-     * 巡护区专题业务服务
+     * 考勤专题业务服务
      * @param option
      * @constructor
      */
-    var XhqThemeService = function (option) {
+    var KqThemeService = function (option) {
         ThemeBaseService.call(this, option);
-        //巡护区地图服务地址
-        this._mapUrls = option.mapUrls;
     };
     //继承自ThemeBaseService
-    ol.inherits(XhqThemeService, ThemeBaseService);
+    ol.inherits(KqThemeService, ThemeBaseService);
 
     //定义属性
-    defineProperties(XhqThemeService.prototype, {});
+    defineProperties(KqThemeService.prototype, {});
 
     /**
      * 服务初始化
      */
-    XhqThemeService.prototype.init = function () {
-        //动态地图底图容器（图层组）初始化
-        this._baseLayerContainer = new ol.layer.Group({layers: []});
-        this._layerManage.themePlyLayerGroup.getLayers().push(this._baseLayerContainer);
-
+    KqThemeService.prototype.init = function () {
         //中间图层初始化
         //1、临时巡护区图层
         this._xhqLayer = this._layerManage.newXhqLayer();
@@ -54,14 +48,13 @@ define([
         this._rdTmpLayer = this._layerManage.newRdLayer();
         this._layerManage.themePointLayerGroup.getLayers().push(this._rdTmpLayer);
 
-        this._layerManage.tempLayers.xhqTmpLayers = {
+        this._layerManage.tempLayers.gjTmpLayers = {
             tmpLayer: this._tmpLayer,
             gjTmpLayer: this._gjTmpLayer,
             gjdTmpLayer: this._gjdTmpLayer,
             xhqLayer: this._xhqLayer,
             bjTmpLayer: this._bjTmpLayer,
-            rdTmpLayer: this._rdTmpLayer,
-            baseLayerContainer: this._baseLayerContainer
+            rdTmpLayer: this._rdTmpLayer
         };
 
         //地图事件
@@ -98,61 +91,26 @@ define([
             }
         });
 
-        //鼠标点击查询巡护区事件:xhqMouseClick
-        this._contMap.scene.on("pointerclick", function (e) {
-            var position = e.position;
-            if (that._canRaiseXhqClickEvent) {
-                //可以点击巡护区触发事件
-                //查询当前位置，获取巡护区，如果存在则触发事件（外部进行绘制）
-                $.get(that._option.getPatrolAreaByLocationUrl, {
-                    x: position[0],
-                    y: position[1]
-                }, function (data) {
-                    if (data.PatrolAreaInfo) {
-                        // 触发事件将此对象传回
-                        var eventarg = {
-                            item: data,
-                            position: position
-                        };
-                        for (var i = 0; i < that._evnts.length; i++) {
-                            if (that._evnts[i].eventType === 'xhqMouseClick') {
-                                if (that._evnts[i].context) {
-                                    that._evnts[i].callback.call(that._evnts[i].context, eventarg);
-                                } else {
-                                    that._evnts[i].callback(eventarg);
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        });
     }
 
     /**
      * 关闭护林员专题时调用
      */
-    XhqThemeService.prototype.onClose = function () {
+    KqThemeService.prototype.onClose = function () {
         //清空临时状态与对象
-        this.clearTmp(true);
+        this.clearTmp();
     };
 
     /**
      * 清除临时状态或图形
-     * @param clearXhqMapLayer 是否清除巡护区地图切片图层
      */
-    XhqThemeService.prototype.clearTmp = function (clearXhqMapLayer) {
+    KqThemeService.prototype.clearTmp = function () {
         //停止播放轨迹、选中
         this.cancelSelected();
         this.trackPlayClose();
 
         //清除单位范围、巡护区、轨迹、关键点、报警点、热点等图形
         this._featureContainerManager.clear();
-        //清除巡护区切片等图层
-        if(clearXhqMapLayer){
-            this._baseLayerContainer.getLayers().clear();
-            this._baseLayerContainer.changed();
-        }
     };
 
     /*========================================轨迹业务===========================================*/
@@ -161,9 +119,10 @@ define([
      * 显示某条轨迹
      * @param gjItem
      */
-    XhqThemeService.prototype.showGj = function (gjItem) {
-        //清除除巡护区切片图层外的临时数据
-        this.clearTmp(false);
+    KqThemeService.prototype.showGj = function (gjItem) {
+        //轨迹专题下，清除临时对象
+        this.clearTmp();
+
         //检查是否已有显示
         var existObj = this._featureContainerManager.exist(gjItem.LineId, "轨迹");
         if (!existObj) {
@@ -192,7 +151,7 @@ define([
     /**
      * 关闭某条轨迹
      */
-    XhqThemeService.prototype.closeGj = function (lineId) {
+    KqThemeService.prototype.closeGj = function (lineId) {
         this._featureContainerManager.removeMapBusinessItem(lineId, "轨迹");
     }
 
@@ -200,7 +159,7 @@ define([
      * 轨迹演示模拟初始化
      * @param gjItem
      */
-    XhqThemeService.prototype.trackPlayInit = function (gjItem) {
+    KqThemeService.prototype.trackPlayInit = function (gjItem) {
         var dataSource = this._gjTmpLayer.getSource();
         var lineItem = dataSource.getItemById(gjItem.LineId);
         if (!lineItem) {
@@ -234,7 +193,7 @@ define([
      * 轨迹演示模拟
      * @param fraction 进度（0~1）
      */
-    XhqThemeService.prototype.trackPlay = function (fraction) {
+    KqThemeService.prototype.trackPlay = function (fraction) {
         //默认已经初始化了
         if (this._trackSimulate) {
             this._trackSimulate.moveTo(fraction);
@@ -244,7 +203,7 @@ define([
     /**
      * 关闭轨迹演示模拟
      */
-    XhqThemeService.prototype.trackPlayClose = function () {
+    KqThemeService.prototype.trackPlayClose = function () {
         //模拟器删除
         if (this._trackSimulate) {
             this._trackSimulate.dispose();
@@ -253,193 +212,11 @@ define([
     };
 
     /*========================================巡护区业务===========================================*/
-
-    /**
-     * 当搜索全省市的巡护区时触发
-     */
-    XhqThemeService.prototype.onSearchAllXhqWithinProvinceAndCity = function () {
-        //只保留全省的切片叠加
-        var layerList = this._baseLayerContainer.getLayers();
-        var existLayer;
-        var otherLayers = [];
-        layerList.forEach(function (layer, index) {
-            if (layer.layerLevel === "省级") {
-                existLayer = layer;
-            } else {
-                otherLayers.push(layer);
-            }
-        });
-        if (!existLayer) {
-            //不存在，则清空并添加
-            var xhqLayer = new ol.layer.Tile({
-                source: new Cont.EsriOfflineDataSource({
-                    url: this._mapUrls["广东省"],
-                    format: "png",
-                    projection: ol.proj.get('EPSG:4326')
-                })
-            });
-            xhqLayer.layerLevel = "省级";
-
-            layerList.clear();
-            layerList.push(xhqLayer);
-        } else {
-            //存在，则删除其他的
-            for (var i = 0; i < otherLayers.length; i++) {
-                var otherLayer = otherLayers[i];
-                layerList.remove(otherLayer);
-            }
-        }
-        this._baseLayerContainer.changed();
-
-        //启动鼠标点击高亮并显示巡护区事件功能
-        this._canRaiseXhqClickEvent = true;
-    }
-
-    /**
-     * 当搜索全县的巡护区时触发
-     * @param countyName 县名
-     */
-    XhqThemeService.prototype.onSearchAllXhqWithinCounty = function (countyName) {
-        //只保留XX县的切片叠加
-        var layerList = this._baseLayerContainer.getLayers();
-        var existLayer;
-        var otherLayers = [];
-        layerList.forEach(function (layer, index) {
-            if (layer.layerLevel === "县级" && layer.layerName === countyName) {
-                existLayer = layer;
-            } else {
-                otherLayers.push(layer);
-            }
-        });
-
-        if (!existLayer) {
-            //不存在，则清空并添加
-            layerList.clear();
-            if (this._mapUrls[countyName]) {
-                //有地图服务，则添加
-                var xhqLayer = new ol.layer.Tile({
-                    source: new Cont.EsriOfflineDataSource({
-                        url: this._mapUrls[countyName],
-                        format: "png",
-                        projection: ol.proj.get('EPSG:4326')
-                    })
-                });
-                xhqLayer.layerLevel = "县级";
-                xhqLayer.layerName = countyName;
-                layerList.push(xhqLayer);
-            } else {
-                //没有地图服务，则不处理
-            }
-        } else {
-            //存在，则删除其他的
-            for (var i = 0; i < otherLayers.length; i++) {
-                var otherLayer = otherLayers[i];
-                layerList.remove(otherLayer);
-            }
-        }
-        this._baseLayerContainer.changed();
-
-        //启动鼠标点击高亮并显示巡护区事件功能
-        this._canRaiseXhqClickEvent = true;
-    }
-
-    /**
-     * 当搜索全乡镇的巡护区时触发
-     * @param xhqItems 全乡镇的巡护区数组对象
-     */
-    XhqThemeService.prototype.onSearchAllXhqWithinTown = function (xhqItems, xiangName) {
-        //只保留XX乡的矢量图层叠加
-        var layerList = this._baseLayerContainer.getLayers();
-        var existLayer;
-        var otherLayers = [];
-        layerList.forEach(function (layer, index) {
-            if (layer.layerLevel === "乡级" && layer.layerName === xiangName) {
-                existLayer = layer;
-            } else {
-                otherLayers.push(layer);
-            }
-        });
-
-        if (!existLayer) {
-            //不存在，则清空并添加
-            var that = this;
-            var xhqLayer = this._layerManage.newXhqLayer(function (feature, resolution) {
-
-                var styles = [
-                    //巡护区边框
-                    new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: "red",
-                            width: 1
-                        })
-                    })
-                ];
-                if (resolution < 8.6e-005) {
-                    //找到巡护区标注文字背景地址
-                    if (!that.hxqLabelGgUrl) {
-                        that.hxqLabelGgUrl = baseUtil.getAbsoluteUrl("./css/images/noticeBg.jpg");
-                    }
-
-                    var info = feature.getProperties();
-                    var labelString = '巡护区：' + info["BH"] + '\n护林员：' + info["UserName"] + '\n面积：' + (info["Area"]).toFixed(1) + " 亩";
-                    //小于该分辨率下显示标注
-                    styles.push(new ol.style.Style({
-                        geometry: function (feature) {
-                            return feature.getGeometry().getInteriorPoint();
-                        },
-                        image: new ol.style.Icon({
-                            src: that.hxqLabelGgUrl,
-                            anchor: [0.5, 0.5],
-                            anchorOrigin: 'top-left'
-                            //rotation: 90 * Math.PI / 180
-                        }),
-                        text: new ol.style.Text({
-                            font: '13px Calibri,sans-serif',    //字体与大小
-                            fill: new ol.style.Fill({    //文字填充色
-                                color: '#FF0000'
-                            }),
-                            text: labelString,
-                            textAlign: 'left',
-                            offsetX: -60
-                        })
-                    }))
-                }
-                return styles;
-            });
-            xhqLayer.layerLevel = "乡级";
-            xhqLayer.layerName = xiangName;
-
-            //添加数据
-            var checkTag = (new Date()).getTime();
-            var xhqDatasource = xhqLayer.getSource();
-            for (var i = 0; i < xhqItems.length; i++) {
-                var xhqItem = xhqItems[i];
-                xhqDatasource.addDataItem(xhqItem, checkTag);
-            }
-
-            layerList.clear();
-            layerList.push(xhqLayer);
-        } else {
-            //存在，则删除其他的
-            for (var i = 0; i < otherLayers.length; i++) {
-                var otherLayer = otherLayers[i];
-                layerList.remove(otherLayer);
-            }
-        }
-        this._baseLayerContainer.changed();
-
-        //启动鼠标点击高亮并显示巡护区事件功能
-        this._canRaiseXhqClickEvent = true;
-    }
-
     /**
      * 显示某巡护区（及关键点）
      * @param patrolDetail 巡护区详情
      */
-    XhqThemeService.prototype.showXhq = function (patrolDetail) {
-        //巡护区专题下，清除以前的临时对象
-        this.clearTmp();
-        //显示当前巡护区
+    KqThemeService.prototype.showXhq = function (patrolDetail) {
         var existObj = this._featureContainerManager.exist(patrolDetail.PatrolAreaInfo.ID, "巡护区");
         if (!existObj) {
             //不存在
@@ -464,7 +241,7 @@ define([
      * （从UI）选择关键点
      * @param patrolPoint
      */
-    XhqThemeService.prototype.selectKeyPoint = function (patrolPoint) {
+    KqThemeService.prototype.selectKeyPoint = function (patrolPoint) {
         var tmpSource = this._gjdTmpLayer.getSource();
         tmpSource.setSelected(patrolPoint.ID);
     };
@@ -472,7 +249,7 @@ define([
     /**
      * （从UI）取消选择关键点
      */
-    XhqThemeService.prototype.unSelectKeyPoint = function () {
+    KqThemeService.prototype.unSelectKeyPoint = function () {
         var tmpSource = this._gjdTmpLayer.getSource();
         tmpSource.cancelSelected();
     };
@@ -480,7 +257,7 @@ define([
     /**
      * 关闭某个巡护区显示
      */
-    XhqThemeService.prototype.closeXhq = function (zoneId) {
+    KqThemeService.prototype.closeXhq = function (zoneId) {
         this._featureContainerManager.removeMapBusinessItem(zoneId, "巡护区");
     };
 
@@ -490,7 +267,7 @@ define([
      * 显示报警
      * @param bjItem
      */
-    XhqThemeService.prototype.showBj = function (bjItem) {
+    KqThemeService.prototype.showBj = function (bjItem) {
         //使用临时图层进行覆盖（不使用常驻图层，需要与其进行区分）
         var existObj = this._featureContainerManager.exist(bjItem.ID, "报警点");
         if (!existObj) {
@@ -511,7 +288,7 @@ define([
      * 显示热点
      * @param rdItem
      */
-    XhqThemeService.prototype.showRd = function (rdItem) {
+    KqThemeService.prototype.showRd = function (rdItem) {
         //使用临时图层进行覆盖（不使用常驻图层，需要与其进行区分）
         var existObj = this._featureContainerManager.exist(rdItem.ID, "热点");
         if (!existObj) {
@@ -536,7 +313,7 @@ define([
      * 获取纯临时图层（实现）
      * @private
      */
-    XhqThemeService.prototype._getTmpLayer = function () {
+    KqThemeService.prototype._getTmpLayer = function () {
         if (!this._tmpLayer) {
             this._LayerDataSource = this._tmpLayer.getSource();
         }
@@ -547,7 +324,7 @@ define([
      * 获取图层数据源对象（实现）
      * @private
      */
-    XhqThemeService.prototype._getLayerDataSource = function () {
+    KqThemeService.prototype._getLayerDataSource = function () {
         if (!this._LayerDataSource) {
             this._LayerDataSource = this._gjTmpLayer.getSource();
         }
@@ -559,7 +336,7 @@ define([
      * @param patrolPoints 巡逻关键点集合
      * @private
      */
-    XhqThemeService.prototype._showKeyPoints = function (zoneItem, patrolPoints) {
+    KqThemeService.prototype._showKeyPoints = function (zoneItem, patrolPoints) {
         var tmpSource = this._gjdTmpLayer.getSource();
         for (var i = 0; i < patrolPoints.length; i++) {
             var point = patrolPoints[i];
@@ -579,7 +356,7 @@ define([
      * @param endGpsInfo
      * @private
      */
-    XhqThemeService.prototype._addStartAndEndPoint = function (lineItem, startGpsInfo, endGpsInfo) {
+    KqThemeService.prototype._addStartAndEndPoint = function (lineItem, startGpsInfo, endGpsInfo) {
         var tmpSource = this._tmpLayer.getSource();
 
         //创建带风格的要素
@@ -617,5 +394,5 @@ define([
         this._featureContainerManager.addFeatureItem(lineItem.LineId, lineItem, endFeature, tmpSource, "轨迹");
     };
 
-    return XhqThemeService;
+    return KqThemeService;
 });
