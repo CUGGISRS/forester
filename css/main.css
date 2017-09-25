@@ -327,7 +327,6 @@ i.loading {
   box-shadow: 0 0px 2px 0px #D9E1E7;
   border-radius: 2px;
   background: #fff;
-  width: 18em;
 }
 .panel .close {
   border: 0;
@@ -353,6 +352,7 @@ i.loading {
 }
 #mainPanel {
   display: none;
+  width: 18em;
   height: -webkit-calc(100vh - 100px);
   height: calc(100vh - 100px);
   top: 15px;
@@ -741,6 +741,7 @@ i.loading {
 }
 #assistPanel {
   display: none;
+  width: 18em;
   height: -webkit-calc(100vh - 260px);
   height: calc(100vh - 260px);
   top: 70px;
@@ -991,7 +992,90 @@ i.loading {
 .datetimes .header {
   color: #3997D6;
 }
-.datetimes .tbody .colum {
+.datetimes .tbody .day {
+  color: #888;
+  border: 1px solid #f1f1f1;
+}
+.datetimes .tbody .on {
   color: #333;
-  border: 1px solid #efefef;
+  border: 1px solid #eee;
+}
+.datetimes .tbody .selected {
+  color: #fff;
+  background: #3997D6;
+  border-color: #3997d6;
+}
+#vue-openlayer-tips .btnarea {
+  right: 15px;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  color: #666;
+}
+#vue-openlayer-tips .btnarea .num {
+  position: absolute;
+  top: 0;
+  right: 0;
+  -webkit-transform: translate(50%, -50%);
+  -ms-transform: translate(50%, -50%);
+  transform: translate(50%, -50%);
+  background: #C00201;
+  color: #fff;
+  border-radius: 50%;
+  width: 1.2em;
+  height: 1.2em;
+  font-size: 12px;
+}
+#vue-openlayer-tips .eye {
+  bottom: 60px;
+}
+#vue-openlayer-tips .info {
+  bottom: 15px;
+}
+#vue-openlayer-tips #rltDiv {
+  right: 60px;
+  bottom: 15px;
+  height: 15em;
+  width: 45vw;
+}
+#vue-openlayer-tips #rltDiv .title {
+  padding-top: 6px;
+}
+#vue-openlayer-tips #rltDiv .title .tabs {
+  margin-right: 1em;
+  background: #ccc;
+  color: #fff;
+  border-radius: 5px;
+  padding: 2px;
+  vertical-align: -2px;
+}
+#vue-openlayer-tips #rltDiv .title .tabs label {
+  border-radius: 5px;
+  padding: 0 5px;
+}
+#vue-openlayer-tips #rltDiv .title .tabs label.selected {
+  background: #fff;
+  color: #aaa;
+}
+#vue-openlayer-tips #rltDiv .results {
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#vue-openlayer-tips #rltDiv .table {
+  border: 1px solid #ccc;
+  width: 100%;
+}
+#vue-openlayer-tips #rltDiv .table th,
+#vue-openlayer-tips #rltDiv .table td {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 4px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+#vue-openlayer-tips #rltDiv .table tr:nth-child(odd) {
+  background: #f1f1f1;
 }

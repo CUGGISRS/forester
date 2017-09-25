@@ -98,6 +98,11 @@
                     this.DetailInfo.GpsDisplayPoints = info.GpsDisplayPoints || [];
                     this.DetailInfo.GpsInfos = info.GpsInfos || [];
                 },
+                palyRoad: function(){
+                    GIS$.trackPlay($.extend({
+                        GpsInfos: this.DetailInfo.GpsInfos
+                    }, this.DetailInfo.BaseInfo));
+                },
                 selectItem: function(item){
                     this.lineId = item.LineId;
                     this.DetailInfo.BaseInfo = item;

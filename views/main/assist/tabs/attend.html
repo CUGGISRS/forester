@@ -1,73 +1,170 @@
 <div id="vue_tab_attend" class="h100 scroll">
-    <dl class="datetimes">
-        <dt class="thead flex acenter jcenter">
-            <button><i class="iconfont icon-arrLeft-fill"></i></button>
-            <span class="currdate">2017-09</span>
-            <button><i class="iconfont icon-sanx-up"></i></button>
-        </dt>
-        <dd class="flex header columns7">
-            <span class="colum" v-for="i in 7" :key="i">{{weeks[i - 1][1]}}</span>
-        </dd>
-        <dd class="flex tbody wrap columns7">
-            <span class="colum" v-for="(d, idx) in days" :key="idx">{{ d.d }}</span>
-        </dd>
-    </dl>
+    <template v-show="!lineId">
+        <dl class="datetimes">
+            <dt class="thead flex acenter jcenter">
+                <button @click="setMonth(-1)"><i class="iconfont icon-arrLeft-fill"></i></button>
+                <span class="currdate">{{year}}-{{month}}</span>
+                <button @click="setMonth(1)"><i class="iconfont icon-sanx-up"></i></button>
+            </dt>
+            <dd class="flex header columns7">
+                <span class="colum" v-for="i in 7" :key="i">{{weeks[i - 1][1]}}</span>
+            </dd>
+            <dd class="flex tbody wrap columns7">
+                <span class="colum" v-for="(d, idx) in days" :key="idx" @click="selectDay(idx)" :class="{'on': d.on, 'day': d.d, 'selected': d.d == day}">{{ d.d }}</span>
+            </dd>
+        </dl>
+        <dl class="tab_panel h100 scroll">
+            <dt class="tab_panel_title">
+                <label class="circle orange">考</label>勤信息
+            </dt>
+            <dd class="list_item" v-for="(item,index) in Linelists" :key="index" @click="selectItem(item)">
+                <p class="strong">{{item.LbsUserBaseInfo.USER_NAME}}</p>
+                <p>{{item.StartTime}}</p>
+                <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
+            </dd>
+        </dl>
+    </template>
+    <div v-if="lineId" class="flex column h100 scroll">
+        <div class="flex_1 scroll">
+            <dl class="tab_panel" v-if="DetailInfo.BaseInfo">
+                <dt class="tab_panel_title">
+                    <label class="circle blue">基</label>本信息
+                </dt>
+                <dd class="list_item">
+                    <p>{{DetailInfo.BaseInfo.StartTime}}</p>
+                    <p>{{DetailInfo.BaseInfo.TimeLength}}小时&emsp;{{DetailInfo.BaseInfo.Distance}}公里</p>
+                </dd>
+            </dl>
+            <dl class="tab_panel">
+                <dt class="tab_panel_title">
+                    <label class="circle green">轨</label>迹播放
+                </dt>
+                <dd class="list_item">
+                    <audio class="audio" controls></audio>
+                </dd>
+            </dl>
+            <dl class="tab_panel">
+                <dt class="tab_panel_title">
+                    <label class="circle orange">轨</label>迹点
+                </dt>
+                <dd class="list_item" v-for="(item,index) in DetailInfo.GpsDisplayPoints" :key="index">
+                    <p><i class="icons"></i><span>{{item.COLLECTTIME.Date()}}</span></p>
+                    <p>{{item.ADDRESS}}</p>
+                    <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
+                </dd>
+            </dl>
+        </div>
+        <div v-if="DetailInfo.BaseInfo" class="backouter">
+            <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
+        </div>
+    </div>
 </div>
 <script>
     (function(){
+        var today = new Date();
         new Vue({
             el: '#vue_tab_attend',
             data: {
                 options: {},
-                year: 2017,
-                month: 9,
-                day: 16,
-                days: [
-                    { y: 2017, m: 9, d: 1 },
-                    { y: 2017, m: 9, d: 2 },
-                    { y: 2017, m: 9, d: 3 },
-                    { y: 2017, m: 9, d: 4 },
-                    { y: 2017, m: 9, d: 5 },
-                    { y: 2017, m: 9, d: 6 },
-                    { y: 2017, m: 9, d: 7 },
-                    { y: 2017, m: 9, d: 8 },
-                    { y: 2017, m: 9, d: 9 },
-                    { y: 2017, m: 9, d: 10 }
-                ],
-                weeks: [[0, '日'],[1, '一'],[2, '二'],[3, '三'],[4, '四'],[5, '五'],[6, '六']]
+                year: today.getFullYear(),
+                month: today.getMonth() + 1,
+                day: today.getDate(),
+                days: [],
+                weeks: [[0, '日'],[1, '一'],[2, '二'],[3, '三'],[4, '四'],[5, '五'],[6, '六']],
+                Linelists: [],
+                lineId: '',
+                DetailInfo: {
+                    BaseInfo: null,
+                    GpsDisplayPoints: [],
+                    GpsInfos: []
+                }
             },
             watch: {
                 month: function(v, o){
-                    if(v < 1) {
-                        this.month = 12;
-                        this.year -= 1;
-                    } else if (v > 12) {
-                        this.month = 1;
-                        this.year += 1;
-                    }
+                    this.creatMonth()
+                },
+                lineId: function(v){
+                    v && this.getInfo();
                 }
             },
             created: function () {
                 this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
-                if (this.options.userId) {
-                    this.getList();
-                } else {
-                    console.log('缺少必要的userId！');
-                }
                 this.creatMonth();
             },
             methods: {
-                creatMonth: function () {
-
+                setMonth: function(step) {
+                    var val = this.month + step;
+                    if(val < 1) {
+                        this.month = 12;
+                        this.year -= 1;
+                    } else if (val > 12) {
+                        this.month = 1;
+                        this.year += 1;
+                    } else {
+                        this.month = val;
+                    }
                 },
-                getList: function () {
+                creatMonth: function () {
+                    var self = this;
+                	var first = new Date(this.year, this.month - 1, 1);
+                    var last = new Date(this.year, this.month, 0);
+                    var bweek = first.getDay();
+                    var fweek = this.weeks[0][0];
+                    var before = fweek ? (bweek || 7) - 1 : bweek;
+                    var total = before + last.getDate();
+                    var after = 7 - (total % 7 || 7);
+                    var days = Array(total + after).join(',').split(',');
+                    this.days = days.map(function(item, idx){
+                        return (idx >= before && idx < total) ? {
+                            y: self.year, m: self.month, d: idx - before + 1, on: false
+                        } : {};
+                    });
+                    this.getDateList([this.year, this.month].join('/'));
+                },
+                selectDay: function(idx){
+                    var item = this.days[idx];
+                    this.getList([item.year, item.month, item.day].join('/'));
+                },
+                getList: function (time) {
+                    var self = this;
+                    $.get(QueryGPSInfo_Ctrl + 'GetUserContrailListToDay', {
+                        userId: '85da242c-b4c6-479d-91b9-ce0c03ebc420' || self.options.userId,
+                        time: time
+                    }).done(function (d) {
+                        self.Linelists = d || [];
+                    });
+                },
+                getDateList: function(month) {
                     var self = this;
                     $.get(QueryAttendance_Ctrl + 'GetAttendanceByMonth', {
-                        userId: self.options.userId,
-                        month: '2017/9'
+                        userId: '85da242c-b4c6-479d-91b9-ce0c03ebc420' || self.options.userId,
+                        month: month
                     }).done(function (d) {
-                        console.log('getattendbymonth:', d);
+                        console.log('GetAttendanceByMonth:', d);
+                        self.getList('2017-09-09');
                     });
+                },
+                getInfo: function(){
+                    var self = this;
+                    $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
+                        lineId: self.lineId
+                    }).done(function (info) {
+                        GIS$.DrawToMap('road', self.options, info);
+                        self.DetailInfo.GpsDisplayPoints = info.GpsDisplayPoints || [];
+                        self.DetailInfo.GpsInfos = info.GpsInfos || [];
+                    });
+                },
+                selectItem: function(item){
+                    this.lineId = item.LineId;
+                    this.DetailInfo.BaseInfo = item;
+                },
+                backList: function(){
+                    this.lineId = '';
+                    this.DetailInfo = {
+                        BaseInfo: {},
+                        GpsDisplayPoints: [],
+                        GpsInfos: []
+                    };
                 }
             }
         })

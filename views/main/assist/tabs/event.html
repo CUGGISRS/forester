@@ -3,7 +3,7 @@
         <dt class="tab_panel_title">
             <label class="circle red">报</label>警信息（48小时内）
         </dt>
-        <dd class="list_item_padding" v-for="(item,index) in AlarmInfoList" :key="index">
+        <dd class="list_item_padding" v-for="(item,index) in AlarmInfoList" @click="c119tomap(item)" :key="index">
             {{item.ALARMTIME.Date('yyyy-MM-dd hh:ss')}}（{{type119(item.ALARMTYPE)}}）
         </dd>
     </dl>
@@ -11,7 +11,7 @@
         <dt class="tab_panel_title">
             <label class="circle orange">热</label>点信息
         </dt>
-        <dd class="list_item_padding" v-for="(item,index) in HotList" :key="index">
+        <dd class="list_item_padding" v-for="(item,index) in HotList" @click="hottomap(item)" :key="index">
             <h3>{{item.LATITUDE}}</h3>
             <p>{{item.REPORT_TIME.Date('yyyy-MM-dd hh:ss')}}（{{item.HOTSPOT_SOURCE}}）</p>
         </dd>
@@ -23,9 +23,11 @@
             el: '#assist_tab_event',
             data: {
                 AlarmInfoList: [],
-                HotList: []
+                HotList: [],
+                options: {}
             },
             created: function () {
+                this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
                 this.getInfo();
             },
             methods: {
@@ -33,8 +35,7 @@
                     return TYPE119[i] || '其它'
                 },
                 getInfo: function () {
-                    var self = this;
-                    var options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
+                    var self = this, options = this.options;
                     if (!options.userId) return console.log('缺少必要的userId！');
                     //error，巡护区时，没有时间段
                     $.get(QueryAlrma_Ctrl + 'GetAlarmsByOrgan', {
@@ -52,6 +53,12 @@
                     }).done(function (d) {
                         self.HotList = d;
                     });
+                },
+                c119tomap: function(d){
+                    GIS$.DrawToMap('c119', this.options, d);
+                },
+                hottomap: function(d){
+                    GIS$.DrawToMap('hot', this.options, d);
                 }
             }
         })

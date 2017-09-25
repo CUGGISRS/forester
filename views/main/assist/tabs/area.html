@@ -29,7 +29,7 @@
                     </dt>
                     <dd>
                         <ul class="num">
-                            <li class="list_item" v-for="(item,index) in DetailInfo.PatrolPoints" :key="index">
+                            <li class="list_item" v-for="(item,index) in DetailInfo.PatrolPoints" @click="selectPoint(item)" :key="index">
                                 <p><span class="strong">{{item.POINTNAME}}</span>({{item.POINTNO}})</p>
                                 <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
                             </li>
@@ -103,6 +103,9 @@
                     selectItem: function(item){
                         this.areaId = item.ID;
                         this.DetailInfo.BaseInfo = item;
+                    },
+                    selectPoint: function(item){
+                        GIS$.DrawToMap('pointer', this.options, item);
                     },
                     backList: function(){
                         this.areaId = '';

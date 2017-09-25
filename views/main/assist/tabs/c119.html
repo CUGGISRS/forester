@@ -51,7 +51,8 @@
                     $.get(QueryAlrma_Ctrl + 'GetAlarmInfo', {
                         alarmId: self.options.c119Id
                     }).done(function (d) {
-                        self.attments = d || [];
+                        self.attments = d.Alarmattachments || [];
+                        GIS$.DrawToMap('c119', self.options, d.AlarmInfo);
                     });
                 }
             }

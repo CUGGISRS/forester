@@ -1,0 +1,78 @@
+<div id="vue-openlayer-tips">
+    <button class="panel absolute btnarea eye">
+        <i class="iconfont icon-yanjing"></i>
+    </button>
+    <button class="panel absolute btnarea info" @click="toggleRLT">
+        <i class="iconfont icon-info"></i>
+        <span class="num">3</span>
+    </button>
+    <div id="rltDiv" v-if="selected" class="absolute panel flex column">
+        <div class="title bbox flex acenter">
+            <span class="flex_1">24小时内报警（热点）数据</span>
+            <span class="tabs flex">
+                <label :class="{'selected': selected=='hot'}" @click="getSelected('hot')">热点</label>
+                <label :class="{'selected': selected=='c119'}" @click="getSelected('c119')">报警</label>
+            </span>
+            <button class="close"><i class="iconfont icon-x"></i></button>
+        </div>
+        <div class="flex_1 scroll results">
+            <table class="table">
+                <tr>
+                    <th>序号</th>
+                    <th>护林员</th>
+                    <th>类型</th>
+                    <th>时间</th>
+                    <th>经度</th>
+                    <th>纬度</th>
+                    <th>单位</th>
+                </tr>
+                <tr v-for="(item,index) in lists" :key="index">
+                    <td>{{item.HOTSPOT_ID}}</td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.HOTSPOT_SOURCE}}</td>
+                    <td>{{item.REPORT_TIME.Date('hh:mm')}}</td>
+                    <td>{{item.LONGITUDE}}</td>
+                    <td>{{item.LATITUDE}}</td>
+                    <td class="tleft">{{item.HOTSPOT_SITE}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var nav2Vue = new Vue({
+            el: '#vue-openlayer-tips',
+            data: {
+                selected: '',
+                lists: []
+            },
+            methods: {
+                toggleRLT: function(){
+                    this.selected = this.selected ? '' : 'hot';
+                    !this.lists.length && this.getSelected(this.selected);
+                },
+                getSelected: function (idx) {
+                    var self = this;
+                    this.selected = idx;
+                    idx == 'c119' && $.get(QueryAlrma_Ctrl + 'GetAlarmsByOrgan', {
+                        sTime: '2017-01-01',
+                        eTime: '2017-10-10',
+                        userId: ''
+                    }).done(function (d) {
+                        self.lists = d;
+                    });
+
+                    idx == 'hot' && $.get(QueryHotSpot_Ctrl + 'GetHotspotList', {
+                        sTime: '2017-01-01',
+                        eTime: '2017-10-10',
+                        organId: '2'
+                    }).done(function (d) {
+                        self.lists = d;
+                    });
+                }
+            }
+        });
+    })();
+</script>

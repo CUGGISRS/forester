@@ -205,7 +205,7 @@ var XHQMAPURLS = {
     "阳山县": "http://localhost/测试地图切片/PatrolArea_ysx",
     "兴宁市": "http://localhost/测试地图切片/PatrolArea_xns",//县级市
 };
-var BASEURL = "gis/js/Map";
+var BASEURL = "/gis/js/Map";
 
 var GIS$ = {};
 var hlyMap;

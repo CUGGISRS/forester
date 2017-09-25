@@ -61,6 +61,7 @@
                             hotspotId: self.options.hotId
                         }).done(function (d) {
                             self.detail = d || [];
+                            GIS$.DrawToMap('hot', self.options, d);
                         });
                     }
                 }
