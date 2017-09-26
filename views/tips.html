@@ -1,10 +1,7 @@
 <div id="vue-openlayer-tips">
-    <button class="panel absolute btnarea eye">
-        <i class="iconfont icon-yanjing"></i>
-    </button>
     <button class="panel absolute btnarea info" @click="toggleRLT">
         <i class="iconfont icon-info"></i>
-        <span class="num">3</span>
+        <span class="num" v-if="num">{{num}}</span>
     </button>
     <div id="rltDiv" v-if="selected" class="absolute panel flex column">
         <div class="title bbox flex acenter">
@@ -15,8 +12,9 @@
             </span>
             <button class="close"><i class="iconfont icon-x"></i></button>
         </div>
-        <div class="flex_1 scroll results">
-            <table class="table">
+        <div class="flex_1 scroll results relative">
+            <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
+            <table v-show="selected=='hot'" class="table">
                 <tr>
                     <th>序号</th>
                     <th>护林员</th>
@@ -26,14 +24,32 @@
                     <th>纬度</th>
                     <th>单位</th>
                 </tr>
-                <tr v-for="(item,index) in lists" :key="index">
+                <tr v-for="(item,index) in Hots" :key="index">
                     <td>{{item.HOTSPOT_ID}}</td>
-                    <td>{{item.id}}</td>
+                    <td>{{(item.LbsUserBaseInfo[0]||{}).USER_NAME}}</td>
                     <td>{{item.HOTSPOT_SOURCE}}</td>
                     <td>{{item.REPORT_TIME.Date('hh:mm')}}</td>
                     <td>{{item.LONGITUDE}}</td>
                     <td>{{item.LATITUDE}}</td>
                     <td class="tleft">{{item.HOTSPOT_SITE}}</td>
+                </tr>
+            </table>
+            <table v-show="selected=='c119'" class="table">
+                <tr>
+                    <th>护林员</th>
+                    <th>报警类型</th>
+                    <th>报警时间</th>
+                    <th>经度</th>
+                    <th>纬度</th>
+                    <th>单位</th>
+                </tr>
+                <tr v-for="(item,index) in C119s" :key="index">
+                    <td>{{item.LBSUSERINFO.USER_NAME}}</td>
+                    <td>{{type119(item.ALARMTYPE)}}</td>
+                    <td>{{item.ALARMTIME.Date('hh:mm')}}</td>
+                    <td>{{item.LONGITUDE}}</td>
+                    <td>{{item.LATITUDE}}</td>
+                    <td class="tleft">{{item.ORGAN_NAME}}</td>
                 </tr>
             </table>
         </div>
@@ -45,32 +61,48 @@
         var nav2Vue = new Vue({
             el: '#vue-openlayer-tips',
             data: {
+                loading: 0,
                 selected: '',
-                lists: []
+                num: 0,
+                Hots: [],
+                C119s: []
+            },
+            created: function () {
+                var self = this;
+                $.get(Home_Ctrl + 'GetHomeCount').done(function (d) {
+                    self.num = d;
+                });
             },
             methods: {
                 toggleRLT: function(){
                     this.selected = this.selected ? '' : 'hot';
-                    !this.lists.length && this.getSelected(this.selected);
+                    this.selected && this.getSelected(this.selected);
+                },
+                type119: function(i){
+                    return TYPE119[i] || '其它'
                 },
                 getSelected: function (idx) {
                     var self = this;
+                    if(idx == 'hot' && !this.Hots.length) {
+                        self.loading = 1;
+                        $.get(QueryHotSpot_Ctrl + 'GetHotspotList', {
+                            sTime: '2017-01-01',
+                            eTime: '2017-10-10'
+                        }).done(function (d) {
+                            self.Hots = d;
+                            self.loading = 2;
+                        });
+                    } else if(idx == 'c119' && !this.C119s.length) {
+                        self.loading = 1;
+                        $.get(QueryAlrma_Ctrl + 'GetAlarmsByOrgan', {
+                            sTime: '2017-01-01',
+                            eTime: '2017-10-10'
+                        }).done(function (d) {
+                            self.C119s = d;
+                            self.loading = 2;
+                        });
+                    }
                     this.selected = idx;
-                    idx == 'c119' && $.get(QueryAlrma_Ctrl + 'GetAlarmsByOrgan', {
-                        sTime: '2017-01-01',
-                        eTime: '2017-10-10',
-                        userId: ''
-                    }).done(function (d) {
-                        self.lists = d;
-                    });
-
-                    idx == 'hot' && $.get(QueryHotSpot_Ctrl + 'GetHotspotList', {
-                        sTime: '2017-01-01',
-                        eTime: '2017-10-10',
-                        organId: '2'
-                    }).done(function (d) {
-                        self.lists = d;
-                    });
                 }
             }
         });

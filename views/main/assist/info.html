@@ -4,7 +4,7 @@
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
     <div class="detail bbox flex acenter jcenter">
-        <div class="distrible flex_1" v-if="info.name">
+        <div class="distrible flex_1" v-if="info.kid == 'forester'">
             <p>{{ info.name }}</p>
             <p>{{ info.tel }}</p>
             <p>{{ info.address || '' }}</p>
@@ -20,6 +20,7 @@
             </p>
             <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
         </div>
+        
         <div class="distrible flex_1" v-else-if="info.kid == 'area'">
             <p>
                 <span>{{info.areaname}}（{{info.areacode}}）</span>
@@ -47,13 +48,13 @@
             </p>
             <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
         </div>
-        <div class="btnarea" :class="info.name ? 'aselfcenter' : 'aselfend'">
-            <p :style="!info.name? 'margin-bottom: 4px' : ''">
+        <div class="btnarea" :class="info.kid == 'forester' ? 'aselfcenter' : 'aselfend'">
+            <p :style="info.kid != 'forester' ? 'margin-bottom: 4px' : ''">
                 <i class="icons icon_31" @click="showDialog"></i>
                 <i class="icons icon_32" @click="showDialog"></i>
                 <i class="icons icon_33" @click="showDialog"></i>
             </p>
-            <p v-if="info.UserInfo">
+            <p v-if="info.kid == 'forester'">
                 <button>跟踪</button>
             </p>
         </div>
@@ -94,6 +95,7 @@
                 var info = JSON.parse(sessionStorage.getItem('_panel_info_') || '{}');
                 this.selected = 0;
                 if(info.UserInfo) {
+                    this.info.kid = 'forester';
                     this.info.name = info.UserInfo.USER_NAME;
                     this.info.tel = info.UserInfo.PHONE_NUM;
                     this.info.address = info.UserInfo.SNAME + info.UserInfo.XNAME;

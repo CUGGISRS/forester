@@ -57,6 +57,7 @@
             });
         });
     }
+    GIS$.getLineInfoAndShow = getLineInfoAndShow;
     
     function getAreaInfoAndShow(options, fn){
         $.get(ManagePatrol_Ctrl + 'GetPatrolAreaForEdit', {
@@ -80,6 +81,7 @@
             });
         });
     }
+    GIS$.getAreaInfoAndShow = getAreaInfoAndShow;
 
     function getC119InfoAndShow(options, fn){
         $.get(QueryAlrma_Ctrl + 'GetAlarmInfo', {
@@ -87,7 +89,7 @@
         }).done(function (data) {
             (typeof fn == 'function') && fn(data);
             //加载副面板
-            data.LbsUserBaseInfo = {};
+            data.AlarmInfo.LBSUSERINFO = data.AlarmInfo.LBSUSERINFO || {};
             Page.showInfo('c119', {
                 c119Id: options.c119Id,
                 userId: data.AlarmInfo.USER_ID
@@ -101,13 +103,14 @@
                     lat: data.AlarmInfo.LATITUDE,
                     lon: data.AlarmInfo.LONGITUDE,
                     conent: data.AlarmInfo.DESCRIPTION,
-                    userName: data.LbsUserBaseInfo.USER_NAME,
-                    tel: data.LbsUserBaseInfo.PHONE_NUM,
+                    userName: data.AlarmInfo.LBSUSERINFO.USER_NAME,
+                    tel: data.AlarmInfo.LBSUSERINFO.PHONE_NUM,
                     userId: data.AlarmInfo.USER_ID
                 }
             });
         });
     }
+    GIS$.getC119InfoAndShow = getC119InfoAndShow;
     
     function getHotInfoAndShow(options, fn){
         $.get(QueryHotSpot_Ctrl + 'GetHotspotById', {
@@ -117,7 +120,7 @@
             //加载副面板
             Page.showInfo('hot', {
                 hotId: options.hotId,
-                userId: data.LBSUSERINFO.ID
+                userId: data.LBSUSERINFO[0].ID
             }, {
                 HotInfo: {
                     kid: 'hot',
@@ -127,13 +130,14 @@
                     organ: data.HOTSPOT_SITE,
                     lat: data.LATITUDE,
                     lon: data.LONGITUDE,
-                    userName: data.LBSUSERINFO.USER_NAME,
-                    tel: data.LBSUSERINFO.PHONE_NUM,
-                    userId: data.LBSUSERINFO.ID
+                    userName: data.LBSUSERINFO[0].USER_NAME,
+                    tel: data.LBSUSERINFO[0].PHONE_NUM,
+                    userId: data.LBSUSERINFO[0].ID
                 }
             });
         });
     }
+    GIS$.getHotInfoAndShow = getHotInfoAndShow;
     /**
      * 绘制路径
      */

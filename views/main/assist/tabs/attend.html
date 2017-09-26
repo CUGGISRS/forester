@@ -10,54 +10,20 @@
                 <span class="colum" v-for="i in 7" :key="i">{{weeks[i - 1][1]}}</span>
             </dd>
             <dd class="flex tbody wrap columns7">
-                <span class="colum" v-for="(d, idx) in days" :key="idx" @click="selectDay(idx)" :class="{'on': d.on, 'day': d.d, 'selected': d.d == day}">{{ d.d }}</span>
+                <span class="colum" v-for="(d, idx) in days" :key="idx" @click="selectDay(idx)" :class="{'on': d.on, 'day': d.d, 'selected': d.d == day && d.on}">{{ d.d }}</span>
             </dd>
         </dl>
-        <dl class="tab_panel h100 scroll" :class="{'noresult': !Linelists.length}">
+        <dl class="tab_panel" :class="{'noresult': !Linelists.length}" style="min-height: 100%;">
             <dt class="tab_panel_title">
                 <label class="circle orange">考</label>勤信息
             </dt>
-            <dd class="list_item" v-for="(item,index) in Linelists" :key="index" @click="selectItem(item)">
+            <dd class="list_item cursor" v-for="(item,index) in Linelists" :key="index" @click="selectItem(item)">
                 <p class="strong">{{item.LbsUserBaseInfo.USER_NAME}}</p>
                 <p>{{item.StartTime}}</p>
                 <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
             </dd>
         </dl>
     </template>
-    <div v-if="lineId" class="flex column h100 scroll">
-        <div class="flex_1 scroll">
-            <dl class="tab_panel" v-if="DetailInfo.BaseInfo">
-                <dt class="tab_panel_title">
-                    <label class="circle blue">基</label>本信息
-                </dt>
-                <dd class="list_item">
-                    <p>{{DetailInfo.BaseInfo.StartTime}}</p>
-                    <p>{{DetailInfo.BaseInfo.TimeLength}}小时&emsp;{{DetailInfo.BaseInfo.Distance}}公里</p>
-                </dd>
-            </dl>
-            <dl class="tab_panel">
-                <dt class="tab_panel_title">
-                    <label class="circle green">轨</label>迹播放
-                </dt>
-                <dd class="list_item">
-                    <audio class="audio" controls></audio>
-                </dd>
-            </dl>
-            <dl class="tab_panel">
-                <dt class="tab_panel_title">
-                    <label class="circle orange">轨</label>迹点
-                </dt>
-                <dd class="list_item" v-for="(item,index) in DetailInfo.GpsDisplayPoints" :key="index">
-                    <p><i class="icons"></i><span>{{item.COLLECTTIME.Date()}}</span></p>
-                    <p>{{item.ADDRESS}}</p>
-                    <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
-                </dd>
-            </dl>
-        </div>
-        <div v-if="DetailInfo.BaseInfo" class="backouter">
-            <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
-        </div>
-    </div>
     <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
 </div>
 <script>
@@ -70,7 +36,7 @@
                 options: {},
                 year: today.getFullYear(),
                 month: today.getMonth() + 1,
-                day: today.getDate(),
+                day: 0,
                 days: [],
                 weeks: [[0, '日'],[1, '一'],[2, '二'],[3, '三'],[4, '四'],[5, '五'],[6, '六']],
                 Linelists: [],
@@ -125,13 +91,14 @@
                 },
                 selectDay: function(idx){
                     var item = this.days[idx];
-                    this.getList([item.year, item.month, item.day].join('/'));
+                    this.getList([item.y, item.m, item.d].join('/'));
+                    this.day = item.d;
                 },
                 getList: function (time) {
                     var self = this;
                     self.loading = 1;
                     $.get(QueryGPSInfo_Ctrl + 'GetUserContrailListToDay', {
-                        userId: '85da242c-b4c6-479d-91b9-ce0c03ebc420' || self.options.userId,
+                        userId: self.options.userId,
                         time: time
                     }).done(function (d) {
                         self.Linelists = d || [];
@@ -141,12 +108,19 @@
                 getDateList: function(month) {
                     var self = this;
                     self.loading = 1;
+                    self.day = 0;
                     $.get(QueryAttendance_Ctrl + 'GetAttendanceByMonth', {
-                        userId: '85da242c-b4c6-479d-91b9-ce0c03ebc420' || self.options.userId,
+                        userId: self.options.userId,
                         month: month
-                    }).done(function (d) {
-                        console.log('GetAttendanceByMonth:', d);
-                        self.getList('2017-09-09');
+                    }).done(function (data) {
+                        data.length && self.days.forEach(function(d) {
+                            data.forEach(function(i) {
+                                var arr = i.KQ_TIME.Date().split('-');
+                                if(d.y == parseInt(arr[0], 10) && d.m == parseInt(arr[1], 10) && d.d == parseInt(arr[2], 10)){
+                                    d.on = true;
+                                }
+                            }, this);
+                        }, this);
                         self.loading = 2;
                     });
                 },

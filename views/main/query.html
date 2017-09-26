@@ -1,6 +1,6 @@
 <div id="vue-querywhere" class="flex column h100 querywhere">
     <div class="title bbox flex acenter">
-        <i class="icons"></i>
+        <i class="icons" :class="pageClsName"></i>
         <span class="flex_1">{{pageName}}查询</span>
         <button class="close"><i class="iconfont icon-x"></i></button>
     </div>
@@ -93,9 +93,9 @@
             <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="filterAttend(0)">按日期排序</span>
             <span class="flex_1" :class="{'selected': tabIdx == 1}" @click="filterAttend(1)">按人名排序</span>
         </div>
-        <dl class="flex_1 scroll resultContext" :class="{'liketable': pageId == 'attend', 'noresult': !results.length}">
+        <dl class="flex_1 scroll resultContext" :class="{'liketable': pageId == 'attend', 'noresult': !results.length && loading == 2}">
             <dt class="tcenter" v-if="loading == 1"><i class="loading"></i></dt>
-            <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :id="pageId + '_' + index" :class="{'selected': index==resultsIdx}">
+            <dd v-for="(item,index) in results" class="cursor" :key="index" @click="selectItem(index)" :id="pageId + '_' + index" :class="{'selected': index==resultsIdx}">
                 <template v-if="pageId == 'road'">
                     <h3 class="whitespace">{{item.LbsUserBaseInfo.USER_NAME}}</h3>
                     <p>{{item.StartTime}}</p>
@@ -128,7 +128,7 @@
                             <div v-if="r.State == '1'" class="th flex_1">
                                 <p>{{r.TimeLength}}小时&emsp;{{r.Distance}}km</p>
                                 <p>
-                                    <button v-for="(line, idx) in r.LinesInfos" @click.prevent="selectLineTime(index, ridx, idx)" class="linebtn">{{line.StartTime}}</button>
+                                    <button class="cursor linebtn" v-for="(line, idx) in r.LinesInfos" @click.prevent="selectLineTime(index, ridx, idx)">{{line.StartTime}}</button>
                                 </p>
                             </div>
                             <div v-else class="th flex_1">
@@ -180,7 +180,8 @@
                     type119: TYPE119
                 },
                 pageId: pageId,
-                pageName: _2_nav_selected.name
+                pageName: _2_nav_selected.name,
+                pageClsName: _2_nav_selected.clsName
             },
             watch: {
                 'form.province': function (v) {
@@ -350,53 +351,13 @@
                     var data = this.results[idx];
                     switch(this.pageId) {
                         case 'road':
-                            this.showLineMap(data.LineId, {
-                                kid: 'road',
-                                date: data.StartTime,
-                                time: data.StartTime.split(' ')[1],
-                                hour: data.TimeLength,
-                                km: data.Distance,
-                                userName: data.LbsUserBaseInfo.USER_NAME,
-                                tel: data.LbsUserBaseInfo.PHONE_NUM,
-                                userId: data.LbsUserBaseInfo.ID
-                            }); break;
+                            GIS$.getLineInfoAndShow({ lineId: data.LineId });break;
                         case 'area':
-                            this.showAreaMap(data.ID, {
-                                kid: 'area',
-                                areaname: data.AreaName,
-                                areacode: data.BH,
-                                area: data.Area,
-                                userName: data.UserName,
-                                tel: data.PhoneNum,
-                                userId: data.UserId
-                            }); break;
+                            GIS$.getAreaInfoAndShow({ areaId: data.ID });break;
                         case 'c119':
-                            this.showC119Map(data.ID, {
-                                kid: 'c119',
-                                alarmname: this.type119(data.ALARMTYPE),
-                                alarmcode: data.ALARMTYPE,
-                                date: data.ALARMTIME.Date('yyyy-MM-dd hh:mm'),
-                                organ: data.AlarmOrgan,
-                                lat: data.LATITUDE,
-                                lon: data.LONGITUDE,
-                                conent: data.DESCRIPTION,
-                                userName: data.LbsUserBaseInfo.USER_NAME,
-                                tel: data.LbsUserBaseInfo.PHONE_NUM,
-                                userId: data.USER_ID
-                            }); break;
+                            GIS$.getC119InfoAndShow({ c119Id: data.ID });break;
                         case 'hot':
-                            this.showHotMap(data.HOTSPOT_ID, {
-                                kid: 'hot',
-                                hotname: data.HOTSPOT_NO,
-                                hotsource: data.HOTSPOT_SOURCE,
-                                date: data.REPORT_TIME.Date('yyyy-MM-dd hh:mm'),
-                                organ: data.HOTSPOT_SITE,
-                                lat: data.LATITUDE,
-                                lon: data.LONGITUDE,
-                                userName: data.LbsUserBaseInfo.USER_NAME,
-                                tel: data.LbsUserBaseInfo.PHONE_NUM,
-                                userId: data.USER_ID
-                            }); break;
+                            GIS$.getHotInfoAndShow({ hotId: data.HOTSPOT_ID });break;
                         case 'attend':
                             this.tabIdx ? this.selectAttendUser(data, idx) : this.selectAttendTime(data, idx); break;
                     }
@@ -405,16 +366,7 @@
                     var data = this.results[index];
                     var record = data.records[ridx];
                     var line = record.LinesInfos[idx];
-                    this.showLineMap(line.LineId, {
-                        kid: 'road',
-                        date: this.tabIdx ? record.AttendanceTimeOrName : data.AttendanceTimeOrName,
-                        time: line.StartTime,
-                        hour: record.TimeLength,
-                        km: record.Distance,
-                        userName: !this.tabIdx ? record.AttendanceTimeOrName : data.AttendanceTimeOrName,
-                        tel: record.PhoneNum,
-                        userId: record.UserId
-                    });
+                    GIS$.getLineInfoAndShow({ lineId: line.LineId });
                 },
                 selectAttendTime: function (data, idx) {
                     var self = this;
@@ -439,38 +391,6 @@
                         self.$nextTick(function () {
                             document.getElementById(self.pageId + '_' + idx).scrollIntoView();
                         })
-                    });
-                },
-                showLineMap: function(lineId, lineinfo) {
-                    //显示副面板信息
-                    Page.showInfo('road', { 
-                        lineId: lineId, userId: lineinfo.userId 
-                    }, {
-                        LineInfo: lineinfo
-                    });
-                },
-                showAreaMap: function(areaId, areainfo) {
-                    //显示副面板信息
-                    Page.showInfo('area', { 
-                        areaId: areaId, userId: areainfo.userId 
-                    }, {
-                        AreaInfo: areainfo
-                    });
-                },
-                showC119Map: function(c119Id, c119info) {
-                    //显示副面板信息
-                    Page.showInfo('c119', { 
-                        c119Id: c119Id, userId: c119info.userId 
-                    }, {
-                        C119Info: c119info
-                    });
-                },
-                showHotMap: function(hotId, hotinfo) {
-                    //显示副面板信息
-                    Page.showInfo('hot', { 
-                        hotId: hotId, userId: hotinfo.userId 
-                    }, {
-                        HotInfo: hotinfo
                     });
                 },
                 backList: function () {

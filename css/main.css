@@ -64,6 +64,9 @@ body {
 .icon_24 {
   background-position: -160px -40px;
 }
+.icon_25 {
+  background-position: -240px -40px;
+}
 .icon_30 {
   background-position: 0 -80px;
 }
@@ -164,9 +167,6 @@ body {
   background-position: -160px -80px;
 }
 .selected .icon_60 {
-  background-position: -100px -160px;
-}
-.selected .icon_61 {
   background-position: -120px -160px;
 }
 .selected .icon_62 {
@@ -200,13 +200,19 @@ body {
   background-position: -40px -100px;
 }
 i.loading {
-  display: inline-block; width:32px; height: 32px; margin: auto;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin: auto;
   background: url(../img/load.gif) no-repeat center center;
 }
-.fullload{
+.fullload {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(255, 255, 255 ,.5);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -244,6 +250,9 @@ i.loading {
   -webkit-transform: rotate(-45deg);
   -ms-transform: rotate(-45deg);
   transform: rotate(-45deg);
+}
+.cursor {
+  cursor: pointer;
 }
 .l-tree-nolines .l-line,
 .l-tree-nolines .l-note,
@@ -309,7 +318,7 @@ i.loading {
   display: inline-block;
   vertical-align: middle;
 }
-#secondMenu dd.selected:after {
+#secondMenu dd.curred:after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -354,7 +363,6 @@ i.loading {
 .panel .title .icons {
   margin-right: 3px;
   width: 18px;
-  background-position: 0 0;
   zoom: .85;
 }
 #mainPanel {
@@ -710,7 +718,7 @@ i.loading {
   text-align: center;
 }
 #openlayerBtns .layersDiv dl {
-  margin: 0 1em;
+  margin: 0 .5em;
 }
 #openlayerBtns .layersDiv dt {
   border-bottom: 1px solid #eee;
@@ -800,6 +808,9 @@ i.loading {
   align-self: center;
   padding-left: 1em;
 }
+#assistPanel .detail .distrible p {
+  white-space: nowrap;
+}
 #assistPanel .detail .btnarea {
   width: 38%;
   text-align: center;
@@ -881,6 +892,7 @@ i.loading {
   position: absolute;
   top: 0;
   left: 0;
+  font-size: 0;
   width: -webkit-calc(100% + 1.5em + 8px);
   width: calc(100% + 1.5em + 8px);
   left: -webkit-calc(0px - 1.5em - 8px);
@@ -894,9 +906,12 @@ i.loading {
   width: -webkit-calc(100% + 1.5em);
   width: calc(100% + 1.5em);
 }
-#assistPanel .tabdetail .list_item .icons {
+#assistPanel .tabdetail .list_item .icons,
+#assistPanel .tabdetail .list_item .icon-dingwei {
   position: absolute;
   left: -24px;
+  color: #F54336;
+  font-size: 20px;
 }
 #assistPanel .tabdetail ul.num li {
   list-style: decimal outside;
@@ -937,8 +952,10 @@ i.loading {
 #assistPanel .tabdetail .columns2 .colum {
   width: 45%;
   margin: 1em 0;
+  color: #666;
   background: #eee;
   height: 5em;
+  overflow: hidden;
   position: relative;
   border-radius: 3px;
 }
@@ -958,6 +975,11 @@ i.loading {
   line-height: 3;
   border-radius: 3px;
 }
+#assistPanel .tabdetail .columns2 .colum img:hover {
+  -webkit-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  transform: scale(1.1);
+}
 #assistPanel .tabdetail .backouter {
   padding: 6px;
   border-top: 1px solid #eee;
@@ -975,6 +997,7 @@ i.loading {
 }
 .datetimes .thead button {
   border: 0;
+  cursor: pointer;
   background: transparent;
   padding: 0 1em;
 }
@@ -1000,12 +1023,13 @@ i.loading {
   color: #3997D6;
 }
 .datetimes .tbody .day {
-  color: #888;
-  border: 1px solid #f1f1f1;
+  color: #aaa;
+  border: 1px solid #f7f7f7;
 }
 .datetimes .tbody .on {
   color: #333;
-  border: 1px solid #eee;
+  border: 1px solid #777;
+  cursor: pointer;
 }
 .datetimes .tbody .selected {
   color: #fff;

@@ -18,15 +18,15 @@
             {{info.conent}}
         </dd>
         <dd class="list_item_padding flex wrap columns2">
-            <span class="colum" v-for="(item,index) in attments" :key="index">
+            <a class="colum" target="_blank" :href="Img(item.URL)" v-for="(item,index) in attments" :key="index">
                 <template v-if="item.FILE_TYPE=='1'">
-                    <img :src="item.FILE_PATH" class="w100 imgcover" alt="">
+                    <img :src="Img(item.URL)" class="w100 imgcover" alt="">
                     <i class="iconfont icon-fangda absolute bottom right"></i>
                 </template>
                 <template v-else>
                     <i class="iconfont absolute bottom right placeholder" :class="item.FILE_TYPE=='2' ? 'icon-shipin' : 'icon-yinle1'"></i>
                 </template>
-            </span>
+            </a>
         </dd>
     </dl>
     <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
@@ -58,6 +58,9 @@
                         GIS$.DrawToMap('c119', self.options, d.AlarmInfo);
                         self.loading = 2;
                     });
+                },
+                Img: function(id){
+                    return FILEURL + id;
                 }
             }
         })

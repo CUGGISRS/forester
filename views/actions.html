@@ -1,7 +1,7 @@
 <div id="vue-actions" class="outer flex">
     <div class="single">
         <div class="block">
-            <button class="item" @click="taggleBtn(0)">
+            <button class="item cursor" @click="taggleBtn(0)" :class="{'selected': selected==0}">
                 <i class="icons icon_60"></i>
             </button>
         </div>
@@ -12,13 +12,13 @@
                 <button class="item" @click="taggleBtn(1)">
                     <i class="icons icon_61"></i> 广东省
                 </button>
-                <button class="item" @click="taggleBtn(2)" :class="{'selected': selected==2}">
+                <button class="item cursor" @click="taggleBtn(2)" :class="{'selected': selected==2}">
                     <i class="icons icon_62"></i> 定位
                 </button>
-                <button class="item" @click="taggleBtn(3)" :class="{'selected': selected==3}">
+                <button class="item cursor" @click="taggleBtn(3)" :class="{'selected': selected==3}">
                     <i class="icons icon_63"></i> 图层
                 </button>
-                <button v-if="layerModal == '2d'" class="item" @click="taggleBtn(4)" :class="{'selected': selected==4}">
+                <button v-if="layerModal == '2d'" class="item cursor" @click="taggleBtn(4)" :class="{'selected': selected==4}">
                     <i class="icons icon_64"></i> 工具
                     <dl class="toolDiv absolute bottom left w100 bbox bgfff" v-if="selected==4">
                         <dd v-for="(item,index) in tools" @click="toolsManger(item)">
@@ -26,7 +26,7 @@
                         </dd>
                     </dl>
                 </button>
-                <button class="item" @click="taggleBtn(5)" :class="{'selected': selected==5}">
+                <button class="item cursor" @click="taggleBtn(5)" :class="{'selected': selected==5}">
                     <i class="icons icon_65"></i> 全屏
                 </button>
             </div>
@@ -99,9 +99,8 @@
             </form>
             <div v-if="selected==3" class="tabs_panel layersDiv">
                 <dl>
-                    <dt class="flex acenter" @click="expandDD(0)">
+                    <dt class="flex acenter">
                         <span class="flex_1">地图模式</span>
-                        <i class="iconfont" :class="layersDetail[0] ? 'icon-less' : 'icon-moreunfold'"></i>
                     </dt>
                     <dd class="flex" v-show="layersDetail[0]">
                         <span class="modal_item" @click="layerManger('2d')" :class="{'selected': layerModal=='2d'}">
@@ -115,9 +114,8 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt class="flex acenter" @click="expandDD(1)">
+                    <dt class="flex acenter">
                         <span class="flex_1">森林资源</span>
-                        <i class="iconfont" :class="layersDetail[1] ? 'icon-less' : 'icon-moreunfold'"></i>
                     </dt>
                     <dd class="flex wrap layermanger" v-show="layersDetail[1]">
                         <label class="whitespace" v-for="(item,index) in layers[0]" :key="index">
@@ -131,9 +129,8 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt class="flex acenter" @click="expandDD(2)">
+                    <dt class="flex acenter">
                         <span class="flex_1">防火专题</span>
-                        <i class="iconfont" :class="layersDetail[2] ? 'icon-less' : 'icon-moreunfold'"></i>
                     </dt>
                     <dd class="flex wrap layermanger" v-show="layersDetail[2]">
                         <label class="whitespace" v-for="(item,index) in layers[1]" :key="index">

@@ -206,6 +206,7 @@ var XHQMAPURLS = {
     "兴宁市": "http://localhost/测试地图切片/PatrolArea_xns",//县级市
 };
 var BASEURL = "/gis/js/Map";
+var FILEURL = 'http://120.197.61.115:8081/GDHLYMobileServer/GetAlarmFile/';
 
 var GIS$ = {};
 var hlyMap;

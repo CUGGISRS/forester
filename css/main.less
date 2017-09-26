@@ -25,6 +25,7 @@ body{
 .icon_22{ background-position: -80px -40px; }
 .icon_23{ background-position: -120px -40px; }
 .icon_24{ background-position: -160px -40px; }
+.icon_25{ background-position: -240px -40px; }
 .icon_30{ background-position: 0 -80px; }
 .icon_31{ background-position: -20px -80px; }
 .icon_32{ background-position: -40px -80px; }
@@ -64,8 +65,8 @@ body{
     .icon_07{background-position: -140px -80px;}
     .icon_39{background-position: -160px -80px;}
 
-    .icon_60{ background-position: -100px -160px;}
-    .icon_61{ background-position: -120px -160px;}
+    .icon_60{ background-position: -120px -160px;}
+    
     .icon_62{ background-position: -140px -160px;}
     .icon_63{ background-position: -160px -160px;}
     .icon_64{ background-position: -180px -160px;}
@@ -134,6 +135,9 @@ i.loading{
     }
 }
 
+.cursor{
+    cursor: pointer;
+}
 .l-tree-nolines{
     .l-line, .l-note, .l-note-last{
         background-position: 1000px 1000px ;
@@ -182,7 +186,7 @@ i.loading{
     dd{
         position: relative; padding: 5px 7px; cursor: pointer;
         display: inline-block; vertical-align: middle; 
-        &.selected:after{
+        &.curred:after{
             content: "";
             position: absolute;
             bottom: 0; left: 0;
@@ -224,7 +228,7 @@ i.loading{
         border-bottom: 1px solid #E5E4E9;
         .icons{
             margin-right: 3px; width: 18px;
-            background-position: 0 0;zoom: .85;
+            zoom: .85;
         }
     }
 }
@@ -542,7 +546,7 @@ i.loading{
             text-align: center;
         }
         dl{
-            margin: 0 1em;
+            margin: 0 .5em;
         }
         dt{
             border-bottom: 1px solid #eee;
@@ -627,6 +631,9 @@ i.loading{
                 -ms-flex-item-align: center;
                     align-self: center;
             padding-left: 1em;
+            p{
+                white-space: nowrap;
+            }
         }
         .btnarea{
             width: 38%;
@@ -696,7 +703,7 @@ i.loading{
                 &:after{
                     content: "";
                     position: absolute;
-                    top: 0; left: 0; 
+                    top: 0; left: 0; font-size: 0;
                     width: -webkit-calc(~"100% + 1.5em + 8px"); 
                     width: calc(~"100% + 1.5em + 8px");
                     left: -webkit-calc(~"0px - 1.5em - 8px");
@@ -711,9 +718,9 @@ i.loading{
                 width: -webkit-calc(~"100% + 1.5em");
                 width: calc(~"100% + 1.5em");
             }
-            .icons{
+            .icons, .icon-dingwei{
                 position: absolute;
-                left: -24px;
+                left: -24px; color: #F54336; font-size: 20px;
             }
         }
         ul.num{
@@ -753,8 +760,8 @@ i.loading{
         }
         .columns2{
             .colum{
-                width: 45%; margin: 1em 0;
-                background: #eee; height: 5em;
+                width: 45%; margin: 1em 0; color: #666;
+                background: #eee; height: 5em; overflow: hidden;
                 position: relative; border-radius: 3px;
                 &:nth-child(2n){
                     margin-left: 10%;
@@ -767,6 +774,11 @@ i.loading{
                     background: #2E2E2E; color: #fff;
                     font-size: 24px;
                     line-height: 3; border-radius: 3px;
+                }
+                img:hover{
+                    -webkit-transform: scale(1.1);
+                        -ms-transform: scale(1.1);
+                            transform: scale(1.1);
                 }
             }
         }
@@ -785,6 +797,7 @@ i.loading{
         border-bottom: 1px solid #eee;
         button{
             border:0;
+            cursor: pointer;
             background: transparent; padding: 0 1em;
         }
         .currdate{
@@ -807,12 +820,13 @@ i.loading{
     .header{color: #3997D6;}
     .tbody{
         .day{ 
-            color: #888; 
-            border: 1px solid #f1f1f1;
+            color: #aaa; 
+            border: 1px solid #f7f7f7;
         }
         .on{
             color: #333; 
-            border: 1px solid #eee;
+            border: 1px solid #777;
+            cursor: pointer;
         }
         .selected{
             color:#fff;

@@ -1,7 +1,7 @@
 <div class="flex column h100">
         <header id="secondMenu">
             <dl>
-                <dd v-for="(item,index) in menus" @click="selectMenu(item.id)" :key="item.id" :class="{'selected': selected == item.id}">
+                <dd v-for="(item,index) in menus" @click="selectMenu(item.id)" :key="item.id" :class="{'curred': selected == item.id}">
                     <i class="icons" :class="item.clsName"></i>{{item.name}}
                 </dd>
             </dl>
@@ -23,26 +23,6 @@
                     menus: SECONDMENUS,
                     selected: ''
                 },
-                watch: {
-                    selected: function(val, o) {
-                        var self = this, targetId;
-                        var item = this.menus.filter(function(item){
-                            return item.id == val;
-                        })[0];
-                        if(!item) return;
-                        //离开时清除原有专题
-                        Page.destroyed && (Page.destroyed(), Page.destroyed = null);
-                        sessionStorage.setItem('_2_nav_selected_', val);
-                        //清除不同面板下副面板的选中项
-                        sessionStorage.removeItem('_panel_nav_selected_');
-                        targetId = 'mainPanel_item_' + item.id;
-                        if (!item.cached) {
-                            item.cached = true;
-                            $('#mainPanel').append($('<div id="'+ targetId +'" class="h100 w100 hidden"></div>').load(item.link));
-                        }
-                        $('#mainPanel').fadeIn(400).find('#' + targetId).show().siblings().hide();
-                    }
-                },
                 created: function () {
                     $('#openlayerBtns').load('views/actions.html');
                     $('#openlayerFrame').on('click', '.panel .close', function(){
@@ -61,11 +41,27 @@
                     $('#openlayerTips').load('views/tips.html');
                 },
                 mounted: function () {
-                    this.selectMenu(sessionStorage.getItem('_2_nav_selected_') || 'forester');
+                    //this.selectMenu(sessionStorage.getItem('_2_nav_selected_') || 'forester');
                 },
                 methods: {
-                    selectMenu: function(idx) {
-                        this.selected = idx;
+                    selectMenu: function(val) {
+                        this.selected = val;
+                        var self = this, targetId;
+                        var item = this.menus.filter(function(item){
+                            return item.id == val;
+                        })[0];
+                        if(!item) return;
+                        //离开时清除原有专题
+                        Page.destroyed && (Page.destroyed(), Page.destroyed = null);
+                        sessionStorage.setItem('_2_nav_selected_', val);
+                        //清除不同面板下副面板的选中项
+                        sessionStorage.removeItem('_panel_nav_selected_');
+                        targetId = 'mainPanel_item_' + item.id;
+                        if (!item.cached) {
+                            item.cached = true;
+                            $('#mainPanel').append($('<div id="'+ targetId +'" class="h100 w100 hidden"></div>').load(item.link));
+                        }
+                        $('#mainPanel').fadeIn(400).find('#' + targetId).show().siblings().hide();
                     }
                 }
             });
