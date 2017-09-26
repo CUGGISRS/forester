@@ -73,11 +73,6 @@
                         userId: data.ID,
                         isOnline: data.IsOnline
                     });
-                },
-                selectDepartArea: function(options){
-                    $.get(Home_Ctrl + 'GetOrganGeometry', options).done(function (d) {
-                        GIS$.jumpToUnitZone(d);
-                    });
                 }
             }
         });
@@ -125,9 +120,7 @@
                             });
                         });
                     } else {
-                        self.selectDepartArea({
-                            organId: data.OrganID
-                        });
+                        GIS$.getDistLineAndToShow(data.OrganID);
                         sessionStorage.setItem('_panel_main_options_', JSON.stringify(data));
                         //加载副面板
                         Page.Actions.loadPanel(true);

@@ -1,4 +1,4 @@
-<div id="assist_tab_road" class="h100">
+<div id="assist_tab_road" class="h100 relative">
     <dl v-show="!lineId" class="tab_panel h100 scroll">
         <dt class="tab_panel_title">
             <label class="circle orange">近</label>三天轨迹
@@ -43,12 +43,14 @@
             <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
         </div>
     </div>
+    <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
 </div>
 <script>
     (function(){
         new Vue({
             el: '#assist_tab_road',
             data: {
+                loading: 0,
                 lists: [],
                 options: {},
                 lineId: '',
@@ -58,39 +60,37 @@
                     GpsInfos: []
                 }
             },
-            watch: {
-                lineId: function(v){
-                    v && this.getInfo();
-                }
-            },
             created: function () {
                 this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
                 if (this.options.lineId) {
-                    this.lineId = this.options.lineId;
-                } else if (this.options.userId) {
-                    this.getList();
+                    this.getInfo(this.options.lineId)
                 } else {
-                    console.log('缺少必要的userId！');
+                    this.getList();
                 }
             },
             methods: {
                 getList: function () {
                     var self = this;
                     //近三天的轨迹
+                    self.loading = 1;
                     $.get(QueryGPSInfo_Ctrl + 'GetUserContrailList', {
                         sTime: '2017-01-01',
                         eTime: '2017-10-10',
                         userId: self.options.userId
                     }).done(function (d) {
                         self.lists = d || [];
+                        self.loading = 2;
                     });
                 },
-                getInfo: function(){
+                getInfo: function(lineId){
                     var self = this;
+                    self.loading = 1;
+                    self.lineId = lineId;
                     $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
-                        lineId: self.lineId
+                        lineId: lineId
                     }).done(function (d) {
                         self.setInfo(d);
+                        self.loading = 2;
                     });
                 },
                 setInfo: function(info) {
@@ -104,7 +104,7 @@
                     }, this.DetailInfo.BaseInfo));
                 },
                 selectItem: function(item){
-                    this.lineId = item.LineId;
+                    this.getInfo(item.LineId)
                     this.DetailInfo.BaseInfo = item;
                 },
                 backList: function(){

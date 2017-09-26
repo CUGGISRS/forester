@@ -1,70 +1,74 @@
-<div id="assist_tab_hot">
-        <dl class="tab_panel">
-            <dt class="tab_panel_title">
-                <label class="circle blue">定</label>位信息
-            </dt>
-            <dd class="list_item_padding">
-                {{detail.HOTSPOT_SITE}}
-            </dd>
-            <dd class="list_item_padding">
-                E{{detail.LONGITUDE}}&emsp; N{{detail.LATITUDE}}
-            </dd>
-        </dl>
-        <dl class="tab_panel">
-            <dt class="tab_panel_title">
-                <label class="circle green">详</label>细信息
-            </dt>
-            <dd class="list_item_padding">
-               面积： {{detail.FIRE_AREA}}像素（烟云{{detail.SMOKE_FLAG}}）
-            </dd>
-            <dd class="list_item_padding">
-               是否连续： {{detail.CONTINUE_FLAG}}
-            </dd>
-            <dd class="list_item_padding">
-               地类： {{detail.SITE_TYPE}}
-            </dd>
-            <dd class="list_item_padding">
-               接收时间： {{(detail.RECIVE_TIME||'').Date('yyyy-MM-dd hh:mm')}}
-            </dd>
-            <dd class="list_item_padding">
-               上报时间： {{(detail.REPORT_TIME||'').Date('yyyy-MM-dd hh:mm')}}
-            </dd>
-            <dd class="list_item_padding">
-               推送时间： {{(detail.PUSH_TIME||'').Date('yyyy-MM-dd hh:mm')}}
-            </dd>
-        </dl>
-        <dl class="tab_panel">
-            <dt class="tab_panel_title">
-                <label class="circle orange">监</label>测图像
-            </dt>
-            <dd class="list_item_padding" v-if="detail.IMAGEURL">
-                <a :href="detail.IMAGEURL" style="color:#3997D6;" target="_blank">监测图像</a>
-            </dd>
-        </dl>
-    </div>
-    <script>
-        (function () {
-            new Vue({
-                el: '#assist_tab_hot',
-                data: {
-                    detail: {}
-                },
-                created: function () {
-                    this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
-                    //获取附件
-                    this.getList();
-                },
-                methods: {
-                    getList: function () {
-                        var self = this;
-                        $.get(QueryHotSpot_Ctrl + 'GetHotspotById', {
-                            hotspotId: self.options.hotId
-                        }).done(function (d) {
-                            self.detail = d || [];
-                            GIS$.DrawToMap('hot', self.options, d);
-                        });
-                    }
+<div id="assist_tab_hot" class="relative">
+    <dl class="tab_panel">
+        <dt class="tab_panel_title">
+            <label class="circle blue">定</label>位信息
+        </dt>
+        <dd class="list_item_padding">
+            {{detail.HOTSPOT_SITE}}
+        </dd>
+        <dd class="list_item_padding">
+            E{{detail.LONGITUDE}}&emsp; N{{detail.LATITUDE}}
+        </dd>
+    </dl>
+    <dl class="tab_panel">
+        <dt class="tab_panel_title">
+            <label class="circle green">详</label>细信息
+        </dt>
+        <dd class="list_item_padding">
+            面积： {{detail.FIRE_AREA}}像素（烟云{{detail.SMOKE_FLAG}}）
+        </dd>
+        <dd class="list_item_padding">
+            是否连续： {{detail.CONTINUE_FLAG}}
+        </dd>
+        <dd class="list_item_padding">
+            地类： {{detail.SITE_TYPE}}
+        </dd>
+        <dd class="list_item_padding">
+            接收时间： {{(detail.RECIVE_TIME||'').Date('yyyy-MM-dd hh:mm')}}
+        </dd>
+        <dd class="list_item_padding">
+            上报时间： {{(detail.REPORT_TIME||'').Date('yyyy-MM-dd hh:mm')}}
+        </dd>
+        <dd class="list_item_padding">
+            推送时间： {{(detail.PUSH_TIME||'').Date('yyyy-MM-dd hh:mm')}}
+        </dd>
+    </dl>
+    <dl class="tab_panel">
+        <dt class="tab_panel_title">
+            <label class="circle orange">监</label>测图像
+        </dt>
+        <dd class="list_item_padding" v-if="detail.IMAGEURL">
+            <a :href="detail.IMAGEURL" style="color:#3997D6;" target="_blank">监测图像</a>
+        </dd>
+    </dl>
+    <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
+</div>
+<script>
+    (function () {
+        new Vue({
+            el: '#assist_tab_hot',
+            data: {
+                loading: 0,
+                detail: {}
+            },
+            created: function () {
+                this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
+                //获取附件
+                this.getList();
+            },
+            methods: {
+                getList: function () {
+                    var self = this;
+                    self.loading = 1;
+                    $.get(QueryHotSpot_Ctrl + 'GetHotspotById', {
+                        hotspotId: self.options.hotId
+                    }).done(function (d) {
+                        self.detail = d || [];
+                        GIS$.DrawToMap('hot', self.options, d);
+                        self.loading = 2;
+                    });
                 }
-            })
-        })();
-    </script>
+            }
+        })
+    })();
+</script>

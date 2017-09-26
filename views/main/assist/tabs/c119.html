@@ -1,4 +1,4 @@
-<div id="assist_tab_c119">
+<div id="assist_tab_c119" class="relative">
     <dl class="tab_panel">
         <dt class="tab_panel_title">
             <label class="circle blue">定</label>位信息
@@ -29,12 +29,14 @@
             </span>
         </dd>
     </dl>
+    <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
 </div>
 <script>
     (function () {
         new Vue({
             el: '#assist_tab_c119',
             data: {
+                loading: 0,
                 info: {},
                 attments: []
             },
@@ -48,11 +50,13 @@
             methods: {
                 getList: function () {
                     var self = this;
+                    self.loading = 1;
                     $.get(QueryAlrma_Ctrl + 'GetAlarmInfo', {
                         alarmId: self.options.c119Id
                     }).done(function (d) {
                         self.attments = d.Alarmattachments || [];
                         GIS$.DrawToMap('c119', self.options, d.AlarmInfo);
+                        self.loading = 2;
                     });
                 }
             }

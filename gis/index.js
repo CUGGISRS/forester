@@ -1,8 +1,15 @@
 (function () {
-    GIS$.mapInit = mapInit;
-    GIS$.switch3D = switch3D;
-    GIS$.switch2D = switch2D;
-    GIS$.jumpToUnitZone = jumpToUnitZone;
+    /**
+     * 选中地图上区县
+     */
+    function getDistLineAndToShow(organId) {
+        $.get(Home_Ctrl + 'GetOrganGeometry', {
+            organId: organId
+        }).done(function (d) {
+            jumpToUnitZone(d);
+        });
+    }
+    GIS$.getDistLineAndToShow = getDistLineAndToShow;
     /**
      * 选中护林员并显示详情
      */
@@ -194,6 +201,7 @@
         mapClickEvent(); //挂载事件
         gjdMapOverEvent(); //挂载关键点事件
     }
+    GIS$.mapInit = mapInit;
 
     /**
      * 点击事件挂接
@@ -278,6 +286,7 @@
     function switch3D() {
         hlyMap.contMap.scene.set3dModel(true);
     }
+    GIS$.switch3D = switch3D;
 
     /**
      * 切换到二维
@@ -285,6 +294,7 @@
     function switch2D() {
         hlyMap.contMap.scene.set3dModel(false);
     }
+    GIS$.switch2D = switch2D;
 
     /**
      * 跳转到单位区域
@@ -293,6 +303,7 @@
         if(!points) return;
         hlyMapService.jumpToUnitZone(points);
     }
+    GIS$.jumpToUnitZone = jumpToUnitZone;
 
     /**
      * 跳转到坐标点位

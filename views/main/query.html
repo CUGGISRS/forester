@@ -153,7 +153,7 @@
         new Vue({
             el: '#vue-querywhere-' + pageId,
             data: {
-                loading: false,
+                loading: 0,
                 resultsIdx: -1,
                 results: [],
                 tabIdx: 0,
@@ -203,7 +203,7 @@
             },
             mounted: function () {
                 $('#' + this.btimeId).ligerDateEditor({
-                    initValue: String(new Date().setMonth(new Date().getMonth() - 1)).Date()
+                    initValue: String(new Date().setMonth(new Date().getMonth() - 8)).Date()
                 });
                 $('#' + this.etimeId).ligerDateEditor({
                     initValue: String(+new Date()).Date()
@@ -215,6 +215,7 @@
                     var level = this.cascade.indexOf(key);
                     var val = !level ? Prov_Code.OrganID : self.form[this.cascade[level - 1]];
                     var url = level > 0 ? 'GetHomeSubOrganList' : 'GetHomeRootOrgan';
+
                     if(key && level != -1) {
                         this.cascade.forEach(function(item, idx) {
                             if(idx < level) return;
@@ -223,14 +224,23 @@
                         }, this);
                     }
                     if(level && !val) return;
-
+                    //加载缓存的数据
+                    var _cache_data = localStorage.getItem('_cache_code_' + key + '_' + val);
+                    if(_cache_data) {
+                        return this.fillSelect(JSON.parse(_cache_data), key, level);
+                    }
+                    //缓存不存在，从数据库读取
                     $.get(Home_Ctrl + url, {
                         organId: val,
                         disconnectTimer: TIMEOUT
                     }).done(function (d) {
-                        self.options[key] = [{ "OrganID": "", "OrganName": "--请选择--" }].concat(d);
-                        level < 1 && (self.form.province = Prov_Code.OrganID);
+                        self.fillSelect(d, key, level);
+                        localStorage.setItem('_cache_code_' + key + '_' + val, JSON.stringify(d));
                     });
+                },
+                fillSelect: function(d, key, level){
+                    this.options[key] = [{ "OrganID": "", "OrganName": "--请选择--" }].concat(d);
+                    level < 1 && (this.form.province = Prov_Code.OrganID);
                 },
                 type119: function(i){
                     return TYPE119[i] || '其它'
@@ -280,11 +290,10 @@
                         self.loading = 2;
                         self.results = d || [];
                     });
-                    $.get(Home_Ctrl + 'GetOrganGeometry', {
-                        organId: self.organId
-                    }).done(function (d) {
-                        GIS$.jumpToUnitZone(d);
-                    });
+                    //地图上显示巡护区
+                    GIS$.getDistLineAndToShow(this.organId);
+
+                    //加载底图数据
                     if(this.form.province == this.organId || this.form.city == this.organId){
                         GIS$.onSearchAllXhqWithinProvinceAndCity();
                     } else if(this.form.county == this.organId){

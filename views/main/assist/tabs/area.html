@@ -1,122 +1,122 @@
-<div id="assist_tab_area" class="h100">
-        <dl v-show="!areaId" class="tab_panel h100 scroll">
-            <dt class="tab_panel_title">
-                <label class="circle orange">负</label>责巡护区
-            </dt>
-            <dd class="list_item" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
-                <p class="strong">{{item.AreaOrgan}}（{{item.AreaName}}）</p>
-                <p>{{item.Area}}亩&emsp;{{item.AreaOrgan}}</p>
-            </dd>
-        </dl>
-        <div v-if="areaId" class="flex column h100 scroll">
-            <div class="flex_1 scroll">
-                <dl class="tab_panel">
-                    <dt class="tab_panel_title">
-                        <label class="circle blue">基</label>本信息
-                    </dt>
-                    <dd class="list_item">
-                        <p>巡护区：{{DetailInfo.PatrolAreaInfo.AREANAME}}</p>
-                        <p>面积：{{DetailInfo.PatrolAreaInfo.AREA}}亩</p>
-                        <p>公益林：{{DetailInfo.PatrolAreaInfo.STL}}亩</p>
-                        <p>用材林：{{DetailInfo.PatrolAreaInfo.YCL}}亩</p>
-                        <p>树种组成：{{DetailInfo.PatrolAreaInfo.YSSZ}}</p>
-                        <p>备注：{{DetailInfo.PatrolAreaInfo.REMARK}}</p>
-                    </dd>
-                </dl>
-                <dl class="tab_panel">
-                    <dt class="tab_panel_title">
-                        <label class="circle orange">关</label>键点
-                    </dt>
-                    <dd>
-                        <ul class="num">
-                            <li class="list_item" v-for="(item,index) in DetailInfo.PatrolPoints" @click="selectPoint(item)" :key="index">
-                                <p><span class="strong">{{item.POINTNAME}}</span>({{item.POINTNO}})</p>
-                                <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
-                            </li>
-                        </ul>
-                    </dd>
-                </dl>
-            </div>
-            <div v-if="options.userId && lists.length > 1" class="backouter">
-                <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
-            </div>
+<div id="assist_tab_area" class="h100 relative">
+    <dl v-show="!areaId" class="tab_panel h100 scroll">
+        <dt class="tab_panel_title">
+            <label class="circle orange">负</label>责巡护区
+        </dt>
+        <dd class="list_item" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
+            <p class="strong">{{item.AreaOrgan}}（{{item.AreaName}}）</p>
+            <p>{{item.Area}}亩&emsp;{{item.AreaOrgan}}</p>
+        </dd>
+    </dl>
+    <div v-if="areaId" class="flex column h100 scroll">
+        <div class="flex_1 scroll">
+            <dl class="tab_panel">
+                <dt class="tab_panel_title">
+                    <label class="circle blue">基</label>本信息
+                </dt>
+                <dd class="list_item">
+                    <p>巡护区：{{DetailInfo.PatrolAreaInfo.AREANAME}}</p>
+                    <p>面积：{{DetailInfo.PatrolAreaInfo.AREA}}亩</p>
+                    <p>公益林：{{DetailInfo.PatrolAreaInfo.STL}}亩</p>
+                    <p>用材林：{{DetailInfo.PatrolAreaInfo.YCL}}亩</p>
+                    <p>树种组成：{{DetailInfo.PatrolAreaInfo.YSSZ}}</p>
+                    <p>备注：{{DetailInfo.PatrolAreaInfo.REMARK}}</p>
+                </dd>
+            </dl>
+            <dl class="tab_panel">
+                <dt class="tab_panel_title">
+                    <label class="circle orange">关</label>键点
+                </dt>
+                <dd>
+                    <ul class="num">
+                        <li class="list_item" v-for="(item,index) in DetailInfo.PatrolPoints" @click="selectPoint(item)" :key="index">
+                            <p><span class="strong">{{item.POINTNAME}}</span>({{item.POINTNO}})</p>
+                            <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+        </div>
+        <div v-if="lists.length > 1" class="backouter">
+            <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
         </div>
     </div>
-    <script>
-        (function(){
-            new Vue({
-                el: '#assist_tab_area',
-                data: {
-                    lists: [],
-                    options: {},
-                    areaId: '',
-                    DetailInfo: {
+    <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
+</div>
+<script>
+    (function () {
+        new Vue({
+            el: '#assist_tab_area',
+            data: {
+                loading: 0,
+                lists: [],
+                options: {},
+                areaId: '',
+                DetailInfo: {
+                    BaseInfo: {},
+                    PatrolAreaInfo: {},
+                    PatrolAreaUsers: {},
+                    PatrolPoints: []
+                }
+            },
+            created: function () {
+                this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
+                if (this.options.areaId) {
+                    this.getInfo(this.options.areaId);
+                } else {
+                    this.getList();
+                }
+            },
+            methods: {
+                getList: function () {
+                    var self = this;
+                    self.loading = 1;
+                    $.get(QueryPatrolarea_Ctrl + 'GetPatrolAreaByUserId', {
+                        userId: self.options.userId
+                    }).done(function (d) {
+                        var lists = d || [];
+                        if (lists.length == 1) {
+                            self.getInfo(d[0].ID);
+                        } else {
+                            self.lists = lists;
+                        }
+                        self.loading = 2;
+                    });
+                },
+                getInfo: function (areaId) {
+                    var self = this;
+                    self.loading = 1;
+                    self.areaId = areaId;
+                    $.get(ManagePatrol_Ctrl + 'GetPatrolAreaForEdit', {
+                        patrolAreaId: areaId
+                    }).done(function (d) {
+                        self.setInfo(d);
+                        self.loading = 2;
+                    });
+                },
+                setInfo: function (d) {
+                    GIS$.DrawToMap('area', this.options, d);
+                    this.DetailInfo.PatrolAreaInfo = d.PatrolAreaInfo;
+                    this.DetailInfo.PatrolAreaUsers = d.PatrolAreaUsers;
+                    this.DetailInfo.PatrolPoints = d.PatrolPoints;
+                },
+                selectItem: function (item) {
+                    this.getInfo(item.ID);
+                    this.DetailInfo.BaseInfo = item;
+                },
+                selectPoint: function (item) {
+                    GIS$.DrawToMap('pointer', this.options, item);
+                },
+                backList: function () {
+                    this.areaId = '';
+                    this.DetailInfo = {
                         BaseInfo: {},
                         PatrolAreaInfo: {},
                         PatrolAreaUsers: {},
                         PatrolPoints: []
-                    }
-                },
-                watch: {
-                    areaId: function(v){
-                        v && this.getInfo();
-                    }
-                },
-                created: function () {
-                    this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
-                    if (this.options.areaId) {
-                        this.areaId = this.options.areaId;
-                    } else if (this.options.userId) {
-                        this.getList();
-                    } else {
-                        console.log('缺少必要的userId！');
-                    }
-                },
-                methods: {
-                    getList: function () {
-                        var self = this;
-                        $.get(QueryPatrolarea_Ctrl + 'GetPatrolAreaByUserId', {
-                            userId: self.options.userId
-                        }).done(function (d) {
-                            var lists = d || [];
-                            if(lists.length == 1) {
-                                self.areaId = d[0].ID;
-                            } else {
-                                self.lists = lists;
-                            }
-                        });
-                    },
-                    getInfo: function(){
-                        var self = this;
-                        $.get(ManagePatrol_Ctrl + 'GetPatrolAreaForEdit', {
-                            patrolAreaId: self.areaId
-                        }).done(function (d) {
-                            self.setInfo(d);
-                        });
-                    },
-                    setInfo: function(d) {
-                        GIS$.DrawToMap('area', this.options, d);
-                        this.DetailInfo.PatrolAreaInfo = d.PatrolAreaInfo;
-                        this.DetailInfo.PatrolAreaUsers = d.PatrolAreaUsers;
-                        this.DetailInfo.PatrolPoints = d.PatrolPoints;
-                    },
-                    selectItem: function(item){
-                        this.areaId = item.ID;
-                        this.DetailInfo.BaseInfo = item;
-                    },
-                    selectPoint: function(item){
-                        GIS$.DrawToMap('pointer', this.options, item);
-                    },
-                    backList: function(){
-                        this.areaId = '';
-                        this.DetailInfo = {
-                            BaseInfo: {},
-                            PatrolAreaInfo: {},
-                            PatrolAreaUsers: {},
-                            PatrolPoints: []
-                        };
-                    }
+                    };
                 }
-            })
-        })();
-    </script>
+            }
+        })
+    })();
+</script>

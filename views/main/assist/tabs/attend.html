@@ -1,4 +1,4 @@
-<div id="vue_tab_attend" class="h100 scroll">
+<div id="vue_tab_attend" class="h100 scroll relative">
     <template v-show="!lineId">
         <dl class="datetimes">
             <dt class="thead flex acenter jcenter">
@@ -58,6 +58,7 @@
             <button class="back" @click.prevent="backList"><i class="iconfont icon-back"></i> 返回</button>
         </div>
     </div>
+    <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
 </div>
 <script>
     (function(){
@@ -65,6 +66,7 @@
         new Vue({
             el: '#vue_tab_attend',
             data: {
+                loading: 0,
                 options: {},
                 year: today.getFullYear(),
                 month: today.getMonth() + 1,
@@ -127,31 +129,37 @@
                 },
                 getList: function (time) {
                     var self = this;
+                    self.loading = 1;
                     $.get(QueryGPSInfo_Ctrl + 'GetUserContrailListToDay', {
                         userId: '85da242c-b4c6-479d-91b9-ce0c03ebc420' || self.options.userId,
                         time: time
                     }).done(function (d) {
                         self.Linelists = d || [];
+                        self.loading = 2;
                     });
                 },
                 getDateList: function(month) {
                     var self = this;
+                    self.loading = 1;
                     $.get(QueryAttendance_Ctrl + 'GetAttendanceByMonth', {
                         userId: '85da242c-b4c6-479d-91b9-ce0c03ebc420' || self.options.userId,
                         month: month
                     }).done(function (d) {
                         console.log('GetAttendanceByMonth:', d);
                         self.getList('2017-09-09');
+                        self.loading = 2;
                     });
                 },
                 getInfo: function(){
                     var self = this;
+                    self.loading = 1;
                     $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
                         lineId: self.lineId
                     }).done(function (info) {
                         GIS$.DrawToMap('road', self.options, info);
                         self.DetailInfo.GpsDisplayPoints = info.GpsDisplayPoints || [];
                         self.DetailInfo.GpsInfos = info.GpsInfos || [];
+                        self.loading = 2;
                     });
                 },
                 selectItem: function(item){

@@ -1,4 +1,4 @@
-<div id="assist_tab_forester">
+<div id="assist_tab_forester" class="relative">
     <dl class="tab_panel">
         <dt class="tab_panel_title">
             <label class="circle blue">详</label>细信息
@@ -79,12 +79,14 @@
             <p>内容：{{item.CONTENT}}</p>
         </dd>
     </dl>
+    <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
 </div>
 <script>
     (function(){
         new Vue({
             el: '#assist_tab_forester',
             data: {
+                loading: 0,
                 info: {
                     options: {},
                     UserInfo: {},
@@ -105,11 +107,13 @@
             methods: {
                 getInfo: function () {
                     var self = this;
+                    self.loading = 1;
                     $.get(QueryUser_Ctrl + 'GetUserInfoById', {
                         userId: self.options.userId,
                         isOnline: self.options.isOnline || false
                     }).done(function (d) {
                         self.setInfo(d);
+                        self.loading = 2;
                     });
                 },
                 setInfo: function(info){
