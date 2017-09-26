@@ -13,7 +13,7 @@
                 <span class="colum" v-for="(d, idx) in days" :key="idx" @click="selectDay(idx)" :class="{'on': d.on, 'day': d.d, 'selected': d.d == day}">{{ d.d }}</span>
             </dd>
         </dl>
-        <dl class="tab_panel h100 scroll">
+        <dl class="tab_panel h100 scroll" :class="{'noresult': !Linelists.length}">
             <dt class="tab_panel_title">
                 <label class="circle orange">考</label>勤信息
             </dt>

@@ -1,5 +1,5 @@
 <div id="assist_tab_road" class="h100 relative">
-    <dl v-show="!lineId" class="tab_panel h100 scroll">
+    <dl v-show="!lineId" class="tab_panel h100 scroll" :class="{'noresult': !lists.length}">
         <dt class="tab_panel_title">
             <label class="circle orange">近</label>三天轨迹
         </dt>
