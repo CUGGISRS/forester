@@ -75,9 +75,15 @@ define([
         //最佳显示
         var extent = lineItem.singleLine.getExtent();
         //转换成3857
-        extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857")
-        var resolution = (extent[2] - extent[0]) / baseUtil.defaultGraphicShowWith;
-        return resolution * 8;
+        var extent3857 = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857");
+        var resolution3857 = (extent3857[2] - extent3857[0]) / baseUtil.defaultGraphicShowWith;
+        //var resolution4326 = (extent[2] - extent[0]) / baseUtil.defaultGraphicShowWith;
+		////与最小最佳分辨率（16级）对比，如果更小则只能显示到该处，并等比控制3857的分辨率
+        //if (resolution4326 < 2.1457672519402802e-5) {
+        //	resolution3857 = resolution3857 * (2.1457672519402802e-5 / resolution4326);
+        //}
+
+        return resolution3857 * 8;
     };
 
     return GjLayer;

@@ -14,11 +14,21 @@ define([
      */
     var HlyLayerCluster = function (option) {
         var iconsUrl = baseUtil.getMapIconsUrl();
+        this._image = baseUtil.getMapImage();
+        this._imageHeight = this._image.height;
         var that = this;
 
         //配置项处理
         this._options = baseUtil.assign({
+            minClusterResolution: 2.2457672519402802e-5,
             distance: 30,
+            textLabelIcon: {
+                offset: [0, 140],//位置
+                url: iconsUrl,//图片资源
+                anchor: [-.15, 1.3],//图标位置对应的地图点
+                size: [60, 40],//截取大小
+                opacity: 1,//透明度
+            },
             //聚合点图标
             clusterIcon: {
                 offset: [229, 46],//位置
@@ -33,21 +43,21 @@ define([
                 GPS: {
                     online: {
                         normal: {
-                            offset: [331, 140],//位置
+                            offset: [93, 182],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
                             size: [40, 40],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [136, 86],//位置
+                            offset: [1, 182],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [136, 86],//位置
+                            offset: [1, 182],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
@@ -56,21 +66,21 @@ define([
                     },
                     offline: {
                         normal: {
-                            offset: [371, 140],//位置
+                            offset: [133, 182],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
                             size: [40, 40],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [274, 86],//位置
+                            offset: [47, 182],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [274, 86],//位置
+                            offset: [47, 182],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
                             size: [46, 48],//截取大小
@@ -166,17 +176,15 @@ define([
      */
     HlyLayerCluster.prototype.init = function () {
         var that = this;
-        this._image = baseUtil.getMapImage();
-        this._imageHeight = this._image.height;
         var styleFun = function (clusterFeature, resolution) {
             var size;
             if (clusterFeature) {
                 size = clusterFeature.get('features').length || 1;
             } else {
-                size = 1
+                size = 1;
             }
 
-            var style;
+            var styles;
             var clusterIcon = new ol.style.Icon({
                 anchor: that._options.clusterIcon.anchor,
                 src: that._options.clusterIcon.url,
@@ -186,7 +194,7 @@ define([
                 opacity: that._options.clusterIcon.opacity
             });
             if (size >= 2) {
-                style = new ol.style.Style({
+                styles = [new ol.style.Style({
                     image: clusterIcon,
                     text: new ol.style.Text({
                         font: "18px 微软雅黑",
@@ -198,7 +206,7 @@ define([
                         }),
                         text: size.toString()
                     })
-                })
+                })];
             }
             else {
                 //离散点
@@ -210,7 +218,8 @@ define([
                     if (feature[onlineState + iconState]) {
                         return feature[onlineState + iconState];
                     } else {
-                        style = new ol.style.Style({
+                        styles = [new ol.style.Style({
+                            zIndex: iconState !== "normal" ? 100 : 0,
                             image: new ol.style.Icon({
                                 anchor: that._options.pointIcon[provider][onlineState][iconState].anchor,
                                 src: that._options.pointIcon[provider][onlineState][iconState].url,
@@ -219,13 +228,35 @@ define([
                                 size: that._options.pointIcon[provider][onlineState][iconState].size,
                                 opacity: that._options.pointIcon[provider][onlineState][iconState].opacity
                             })
-                        });
-                        feature[onlineState + iconState] = style;
+                        })];
+                        //当选中或高亮时，显示人名
+                        if (iconState !== "normal") {
+                            var userName = feature.get("UserName");
+                            styles.push(new ol.style.Style({
+                                zIndex: iconState !== "normal" ? 100 : 0,
+                                image: new ol.style.Icon({
+                                    anchor: that._options.textLabelIcon.anchor,
+                                    src: that._options.textLabelIcon.url,
+                                    scale: 1,
+                                    offset: that._options.textLabelIcon.offset,
+                                    size: that._options.textLabelIcon.size,
+                                    opacity: that._options.textLabelIcon.opacity
+                                }),
+                                text: new ol.style.Text({
+                                    font: "14px 微软雅黑",
+                                    textAlign: "center",
+                                    offsetX: 40,
+                                    offsetY: -32,
+                                    text: userName
+                                })
+                            }));
+                        }
+                        feature[onlineState + iconState] = styles;
                     }
                 }
 
             }
-            return style
+            return styles;
         };
         var distance = this._options.distance;
         this._vectorSource = this._options.vectorSource;
@@ -239,6 +270,33 @@ define([
         });
         this._olLayer.LayerType = "护林员图层";
         this._olLayer.skipSynchronize = true;
+        this._olLayer.set("altitudeMode", "clampToGround");
+
+        //重写this._vectorSource的loadFeatures方法
+        //todo 待重构，换版本时可能会有问题（可挂接添加要素事件并另起机制获取当前地图分辨率）
+        var oldloadFeatures = this._clusterSource.Oc;
+        this._clusterSource.Oc = function (extent, resolution, projection) {
+            //先执行聚合
+            oldloadFeatures.call(this, extent, resolution, projection);
+            //针对已聚合要素，在最后一级比例尺下，将当前视野下的clusterFeature进行拆分，
+            //被聚合的全部独立出来作为只有一个包含关系的聚合体
+            if (resolution < that._options.minClusterResolution) {
+                var visibleFeatures = this.getFeaturesInExtent(extent);
+                for (var i = 0; i < visibleFeatures.length; i++) {
+                    var visibleClusterFeature = visibleFeatures[i];
+                    var subFeatures = visibleClusterFeature.get('features');
+                    //删除聚合要素，同时添加独立要素
+                    this.removeFeature(visibleClusterFeature);
+                    for (var j = 0; j < subFeatures.length; j++) {
+                        var subFeature = subFeatures[j];
+                        var point = subFeature.getGeometry();
+                        var cluster = new ol.Feature(point);
+                        cluster.set('features', [subFeature]);
+                        this.addFeature(cluster);
+                    }
+                }
+            }
+        }
 
         //三维聚合数据源初始化
         this._clusterDataSourceInit(this._options.scene);
@@ -347,6 +405,7 @@ define([
                 horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                 imageSubRegion: new Cesium.BoundingRectangle(offset[0], this._imageHeight - offset[1] - size[1], size[0], size[1]),
+                pixelOffset: new Cesium.Cartesian2(0, 0),
                 disableDepthTestDistance: 10000,
                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
                 translucencyByDistance: new Cesium.NearFarScalar(1.5e4, 1, 1.5e9, 0.2)
@@ -360,9 +419,34 @@ define([
             var onlineState = feature.get("onlineState") ? feature.get("onlineState") : "online";
             var iconState = feature.get("iconState") ? feature.get("iconState") : "normal";
 
-            var offset = that._options.pointIcon[provider][onlineState][iconState].offset;
-            var size = that._options.pointIcon[provider][onlineState][iconState].size;
-            feature.cesiumEntity.billboard.imageSubRegion = new Cesium.BoundingRectangle(offset[0], that._imageHeight - offset[1] - size[1], size[0], size[1]);
+            //当选中或高亮时，显示人名
+            var newiconUrl = iconUrl;
+            var imageSubRegion;
+            var pixelOffset;
+            if (iconState !== "normal") {
+                var userName = feature.get("UserName");
+                var labelOption = that._options.textLabelIcon;
+                var lableIconUrl = baseUtil.getImageFromText(that._image, labelOption.offset[0], labelOption.offset[1],
+                    labelOption.size[0], labelOption.size[1],
+                    userName, "14px 微软雅黑", labelOption.size[0] / 2 + 1, labelOption.size[1] / 2 + 5, "black");
+                var lableIcon = new Image();
+                lableIcon.src = lableIconUrl;
+
+                labelOption = that._options.pointIcon[provider][onlineState][iconState];
+                newiconUrl = baseUtil.getImageCoveredImage(that._image, labelOption.offset[0], labelOption.offset[1],
+                    labelOption.size[0], labelOption.size[1],
+                    lableIcon, 32, -10);
+                imageSubRegion = null;
+                pixelOffset = new Cesium.Cartesian2(23, 6);
+            } else {
+                var offset = that._options.pointIcon[provider][onlineState][iconState].offset;
+                var size = that._options.pointIcon[provider][onlineState][iconState].size;
+                imageSubRegion = new Cesium.BoundingRectangle(offset[0], that._imageHeight - offset[1] - size[1], size[0], size[1]);
+                pixelOffset = new Cesium.Cartesian2(0, 0);
+            }
+            feature.cesiumEntity.billboard.pixelOffset = pixelOffset;
+            feature.cesiumEntity.billboard.image = newiconUrl;
+            feature.cesiumEntity.billboard.imageSubRegion = imageSubRegion;
         });
         feature.on("change:geometry", function (e) {
 
@@ -387,7 +471,7 @@ define([
         modelLayer.entities.remove(feature.cesiumEntity);
     };
 
-    return HlyLayerCluster
+    return HlyLayerCluster;
 
 });
 

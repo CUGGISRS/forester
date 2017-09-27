@@ -14,6 +14,7 @@ define([
     var FkLayer = function (option) {
         BaseLayer.call(this, option);
         this.LayerType="反馈图层";
+        this.set("altitudeMode", "clampToGround");
     };
 
     ol.inherits(FkLayer, BaseLayer);

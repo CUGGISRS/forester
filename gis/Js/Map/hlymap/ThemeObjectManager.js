@@ -91,7 +91,7 @@ define(function () {
     ThemeObjectManager.prototype.removeTmpObject = function (themeName, itemId, tmpItemId, tmpItemType) {
         var existObj = this.getTmpObject(themeName, itemId, tmpItemId, tmpItemType);
         if (existObj) {
-            existObj.bItem.value.themeName=null;
+            existObj.bItem.value.themeName = null;
             //对象释放
             this._featureContainerManager.removeMapBusinessItem(existObj.bItem.itemId, existObj.bItem.itemType);
             //从容器中移除
@@ -135,7 +135,7 @@ define(function () {
         }
         for (var key in this._themeObjectContainer) {
             var themeItem = this._themeObjectContainer[key];
-            if(!themeItem){
+            if (!themeItem) {
                 continue;
             }
             //专题对象中查找
@@ -206,14 +206,27 @@ define(function () {
         //删除专题对象的临时对象
         for (var i = 0; i < themeObj.tmpItems.length; i++) {
             var tmpItem = themeObj.tmpItems[i];
-            tmpItem.value.themeName=null;
+            tmpItem.value.themeName = null;
             this._featureContainerManager.removeMapBusinessItem(tmpItem.itemId, tmpItem.itemType);
         }
         //已有专题对象，删除该对象
         this._featureContainerManager.removeMapBusinessItem(themeObj.businessItem.itemId, themeObj.businessItem.itemType);
-        themeObj.businessItem.value.themeName=null;
+        themeObj.businessItem.value.themeName = null;
         this._themeObjectContainer[themeName] = null;
     };
+
+    /**
+     * 清除所有专题
+     */
+    ThemeObjectManager.prototype.clearAll = function () {
+        for (var key in this._themeObjectContainer) {
+            var themeItem = this._themeObjectContainer[key];
+            if (!themeItem) {
+                continue;
+            }
+            this.clearThemeObject(key, themeItem.id);
+        }
+    }
 
     return ThemeObjectManager
 });

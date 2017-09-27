@@ -16,6 +16,7 @@ define([
             style: this._styleFunction
         }, option));
         this.LayerType = "热点图层";
+        this.set("altitudeMode", "clampToGround");
     };
 
     ol.inherits(RdLayer, BaseLayer);

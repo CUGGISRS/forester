@@ -16,6 +16,7 @@ define([
             style: this._styleFunction
         }, option));
         this.LayerType = "报警图层";
+        this.set("altitudeMode", "clampToGround");
     };
 
     ol.inherits(BjLayer, BaseLayer);

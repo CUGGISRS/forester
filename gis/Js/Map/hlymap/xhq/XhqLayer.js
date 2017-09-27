@@ -34,15 +34,15 @@ define([
             return feature[iconState];
         }
         var borderWidthOption = {
-            normal: 4,
-            selected: 6,
-            highlight: 6,
+            normal: 3,
+            selected: 4,
+            highlight: 5,
         };
         var width = borderWidthOption[iconState];
 
         var style = new ol.style.Style({
             stroke: new ol.style.Stroke({
-                color: "rgba(255,255,255,.8)",
+            	color: "rgba(0,255,127,.8)",
                 width: width
             })
         });
@@ -59,7 +59,7 @@ define([
         //最佳显示
         var extent = feature.getGeometry().getExtent();
         //转换成3857
-        extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857")
+	    extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857");
         var resolution = (extent[2]-extent[0]) / baseUtil.defaultGraphicShowWith;
         return resolution * 8;
     };

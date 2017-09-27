@@ -58,7 +58,7 @@ define([
                 var iconState = feature.get("iconState") ? feature.get("iconState") : "normal";
                 if (iconState === 'normal') {
                     //当前为normal情况的，执行移除
-                    this.removeDateItem(item);
+                    this.removeDataItem(item);
                 }
             }
         }
@@ -87,7 +87,7 @@ define([
         feature.setId(this._getItemId(item));
         feature.set("iconState", "normal");
         //所属值对象
-        feature.valueItem=item;
+        feature.valueItem = item;
 
         this._onAddFeature(feature, item);
 
@@ -125,11 +125,14 @@ define([
                 //以前有高亮，则取消高亮
                 this.cancelHighLight();
             }
-            //设为高亮
-            feature.set("oldIconState", feature.get("iconState"));
-            feature.set("iconState", "highlight");
 
-            this.highLightFeature = feature;
+            //正常的才能执行高亮
+            if (feature.get("iconState") === "normal") {
+                //设为高亮
+                feature.set("iconState", "highlight");
+
+                this.highLightFeature = feature;
+            }
         }
     };
 
@@ -140,9 +143,11 @@ define([
     LayerBaseDataSource.prototype.cancelHighLight = function () {
         var feature = this.highLightFeature;
         if (feature) {
-            //已高亮，则设为非高亮
-            feature.set("iconState", feature.get("oldIconState"));
-            this.highLightFeature = null;
+            //高亮时才取消高亮
+            if (feature.get("iconState") === "highlight") {
+                feature.set("iconState", "normal");
+                this.highLightFeature = null;
+            }
         }
     };
 
@@ -156,6 +161,10 @@ define([
             if (this.selectedFeature) {
                 //有选中则清除选中
                 this.cancelSelected();
+            }
+            //已经为选中，则不处理
+            if (feature.get("iconState") === "selected") {
+                return;
             }
             feature.set("iconState", "selected");
             this.selectedFeature = feature;

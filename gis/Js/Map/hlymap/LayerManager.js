@@ -1,4 +1,5 @@
 ﻿define([
+    'core/baseUtil',
     'core/defineProperties',
     'hlymap/bj/BjLayerDataSource',
     'hlymap/bj/BjLayer',
@@ -14,7 +15,7 @@
     'hlymap/Hly/HlyLayerDataSource',
     'hlymap/fk/FkLayer',
     'hlymap/fk/FkLayerDataSource',
-], function (defineProperties, BjLayerDataSource, BjLayer,
+], function (baseUtil,defineProperties, BjLayerDataSource, BjLayer,
              RdLayer, RdLayerDataSource,
              XhqLayer, XhqLayerDataSource,
              GjLayer, GjLayerDataSource,
@@ -148,7 +149,19 @@
                     this._tmpLayer = new ol.layer.Vector({
                         source: new ol.source.Vector(),
                     });
-                }
+					//贴地
+                    this._tmpLayer.set("altitudeMode", "clampToGround");
+					//三维宽度
+                    this._tmpLayer.getCorridorGeometryWidth = function (feature) {
+                    	//最佳显示
+                    	var extent = feature.getGeometry().getExtent();
+                    	//转换成3857
+                    	extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857");
+                    	var resolution = (extent[2] - extent[0]) / baseUtil.defaultGraphicShowWith;
+                    	return resolution * 8;
+                    };
+
+				}
                 return this._tmpLayer;
             }
         },

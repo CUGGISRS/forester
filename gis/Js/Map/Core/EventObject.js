@@ -9,7 +9,7 @@ define(function () {
      * @abstract
      * @alias EventObject
      */
-    var EventObject=function () {
+    var EventObject = function () {
         this._evnts = [];
     };
 
@@ -40,6 +40,23 @@ define(function () {
             this._evnts.splice(index, 1);
         }
     };
+
+    /**
+     * 触发事件
+     * @param eventarg 事件参数对象
+     * @param eventType 事件类型
+     */
+    EventObject.prototype.raiseEvent = function (eventarg, eventType) {
+        for (var i = 0; i < this._evnts.length; i++) {
+            if (this._evnts[i].eventType === eventType) {
+                if (this._evnts[i].context) {
+                    this._evnts[i].callback.call(this._evnts[i].context, eventarg);
+                } else {
+                    this._evnts[i].callback(eventarg);
+                }
+            }
+        }
+    }
 
     return EventObject;
 });

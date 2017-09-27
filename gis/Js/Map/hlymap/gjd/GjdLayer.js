@@ -16,6 +16,7 @@ define([
             style: this._styleFunction
         }, option));
         this.LayerType = "关键点图层";
+        this.set("altitudeMode", "clampToGround");
     };
 
     ol.inherits(GjdLayer, BaseLayer);

@@ -68,7 +68,6 @@
 
 </div>
 <!--依赖js库-->
-<script src="../../js/config.js"></script>
 <script src="../Scripts/Cesium/Cesium.js"></script>
 <script src="../Scripts/ol3/ol.js"></script>
 <script src="../Scripts/ContMap/contmap.js"></script>
@@ -100,10 +99,20 @@
         //地图初始化
         hlyMapService = new Hly.HlyMapService({
             serviceUrlConfig: serviceUrlConfig,
-            baseMapUrls: BASEMAPURLS,
+            baseMapUrls: [{
+                name: "广东影像图",
+                url: 'http://localhost/广东影像地图切片',
+                type: 'EsriOffline',
+                format: "png",
+                project: "EPSG:4326"
+            }],
             mapContainer: 'map',
-            terrainProviderUrl: TERRAINPROVIDERURL,
-            xhqMapUrls: XHQMAPURLS,
+            terrainProviderUrl: "http://localhost:8035/ContTmsTerrain",
+            xhqMapUrls: {
+                "广东省": "http://localhost/测试地图切片/PatrolArea/Layers/_alllayers",
+                "阳山县": "http://localhost/测试地图切片/PatrolArea_ysx",
+                "兴宁市": "http://localhost/测试地图切片/PatrolArea_xns",//县级市
+            },
         });
         hlyMapService.init();
         hlyMap = hlyMapService.hlyMap;
