@@ -33,7 +33,9 @@
         });
     }
     GIS$.getUserInfoAndToShow = getUserInfoAndToShow;
-
+    /**
+     * 选中轨迹并显示详情
+     */
     function getLineInfoAndShow(options, fn){
         $.get(QueryGPSInfo_Ctrl + 'GetLineDetailInfo', {
             lineId: options.lineId
@@ -58,7 +60,9 @@
         });
     }
     GIS$.getLineInfoAndShow = getLineInfoAndShow;
-    
+    /**
+     * 选中巡护区并显示详情
+     */
     function getAreaInfoAndShow(options, fn){
         $.get(ManagePatrol_Ctrl + 'GetPatrolAreaForEdit', {
             patrolAreaId: options.areaId
@@ -82,7 +86,9 @@
         });
     }
     GIS$.getAreaInfoAndShow = getAreaInfoAndShow;
-
+    /**
+     * 选中报警点并显示详情
+     */
     function getC119InfoAndShow(options, fn){
         $.get(QueryAlrma_Ctrl + 'GetAlarmInfo', {
             alarmId: options.c119Id
@@ -111,7 +117,9 @@
         });
     }
     GIS$.getC119InfoAndShow = getC119InfoAndShow;
-    
+    /**
+     * 选中热点并显示详情
+     */
     function getHotInfoAndShow(options, fn){
         $.get(QueryHotSpot_Ctrl + 'GetHotspotById', {
             hotspotId: options.hotId
@@ -120,7 +128,7 @@
             //加载副面板
             Page.showInfo('hot', {
                 hotId: options.hotId,
-                userId: data.LBSUSERINFO[0].ID
+                userId: (data.LBSUSERINFO[0] || {}).ID
             }, {
                 HotInfo: {
                     kid: 'hot',
@@ -130,9 +138,9 @@
                     organ: data.HOTSPOT_SITE,
                     lat: data.LATITUDE,
                     lon: data.LONGITUDE,
-                    userName: data.LBSUSERINFO[0].USER_NAME,
-                    tel: data.LBSUSERINFO[0].PHONE_NUM,
-                    userId: data.LBSUSERINFO[0].ID
+                    userName: (data.LBSUSERINFO[0]||{}).USER_NAME,
+                    tel: (data.LBSUSERINFO[0]||{}).PHONE_NUM,
+                    userId: (data.LBSUSERINFO[0]||{}).ID
                 }
             });
         });
@@ -312,8 +320,27 @@
     /**
      * 跳转到坐标点位
      */
-    function gotoLocation() {
-        hlyMap.gotoLocation(115, 24);
+    function gotoLocation(lat, lon) {
+        typeof lat == 'object' && (lat = DegreeConvertBack(lat));
+        typeof lon == 'object' && (lon = DegreeConvertBack(lon));
+        hlyMap.gotoLocation(lat, lon);
+    }
+    GIS$.gotoLocation = gotoLocation;
+
+    ///<summary>将度转换成为度分秒</summary>
+    function formatDegree(value) {
+        value = Math.abs(value);
+        var v1 = Math.floor(value);//度
+        var v2 = Math.floor((value - v1) * 60);//分
+        var v3 = Math.round((value - v1) * 3600 % 60);//秒
+        return v1 + '°' + v2 + '\'' + v3 + '"';
+    }
+    ///<summary>度分秒转换成为度</summary>
+    function DegreeConvertBack(value){
+        var du = value[0] || 0;
+        var fen = value[1] || 0;
+        var miao = value[2] || 0;
+        return Math.abs(du) + "." + (Math.abs(fen)/60 + Math.abs(miao)/3600);
     }
     /*==============================业务模块接口=============================*/
 
@@ -328,15 +355,16 @@
      * 锁定（追踪）护林员
      */
     var trackingOnUser = false;
-    function trackOnHly() {
+    function trackOnHly(uid) {
         //定时查询用户位置，定位地图到当前位置
         trackingOnUser = !trackingOnUser;
         if (trackingOnUser) {
-            hlyMapService.trackOnHly("89954a6c-85f7-4e57-b97a-fae8eed87f2c")
+            hlyMapService.trackOnHly(uid)
         } else {
             hlyMapService.unTrackOnHly()
         }
     }
+    GIS$.trackOnHly = trackOnHly;
     /**
      * 关闭当前护林员专题
      */
@@ -362,22 +390,35 @@
     /**
      * 轨迹播放
      */
-    function trackPlay(info) {
+    var codeTrack;
+    function trackPlay(info, callback) {
+        var per, timer = 500, step = 10;
+        var value = 0;
+        var count = info.GpsInfos.length;
+
         hlyMapService.gjPlayInit(info);
 
-        var value = 0;
-        var step = 10;
-        code = setInterval(function () {
-            if (value > 100) {
-                //停止循环
-                clearInterval(code);
-                hlyMapService.gjPlayClose();
-            }
-            hlyMapService.gjPlay(value / 100.0);
-            value = value + step;
-        }, 1000);
+        step = count / 100;
+        timer = 30000 / count;
+
+        codeTrack = setInterval(function () {
+            value += step;
+            per = value / count;
+            callback(per >= 1 ? trackStop() : per.toFixed(2) * 100);
+            hlyMapService.gjPlay(per < 1 ? per : 1);
+        }, timer > 1000 ? 1000 : timer < 100 ? 100 : timer);
     }
     GIS$.trackPlay = trackPlay;
+    /**
+     * 停止轨迹播放
+     */
+    function trackStop() {
+        //停止循环
+        clearInterval(codeTrack);
+        hlyMapService.gjPlayClose();
+        return 0;
+    }
+    GIS$.trackStop = trackStop;
     /**
      * 关闭护林员专题
      */

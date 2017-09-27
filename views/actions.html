@@ -30,35 +30,33 @@
                     <i class="icons icon_65"></i> 全屏
                 </button>
             </div>
-            <form v-if="selected==2" action="." @submit.prevent="gpsMeth" class="tabs_panel">
+            <form v-if="selected==2" action="." @submit.prevent="gotoGPS" class="tabs_panel">
                 <dl class="gpsDiv">
                     <dt class="flex acenter jcenter columns3">
-                        <button class="input" :class="{'selected': gpsIdx == 0}" @click="gpsIdx = 0">地名</button>
-                        <button class="input" :class="{'selected': gpsIdx == 1}" @click="gpsIdx = 1">度分秒形式</button>
-                        <button class="input" :class="{'selected': gpsIdx == 2}" @click="gpsIdx = 2">小数形式</button>
+                        <button class="input" type="button" :class="{'selected': gpsIdx == 0}" @click.prevent="gpsIdx = 0">地名</button>
+                        <button class="input" type="button" :class="{'selected': gpsIdx == 1}" @click.prevent="gpsIdx = 1">度分秒形式</button>
+                        <button class="input" type="button" :class="{'selected': gpsIdx == 2}" @click.prevent="gpsIdx = 2">小数形式</button>
                     </dt>
                     <template v-if="gpsIdx==0">
                         <dd class="hasClear input">
-                            <input type="text" v-model="gps[0].address">
+                            <input type="text" v-model="gps.address">
                             <i class="iconfont icon-guanbi absolute right"></i>
                         </dd>
-                        <dd>
-                            请输入地名，如：广州市
-                        </dd>
+                        <dd>请输入地名，如：广州市</dd>
                     </template>
                     <template v-if="gpsIdx==1">
                         <dd class="flex columns3">
                             <span class="input hasafter1">
                                 <span class="absolute left after">E</span>
-                                <input type="text" v-model="gps[1].ed">
+                                <input type="text" v-model="gps.ed" pattern="[0-9.]*">
                                 <span class="absolute dw">°</span>
                             </span>
                             <span class="input">
-                                <input type="text" v-model="gps[1].ef">
+                                <input type="text" v-model="gps.ef" pattern="[0-9.]*">
                                 <span class="absolute dw">′</span>
                             </span>
                             <span class="hasClear input">
-                                <input type="text" v-model="gps[1].em">
+                                <input type="text" v-model="gps.em" pattern="[0-9.]*">
                                 <span class="absolute dw">″</span>
                                 <i class="iconfont icon-guanbi absolute right"></i>
                             </span>
@@ -66,15 +64,15 @@
                         <dd class="flex columns3">
                             <span class="input hasafter1">
                                 <span class="absolute left after">N</span>
-                                <input type="text" v-model="gps[1].nd">
+                                <input type="text" v-model="gps.nd" pattern="[0-9.]*">
                                 <span class="absolute dw">°</span>
                             </span>
                             <span class="input">
-                                <input type="text" v-model="gps[1].nf">
+                                <input type="text" v-model="gps.nf" pattern="[0-9.]*">
                                 <span class="absolute dw">′</span>
                             </span>
                             <span class="hasClear input">
-                                <input type="text" v-model="gps[1].nm">
+                                <input type="text" v-model="gps.nm" pattern="[0-9.]*">
                                 <span class="absolute dw">″</span>
                                 <i class="iconfont icon-guanbi absolute right"></i>
                             </span>
@@ -83,12 +81,12 @@
                     <template v-if="gpsIdx==2">
                         <dd class="hasClear input hasafter3">
                             <span class="absolute left after">经度：</span>
-                            <input type="text" v-model="gps[2].edfm">
+                            <input type="text" v-model="gps.edfm" pattern="[0-9.]*">
                             <i class="iconfont icon-guanbi absolute right"></i>
                         </dd>
                         <dd class="hasClear input hasafter3">
                             <span class="absolute left after">纬度：</span>
-                            <input type="text" v-model="gps[2].ndfm">
+                            <input type="text" v-model="gps.ndfm" pattern="[0-9.]*">
                             <i class="iconfont icon-guanbi absolute right"></i>
                         </dd>
                     </template>
@@ -102,7 +100,7 @@
                     <dt class="flex acenter">
                         <span class="flex_1">地图模式</span>
                     </dt>
-                    <dd class="flex" v-show="layersDetail[0]">
+                    <dd class="flex">
                         <span class="modal_item" @click="layerManger('2d')" :class="{'selected': layerModal=='2d'}">
                             <i class="modals modal_00"></i>
                             二维
@@ -117,7 +115,7 @@
                     <dt class="flex acenter">
                         <span class="flex_1">森林资源</span>
                     </dt>
-                    <dd class="flex wrap layermanger" v-show="layersDetail[1]">
+                    <dd class="flex wrap layermanger">
                         <label class="whitespace" v-for="(item,index) in layers[0]" :key="index">
                             <input type="checkbox" class="hidden" @change="layerManger(item)">
                             <i class="checkbox"></i>
@@ -132,7 +130,7 @@
                     <dt class="flex acenter">
                         <span class="flex_1">防火专题</span>
                     </dt>
-                    <dd class="flex wrap layermanger" v-show="layersDetail[2]">
+                    <dd class="flex wrap layermanger">
                         <label class="whitespace" v-for="(item,index) in layers[1]" :key="index">
                             <input type="checkbox" class="hidden" @change="layerManger(item)">
                             <i class="checkbox"></i>
@@ -155,29 +153,27 @@
                 selected: -1,
                 layerModal: '2d',
                 gpsIdx: 0,
-                gps: [
-                    {
-                        address: ''
-                    },
-                    {
-                        ed: '',
-                        ef: '',
-                        em: '',
-                        nd: '',
-                        nf: '',
-                        nm: ''
-                    },
-                    {
-                        edfm: '',
-                        ndfm: ''
-                    }
-                ],
-                layersDetail: [true, true, true],
+                gps: {
+                    address: '',
+                    ed: '',
+                    ef: '',
+                    em: '',
+                    nd: '',
+                    nf: '',
+                    nm: '',
+                    edfm: '',
+                    ndfm: ''
+                },
                 layers: [
                     [
                         {
                             id: '0',
                             name: '资源小班',
+                            clsName: 'icon_74'
+                        },
+                        {
+                            id: '1',
+                            name: '巡护区',
                             clsName: 'icon_74'
                         }
                     ],
@@ -272,6 +268,12 @@
                     this.loadPanel(v == 0);
                 }
             },
+            created: function () {
+                document.addEventListener("fullscreenchange", this.fullscreenchange);
+                document.addEventListener("mozfullscreenchange", this.fullscreenchange);
+                document.addEventListener("webkitfullscreenchange", this.fullscreenchange);
+                document.addEventListener("msfullscreenchange", this.fullscreenchange);
+            },
             mounted: function () {
                 this.selected = 0;
             },
@@ -282,16 +284,30 @@
                     } else {
                         this.selected = i;
                     }
+                    if(i == 5) {
+                        this.launchFullscreen();
+                    }
                 },
                 loadPanel: function (bol) {
                     this.selected = bol ? 0 : this.selected;
-                    bol ? $('#assistPanel').load('views/main/assist/main.html?').fadeIn(400) : $('#assistPanel').hide();
+                    bol ? $('#assistPanel').load('views/main/assist/main.html').fadeIn(400) : $('#assistPanel').hide();
                 },
                 reset: function () {
                     this.selected = -1;
                 },
-                gpsMeth: function(){
-
+                gotoGPS: function(){
+                    console.log(this.gps);
+                    switch (this.gpsIdx) {
+                        case 0:
+                            //this.gps.address
+                            break;
+                        case 1:
+                            GIS$.gotoLocation([this.gps.ed, this.gps.ef, this.gps.em], [this.gps.nd, this.gps.nf, this.gps.nm]);
+                            break;
+                        case 2:
+                            GIS$.gotoLocation(this.gps.edfm, this.gps.ndfm);
+                            break;
+                    }
                 },
                 layerManger: function(item){
                     if(item == '2d') {
@@ -304,13 +320,39 @@
                         console.log('layermanger', item);
                     }
                 },
-                expandDD: function (idx) {
-                    this.layersDetail[idx] = !this.layersDetail[idx]
-                    this.layersDetail = [].concat(this.layersDetail);
-                },
                 toolsManger: function(item){
                     console.log('toolManger', item);
-                }
+                },
+                fullscreenchange: function (e) {
+                    if ($('#app').hasClass("full-screen")) {
+						$('#app').removeClass("full-screen");
+                        this.selected = -1;
+					} else {
+						$('#app').addClass("full-screen");
+                    }
+                },
+                launchFullscreen: function(){
+                    var element = document.documentElement;
+					if (!$('#app').hasClass("full-screen")) {
+						if (element.requestFullscreen) {
+							element.requestFullscreen();
+						} else if (element.mozRequestFullScreen) {
+							element.mozRequestFullScreen();
+						} else if (element.webkitRequestFullscreen) {
+							element.webkitRequestFullscreen();
+						} else if (element.msRequestFullscreen) {
+							element.msRequestFullscreen();
+						}
+					} else {
+						if (document.exitFullscreen) {
+							document.exitFullscreen();
+						} else if (document.mozCancelFullScreen) {
+							document.mozCancelFullScreen();
+						} else if (document.webkitExitFullscreen) {
+							document.webkitExitFullscreen();
+						}
+					}
+			   }
             }
         })
     })();

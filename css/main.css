@@ -163,6 +163,21 @@ body {
 .selected .icon_07 {
   background-position: -140px -80px;
 }
+.selected .icon_20 {
+  background-position: 0 -120px;
+}
+.selected .icon_21 {
+  background-position: -40px -120px;
+}
+.selected .icon_22 {
+  background-position: -80px -120px;
+}
+.selected .icon_23 {
+  background-position: -120px -120px;
+}
+.selected .icon_24 {
+  background-position: -160px -120px;
+}
 .selected .icon_39 {
   background-position: -160px -80px;
 }
@@ -251,6 +266,50 @@ i.loading {
   -ms-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
+.audio {
+  overflow: hidden;
+}
+.audio button {
+  border: 0;
+  background: transparent;
+  padding-right: 1em;
+  color: #bbb;
+  cursor: pointer;
+  outline: none;
+}
+.audio .process {
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  background: #777;
+  margin: auto;
+}
+.audio .process .control {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  height: 100%;
+  border-radius: 2px;
+  background: #bbb;
+  width: 0%;
+}
+.audio .process .control:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  -webkit-transform: translate(50%, -50%);
+  -ms-transform: translate(50%, -50%);
+  transform: translate(50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid #bbb;
+  background: #f5f5f5;
+  -webkit-box-shadow: 0 0 1px #bbb;
+  box-shadow: 0 0 1px #bbb;
+}
 .cursor {
   cursor: pointer;
 }
@@ -268,14 +327,18 @@ i.loading {
   margin-left: -1px;
 }
 .noresult {
-  background: url(../img/noresult.png) no-repeat center 40%;
+  background: url(../img/noresult.png) no-repeat center 30%;
   background-size: 30px 30px;
   opacity: .8;
+}
+.full-screen #mainNav {
+  display: none;
 }
 #mainNav {
   background: #323941;
   color: #fff;
   width: 6em;
+  display: none;
 }
 #mainNav .logo_title {
   padding: 1em 0;
@@ -287,6 +350,7 @@ i.loading {
 }
 #mainNav nav dd.selected {
   background: #2A2F35;
+  color: #7C8495;
 }
 #mainNav nav dd .icons {
   width: 40px;
@@ -307,7 +371,8 @@ i.loading {
   vertical-align: -4px;
 }
 #secondMenu {
-  min-height: 30px;
+  height: 30px;
+  overflow: hidden;
   padding: 0 2em;
   border-bottom: 1px solid #D5D7D6;
 }
@@ -442,7 +507,7 @@ i.loading {
 #mainPanel .treeContext .l-tree li .l-body.l-selected {
   min-height: 22px;
   height: auto;
-  background: #F4F4F4;
+  background: #eee;
 }
 #mainPanel .treeContext .l-tree li .l-body.l-selected span {
   min-height: 20px;
@@ -471,7 +536,7 @@ i.loading {
   vertical-align: -6px;
 }
 #mainPanel .resultContext dd.selected {
-  background-color: #F6F6F6;
+  background-color: #eee;
 }
 #mainPanel .resultContext dt {
   padding: 6px;
@@ -683,6 +748,8 @@ i.loading {
 }
 #openlayerBtns .gpsDiv .btn {
   padding: 10px 0;
+  height: auto;
+  min-height: 30px;
 }
 #openlayerBtns .gpsDiv .btn button {
   background: #3997D6;
@@ -829,8 +896,8 @@ i.loading {
 #assistPanel .tabs span {
   display: inline-block;
   cursor: pointer;
-  width: 25%;
   font-size: 13px;
+  white-space: nowrap;
   text-align: center;
   padding: 6px 0;
   -webkit-box-sizing: border-box;
@@ -1083,6 +1150,7 @@ i.loading {
 #vue-openlayer-tips #rltDiv .title .tabs label {
   border-radius: 5px;
   padding: 0 5px;
+  cursor: pointer;
 }
 #vue-openlayer-tips #rltDiv .title .tabs label.selected {
   background: #fff;
@@ -1106,6 +1174,9 @@ i.loading {
   overflow: hidden;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
+}
+#vue-openlayer-tips #rltDiv .table tr {
+  cursor: pointer;
 }
 #vue-openlayer-tips #rltDiv .table tr:nth-child(odd) {
   background: #f1f1f1;

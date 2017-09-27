@@ -3,7 +3,7 @@
         <dt class="tab_panel_title">
             <label class="circle red">报</label>警信息
         </dt>
-        <dd class="list_item_padding" v-for="(item,index) in AlarmInfoList" @click="c119tomap(item)" :key="index">
+        <dd class="list_item_padding cursor" v-for="(item,index) in AlarmInfoList" @click="c119tomap(item)" :key="index">
             {{item.ALARMTIME.Date('yyyy-MM-dd hh:ss')}}（{{type119(item.ALARMTYPE)}}）
         </dd>
     </dl>
@@ -11,7 +11,7 @@
         <dt class="tab_panel_title">
             <label class="circle orange">热</label>点信息
         </dt>
-        <dd class="list_item_padding" v-for="(item,index) in HotList" @click="hottomap(item)" :key="index">
+        <dd class="list_item_padding cursor" v-for="(item,index) in HotList" @click="hottomap(item)" :key="index">
             <h3>{{item.LATITUDE}}</h3>
             <p>{{item.REPORT_TIME.Date('yyyy-MM-dd hh:ss')}}（{{item.HOTSPOT_SOURCE}}）</p>
         </dd>

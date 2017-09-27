@@ -18,7 +18,7 @@
             {{info.conent}}
         </dd>
         <dd class="list_item_padding flex wrap columns2">
-            <a class="colum" target="_blank" :href="Img(item.URL)" v-for="(item,index) in attments" :key="index">
+            <a class="colum cursor" target="_blank" :href="Img(item.URL)" v-for="(item,index) in attments" :key="index">
                 <template v-if="item.FILE_TYPE=='1'">
                     <img :src="Img(item.URL)" class="w100 imgcover" alt="">
                     <i class="iconfont icon-fangda absolute bottom right"></i>

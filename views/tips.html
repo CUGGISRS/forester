@@ -1,5 +1,5 @@
 <div id="vue-openlayer-tips">
-    <button class="panel absolute btnarea info" @click="toggleRLT">
+    <button class="panel absolute btnarea info cursor" @click="toggleRLT">
         <i class="iconfont icon-info"></i>
         <span class="num" v-if="num">{{num}}</span>
     </button>
@@ -24,7 +24,7 @@
                     <th>纬度</th>
                     <th>单位</th>
                 </tr>
-                <tr v-for="(item,index) in Hots" :key="index">
+                <tr v-for="(item,index) in Hots" :key="index" @click="showHotMap(index)">
                     <td>{{item.HOTSPOT_ID}}</td>
                     <td>{{(item.LbsUserBaseInfo[0]||{}).USER_NAME}}</td>
                     <td>{{item.HOTSPOT_SOURCE}}</td>
@@ -43,7 +43,7 @@
                     <th>纬度</th>
                     <th>单位</th>
                 </tr>
-                <tr v-for="(item,index) in C119s" :key="index">
+                <tr v-for="(item,index) in C119s" :key="index" @click="showC119Map(index)">
                     <td>{{item.LBSUSERINFO.USER_NAME}}</td>
                     <td>{{type119(item.ALARMTYPE)}}</td>
                     <td>{{item.ALARMTIME.Date('hh:mm')}}</td>
@@ -103,6 +103,14 @@
                         });
                     }
                     this.selected = idx;
+                },
+                showHotMap: function (idx) {
+                    var item = this.Hots[idx];
+                    GIS$.getHotInfoAndShow({ hotId: item.HOTSPOT_ID });
+                },
+                showC119Map: function (idx) {
+                    var item = this.C119s[idx];
+                    GIS$.getC119InfoAndShow({ c119Id: item.ID });
                 }
             }
         });

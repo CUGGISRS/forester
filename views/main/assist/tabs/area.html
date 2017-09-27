@@ -3,7 +3,7 @@
         <dt class="tab_panel_title">
             <label class="circle orange">负</label>责巡护区
         </dt>
-        <dd class="list_item" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
+        <dd class="list_item cursor" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
             <p class="strong">{{item.AreaOrgan}}（{{item.AreaName}}）</p>
             <p>{{item.Area}}亩&emsp;{{item.AreaOrgan}}</p>
         </dd>
@@ -16,6 +16,7 @@
                 </dt>
                 <dd class="list_item">
                     <p>巡护区：{{DetailInfo.PatrolAreaInfo.AREANAME}}</p>
+                    <p>编号：{{DetailInfo.PatrolAreaInfo.BH}}</p>
                     <p>面积：{{DetailInfo.PatrolAreaInfo.AREA}}亩</p>
                     <p>公益林：{{DetailInfo.PatrolAreaInfo.STL}}亩</p>
                     <p>用材林：{{DetailInfo.PatrolAreaInfo.YCL}}亩</p>

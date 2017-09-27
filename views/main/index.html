@@ -28,7 +28,7 @@
                     $('#openlayerFrame').on('click', '.panel .close', function(){
                         $(this).closest('.panel').fadeOut(400);
                         //关闭汇总信息
-                        Page.Actions.reset();
+                        $(this).closest('#vue-assist-main').size() && Page.Actions.reset();
                     });
                     (function initMap(){
                         if (typeof Hly != 'undefined') {

@@ -48,9 +48,10 @@
             created: function () {
                 var self = this;
                 var data = JSON.parse(sessionStorage.getItem('_panel_main_options_') || JSON.stringify(Prov_Code));
+
                 $.get(Home_Ctrl + 'GetHomeStatistics', {
                     organId: data.OrganID,
-                    isCurrentLevel: data.IsCurrentLevel
+                    isCurrentLevel: data.IsCurrentLevel || false
                 }).done(function (d) {
                     self.RealTimeInfoForDay = d.RealTimeInfoForDay;
                     self.StatisticsInfoForMonth = d.StatisticsInfoForMonth;

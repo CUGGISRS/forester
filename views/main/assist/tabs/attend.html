@@ -1,29 +1,27 @@
 <div id="vue_tab_attend" class="h100 scroll relative">
-    <template v-show="!lineId">
-        <dl class="datetimes">
-            <dt class="thead flex acenter jcenter">
-                <button @click="setMonth(-1)"><i class="iconfont icon-arrLeft-fill"></i></button>
-                <span class="currdate">{{year}}-{{month}}</span>
-                <button @click="setMonth(1)"><i class="iconfont icon-sanx-up"></i></button>
-            </dt>
-            <dd class="flex header columns7">
-                <span class="colum" v-for="i in 7" :key="i">{{weeks[i - 1][1]}}</span>
-            </dd>
-            <dd class="flex tbody wrap columns7">
-                <span class="colum" v-for="(d, idx) in days" :key="idx" @click="selectDay(idx)" :class="{'on': d.on, 'day': d.d, 'selected': d.d == day && d.on}">{{ d.d }}</span>
-            </dd>
-        </dl>
-        <dl class="tab_panel" :class="{'noresult': !Linelists.length}" style="min-height: 100%;">
-            <dt class="tab_panel_title">
-                <label class="circle orange">考</label>勤信息
-            </dt>
-            <dd class="list_item cursor" v-for="(item,index) in Linelists" :key="index" @click="selectItem(item)">
-                <p class="strong">{{item.LbsUserBaseInfo.USER_NAME}}</p>
-                <p>{{item.StartTime}}</p>
-                <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
-            </dd>
-        </dl>
-    </template>
+    <dl class="datetimes">
+        <dt class="thead flex acenter jcenter">
+            <button @click="setMonth(-1)"><i class="iconfont icon-arrLeft-fill"></i></button>
+            <span class="currdate">{{year}}-{{month}}</span>
+            <button @click="setMonth(1)"><i class="iconfont icon-sanx-up"></i></button>
+        </dt>
+        <dd class="flex header columns7">
+            <span class="colum" v-for="i in 7" :key="i">{{weeks[i - 1][1]}}</span>
+        </dd>
+        <dd class="flex tbody wrap columns7">
+            <span class="colum" v-for="(d, idx) in days" :key="idx" @click="selectDay(idx)" :class="{'on': d.on, 'day': d.d, 'selected': d.d == day && d.on}">{{ d.d }}</span>
+        </dd>
+    </dl>
+    <dl class="tab_panel" :class="{'noresult': !Linelists.length}" style="min-height: 100%;">
+        <dt class="tab_panel_title">
+            <label class="circle orange">考</label>勤信息
+        </dt>
+        <dd class="list_item cursor" v-for="(item,index) in Linelists" :key="index" :class="{'selected': lineId == item.LineId}" @click="selectItem(item)">
+            <p class="strong">{{item.LbsUserBaseInfo.USER_NAME}}</p>
+            <p>{{item.StartTime}}</p>
+            <p>共计：{{item.TimeLength}}小时&emsp;{{item.Distance}}公里</p>
+        </dd>
+    </dl>
     <div v-if="loading == 1" class="fullload"><i class="loading"></i></div>
 </div>
 <script>
@@ -40,19 +38,11 @@
                 days: [],
                 weeks: [[0, '日'],[1, '一'],[2, '二'],[3, '三'],[4, '四'],[5, '五'],[6, '六']],
                 Linelists: [],
-                lineId: '',
-                DetailInfo: {
-                    BaseInfo: null,
-                    GpsDisplayPoints: [],
-                    GpsInfos: []
-                }
+                lineId: ''
             },
             watch: {
                 month: function(v, o){
                     this.creatMonth()
-                },
-                lineId: function(v){
-                    v && this.getInfo();
                 }
             },
             created: function () {
@@ -131,22 +121,15 @@
                         lineId: self.lineId
                     }).done(function (info) {
                         GIS$.DrawToMap('road', self.options, info);
-                        self.DetailInfo.GpsDisplayPoints = info.GpsDisplayPoints || [];
-                        self.DetailInfo.GpsInfos = info.GpsInfos || [];
                         self.loading = 2;
                     });
                 },
                 selectItem: function(item){
                     this.lineId = item.LineId;
-                    this.DetailInfo.BaseInfo = item;
+                    this.getInfo();
                 },
                 backList: function(){
                     this.lineId = '';
-                    this.DetailInfo = {
-                        BaseInfo: {},
-                        GpsDisplayPoints: [],
-                        GpsInfos: []
-                    };
                 }
             }
         })

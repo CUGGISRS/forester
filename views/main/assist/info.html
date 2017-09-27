@@ -9,45 +9,32 @@
             <p>{{ info.tel }}</p>
             <p>{{ info.address || '' }}</p>
         </div>
-        <div class="distrible flex_1" v-else-if="info.kid == 'road'">
-            <p class="flex">
-                <span class="flex_1">{{info.date.split(' ')[0]}}</span>
-                <span>{{info.time}}</span>
-            </p>
-            <p class="flex">
-                <span class="flex_1">{{info.hour}}小时</span>
-                <span>{{info.km}}公里</span>
-            </p>
-            <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
+        <div class="distrible flex_1" v-else>
+            <template v-if="info.kid == 'road'">
+                <p class="flex">
+                    <span class="flex_1">{{info.date.split(' ')[0]}}</span>
+                    <span>{{info.time}}</span>
+                </p>
+                <p class="flex">
+                    <span class="flex_1">{{info.hour}}小时</span>
+                    <span>{{info.km}}公里</span>
+                </p>
+            </template>
+            <template v-else-if="info.kid == 'area'">
+                <p>{{info.areaname}}<span v-if="info.areacode">（{{info.areacode}}）</span></p>
+                <p>{{info.area}}亩</p>
+            </template>
+            <template v-else-if="info.kid == 'c119'">
+                <p>{{info.alarmname}}</p>
+                <p>{{info.date}}</p>
+            </template>
+            <template v-else-if="info.kid == 'hot'">
+                <p>{{info.hotname}}<span v-if="info.hotsource">（{{info.hotsource}}）</span></p>
+                <p>{{info.date}}</p>
+            </template>
+            <p class="whitespace">{{ info.userName || '　' }}<span v-if="info.tel">({{ info.tel }})</span></p>
         </div>
-        
-        <div class="distrible flex_1" v-else-if="info.kid == 'area'">
-            <p>
-                <span>{{info.areaname}}（{{info.areacode}}）</span>
-            </p>
-            <p>
-                <span>{{info.area}}亩</span>
-            </p>
-            <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
-        </div>
-        <div class="distrible flex_1" v-else-if="info.kid == 'c119'">
-            <p>
-                <span>{{info.alarmname}}</span>
-            </p>
-            <p>
-                <span>{{info.date}}</span>
-            </p>
-            <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
-        </div>
-        <div class="distrible flex_1" v-else-if="info.kid == 'hot'">
-            <p>
-                <span>{{info.hotname}}（{{info.hotsource}}）</span>
-            </p>
-            <p>
-                <span>{{info.date}}</span>
-            </p>
-            <p class="whitespace">{{ info.userName }}({{ info.tel }})</p>
-        </div>
+
         <div class="btnarea" :class="info.kid == 'forester' ? 'aselfcenter' : 'aselfend'">
             <p :style="info.kid != 'forester' ? 'margin-bottom: 4px' : ''">
                 <i class="icons icon_31" @click="showDialog"></i>
@@ -55,12 +42,12 @@
                 <i class="icons icon_33" @click="showDialog"></i>
             </p>
             <p v-if="info.kid == 'forester'">
-                <button>跟踪</button>
+                <button class="cursor" @click="trackHLY">跟踪</button>
             </p>
         </div>
     </div>
     <div class="tabs flex acenter">
-        <span v-for="(item,index) in menus" :key="index" @click="selectNav(index)" :class="{'selected': index==selected}">
+        <span class="flex_1" v-for="(item,index) in menus" :key="index" @click="selectNav(index)" :class="{'selected': index==selected}">
             <i class="icons" :class="item.clsName"></i>{{item.name}}
         </span>
     </div>
@@ -129,6 +116,9 @@
                         $('#panelnavdetail').append($('<div id="'+ targetId +'" class="h100 w100 hidden"></div>').load(item.link));
                     }
                     $('#' + targetId).show().siblings().hide();
+                },
+                trackHLY: function(){
+                    GIS$.trackOnHly(this.options.userId);
                 },
                 showDialog: function () {
                     $.ligerDialog.open({
