@@ -1180,3 +1180,7 @@ i.loading {
 #vue-openlayer-tips #rltDiv .table tr:nth-child(odd) {
   background: #f1f1f1;
 }
+#vue-openlayer-tips #rltDiv .table tr:hover {
+  background: #3997d6;
+  color: #fff;
+}
