@@ -112,12 +112,25 @@
                     </dd>
                 </dl>
                 <dl>
+                    <dt class="flex acenter"></dt>
+                    <dd class="flex wrap layermanger">
+                        <label class="whitespace" v-for="(item,index) in layers[0]" :key="index">
+                            <input type="checkbox" class="hidden" @change="layerManger(item, $event)">
+                            <i class="checkbox"></i>
+                            <span>
+                                <i class="icons vcenter" :class="item.clsName"></i>
+                                {{item.name}}
+                            </span>
+                        </label>
+                    </dd>
+                </dl>
+                <dl>
                     <dt class="flex acenter">
                         <span class="flex_1">森林资源</span>
                     </dt>
                     <dd class="flex wrap layermanger">
-                        <label class="whitespace" v-for="(item,index) in layers[0]" :key="index">
-                            <input type="checkbox" class="hidden" @change="layerManger(item)">
+                        <label class="whitespace" v-for="(item,index) in layers[1]" :key="index">
+                            <input type="checkbox" class="hidden" @change="layerManger(item, $event)">
                             <i class="checkbox"></i>
                             <span>
                                 <i class="icons vcenter" :class="item.clsName"></i>
@@ -131,8 +144,8 @@
                         <span class="flex_1">防火专题</span>
                     </dt>
                     <dd class="flex wrap layermanger">
-                        <label class="whitespace" v-for="(item,index) in layers[1]" :key="index">
-                            <input type="checkbox" class="hidden" @change="layerManger(item)">
+                        <label class="whitespace" v-for="(item,index) in layers[2]" :key="index">
+                            <input type="checkbox" class="hidden" @change="layerManger(item, $event)">
                             <i class="checkbox"></i>
                             <span>
                                 <i class="icons vcenter" :class="item.clsName"></i>
@@ -167,13 +180,15 @@
                 layers: [
                     [
                         {
+                            id: 'area',
+                            name: '巡护区',
+                            clsName: 'icon_74'
+                        }
+                    ],
+                    [
+                        {
                             id: '0',
                             name: '资源小班',
-                            clsName: 'icon_74'
-                        },
-                        {
-                            id: '1',
-                            name: '巡护区',
                             clsName: 'icon_74'
                         }
                     ],
@@ -309,7 +324,7 @@
                             break;
                     }
                 },
-                layerManger: function(item){
+                layerManger: function(item, target){
                     if(item == '2d') {
                         this.layerModal = '2d'
                         GIS$.switch2D();
@@ -317,11 +332,12 @@
                         this.layerModal = '3d'
                         GIS$.switch3D();
                     } else {
-                        console.log('layermanger', item);
+                        item.id == 'area' && GIS$.showXhqMap(target.target.checked);
                     }
                 },
                 toolsManger: function(item){
-                    console.log('toolManger', item);
+                    //清除
+                    item.id == 3 && GIS$.mapClear();
                 },
                 fullscreenchange: function (e) {
                     if ($('#app').hasClass("full-screen")) {

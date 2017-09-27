@@ -342,6 +342,26 @@
         var miao = value[2] || 0;
         return Math.abs(du) + "." + (Math.abs(fen)/60 + Math.abs(miao)/3600);
     }
+    /**
+     * 地图工具里清除
+     */
+    GIS$.mapClear = function(){
+        hlyMapService.mapClear();
+    };
+    
+    /**
+     * 图层面板里显示巡护区
+     */
+    GIS$.showXhqMap = function(bol){
+        hlyMapService.showHxqMap(bol || true);
+    };
+
+    /**
+     * 巡护区查询时
+     */
+    GIS$.enableRaiseXhqClickEvent = function(bol){
+        hlyMapService.enableRaiseXhqClickEvent(bol || true);
+    };
     /*==============================业务模块接口=============================*/
 
     /**

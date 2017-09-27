@@ -9,7 +9,7 @@
             <p class="flex group">
                 <label class="label">省</label>
                 <span class="flex_1 input">
-                    <select v-model="form.province" class="w100">
+                    <select v-model="form.province" class="w100" :disabled="disableds.province">
                         <option v-for="i in options.province" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
                     </select>
                 </span>
@@ -17,7 +17,7 @@
             <p class="flex group">
                 <label class="label">市</label>
                 <span class="flex_1 input">
-                    <select v-model="form.city" class="w100">
+                    <select v-model="form.city" class="w100" :disabled="disableds.city">
                         <option v-for="i in options.city" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
                     </select>
                 </span>
@@ -25,7 +25,7 @@
             <p class="flex group">
                 <label class="label">县</label>
                 <span class="flex_1 input">
-                    <select v-model="form.county" class="w100">
+                    <select v-model="form.county" class="w100" :disabled="disableds.county">
                         <option v-for="i in options.county" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
                     </select>
                 </span>
@@ -33,7 +33,7 @@
             <p class="flex group">
                 <label class="label">乡</label>
                 <span class="flex_1 input">
-                    <select v-model="form.village" class="w100">
+                    <select v-model="form.village" class="w100" :disabled="disableds.village">
                         <option v-for="i in options.village" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
                     </select>
                 </span>
@@ -160,6 +160,13 @@
                 btimeId: 'btime' + +new Date(),
                 etimeId: 'etime' + +new Date(),
                 cascade: ['province', 'city', 'county', 'village'],
+                disableds: {
+                    province: false,
+                    city: false,
+                    county: false,
+                    village: false
+                },
+                defVal: [],
                 form: {
                     province: '',
                     city: '',
@@ -200,7 +207,17 @@
                 }
             },
             created: function () {
-                this.initDistrict('province');
+                var self = this;
+                $.get(Home_Ctrl + 'GetAllParentOrganByOrganId', {
+                    organId: Prov_Code.OrganID
+                }).done(function(d){
+                    d.forEach(function(item, idx){
+                        var key = self.cascade[idx];
+                        self.defVal.push(item.ORGAN_ID);
+                        self.disableds[key] = true;
+                    })
+                    self.initDistrict('province');
+                })
             },
             mounted: function () {
                 $('#' + this.btimeId).ligerDateEditor({
@@ -214,9 +231,8 @@
                 initDistrict: function(key) {
                     var self = this;
                     var level = this.cascade.indexOf(key);
-                    var val = !level ? Prov_Code.OrganID : self.form[this.cascade[level - 1]];
+                    var val = !level ? '2' : self.form[this.cascade[level - 1]];
                     var url = level > 0 ? 'GetHomeSubOrganList' : 'GetHomeRootOrgan';
-
                     if(key && level != -1) {
                         this.cascade.forEach(function(item, idx) {
                             if(idx < level) return;
@@ -241,7 +257,7 @@
                 },
                 fillSelect: function(d, key, level){
                     this.options[key] = [{ "OrganID": "", "OrganName": "--请选择--" }].concat(d);
-                    level < 1 && (this.form.province = Prov_Code.OrganID);
+                    this.form[key] = this.defVal[level];
                 },
                 type119: function(i){
                     return TYPE119[i] || '其它'
@@ -252,7 +268,8 @@
                     this.form.btime = $('#' + this.btimeId).val();
                     this.form.etime = $('#' + this.etimeId).val();
                     sessionStorage.setItem('_panel_query_form_', JSON.stringify(this.form));
-
+                    
+                    GIS$.enableRaiseXhqClickEvent(false);
                     switch(pageId) {
                         case "road" :
                             this.filterRoad(); break;
@@ -293,13 +310,8 @@
                     });
                     //地图上显示巡护区
                     GIS$.getDistLineAndToShow(this.organId);
-
-                    //加载底图数据
-                    if(this.form.province == this.organId || this.form.city == this.organId){
-                        GIS$.onSearchAllXhqWithinProvinceAndCity();
-                    } else if(this.form.county == this.organId){
-                        GIS$.onSearchAllXhqWithinCounty();
-                    }
+                    //加载底图
+                    GIS$.enableRaiseXhqClickEvent(true);
                 },
                 //查询报警
                 filter119: function() {

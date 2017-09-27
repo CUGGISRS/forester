@@ -7,7 +7,7 @@ var QueryAttendance_Ctrl = IPServer + '/gdhly/QueryAttendance/';
 var QueryAlrma_Ctrl = IPServer + '/gdhly/QueryAlrma/';
 var QueryHotSpot_Ctrl = IPServer + '/gdhly/QueryHotSpot/';
 var ManagePatrol_Ctrl = IPServer + '/gdhly/ManagePatrol/';
-var Prov_Code = { "OrganID": 2, "OrganName": "广东省" };
+var Prov_Code = { "OrganID": '2', "OrganName": "广东省" };
 var TIMEOUT = '1000000';
 var MENUS = [
     {

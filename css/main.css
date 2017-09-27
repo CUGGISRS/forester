@@ -50,19 +50,19 @@ body {
   background-position: -60px -20px;
 }
 .icon_20 {
-  background-position: 0 -40px;
+  background-position: 0 -120px;
 }
 .icon_21 {
-  background-position: -40px -40px;
+  background-position: -40px -120px;
 }
 .icon_22 {
-  background-position: -80px -40px;
+  background-position: -80px -120px;
 }
 .icon_23 {
-  background-position: -120px -40px;
+  background-position: -120px -120px;
 }
 .icon_24 {
-  background-position: -160px -40px;
+  background-position: -160px -120px;
 }
 .icon_25 {
   background-position: -240px -40px;
@@ -164,19 +164,19 @@ body {
   background-position: -140px -80px;
 }
 .selected .icon_20 {
-  background-position: 0 -120px;
+  background-position: 0 -40px;
 }
 .selected .icon_21 {
-  background-position: -40px -120px;
+  background-position: -40px -40px;
 }
 .selected .icon_22 {
-  background-position: -80px -120px;
+  background-position: -80px -40px;
 }
 .selected .icon_23 {
-  background-position: -120px -120px;
+  background-position: -120px -40px;
 }
 .selected .icon_24 {
-  background-position: -160px -120px;
+  background-position: -160px -40px;
 }
 .selected .icon_39 {
   background-position: -160px -80px;
@@ -336,7 +336,7 @@ i.loading {
 }
 #mainNav {
   background: #323941;
-  color: #fff;
+  color: #7C8495;
   width: 6em;
 }
 #mainNav .logo_title {
@@ -349,7 +349,7 @@ i.loading {
 }
 #mainNav nav dd.selected {
   background: #2A2F35;
-  color: #7C8495;
+  color: #fff;
 }
 #mainNav nav dd .icons {
   width: 40px;
