@@ -323,7 +323,7 @@
     function gotoLocation(lat, lon) {
         typeof lat == 'object' && (lat = DegreeConvertBack(lat));
         typeof lon == 'object' && (lon = DegreeConvertBack(lon));
-        hlyMap.gotoLocation(lat, lon);
+        hlyMapService.gotoLocation(lat, lon);
     }
     GIS$.gotoLocation = gotoLocation;
 
