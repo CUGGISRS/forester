@@ -222,6 +222,19 @@
             //显示到界面
             var belongs = getPageId(e.themeBelongsTo);
             var curr = getPageId(e.layerType);
+            if(belongs) {
+                var nav = SECONDMENUS.filter(function(item){
+                    return item.id == belongs;
+                })[0];
+
+                nav && nav['panelMenus'].forEach(function(item, idx){
+                    if(e.layerType.indexOf(item.name) != -1){
+                        return sessionStorage.setItem('_panel_nav_selected_strong_', idx), true;
+                    }
+                    return false;
+                })
+            }
+            sessionStorage.setItem('_panel_nav_selected_strong_id_', curr + ':' + e.itemId);
             panelInfoShow(belongs || curr, e.itemIdBelongsTo || e.itemId);
         });
     }
@@ -264,6 +277,8 @@
 
     function getPageId(name){
         switch (name) {
+            case "护林员":
+                return 'forester';
             case "报警":
             case "报警图层":
                 return 'c119';

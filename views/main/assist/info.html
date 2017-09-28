@@ -100,9 +100,13 @@
                 var self = this;
                 var nav_selected_2 = sessionStorage.getItem('_2_nav_selected_');
                 var old_idx = sessionStorage.getItem('_panel_nav_selected_');
+                var strong_idx = sessionStorage.getItem('_panel_nav_selected_strong_');
                 this.selectNav(0);
-                if(this.info.kid == nav_selected_2) {
-                    self.selectNav(old_idx || 0);
+                if (strong_idx) {
+                    sessionStorage.removeItem('_panel_nav_selected_strong_');
+                    self.selectNav(strong_idx);
+                } else if(old_idx && this.info.kid == nav_selected_2) {
+                    self.selectNav(old_idx);
                 }
             },
             methods: {

@@ -68,6 +68,11 @@
             },
             created: function () {
                 this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
+                var mapId = sessionStorage.getItem('_panel_nav_selected_strong_id_');
+                if(mapId && mapId.indexOf('road:') != -1) {
+                    this.options.lineId = this.options.lineId || mapId.split(':')[1];
+                    sessionStorage.removeItem('_panel_nav_selected_strong_id_');
+                }
                 if (this.options.lineId) {
                     this.getInfo(this.options.lineId)
                 } else {

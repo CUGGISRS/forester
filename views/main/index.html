@@ -23,12 +23,27 @@
                     menus: SECONDMENUS,
                     selected: ''
                 },
+                watch: {
+                    selected: function (v){
+                        if (!v) {
+                            sessionStorage.removeItem('_2_nav_selected_');
+                            $('#mainPanel').fadeOut(400);
+                        } else {
+                            sessionStorage.setItem('_2_nav_selected_', v);
+                        }
+                        //清除不同面板下副面板的选中项
+                        sessionStorage.removeItem('_panel_nav_selected_');
+                    }
+                },
                 created: function () {
+                    var self = this;
                     $('#openlayerBtns').load('views/actions.html');
                     $('#openlayerFrame').on('click', '.panel .close', function(){
                         $(this).closest('.panel').fadeOut(400);
                         //关闭汇总信息
                         $(this).closest('#vue-assist-main').size() && Page.Actions.reset();
+                        // 关闭左侧主面板
+                        $(this).closest('#mainPanel').size() && (self.selected = '');
                     });
                     (function initMap(){
                         if (typeof Hly != 'undefined') {
@@ -40,22 +55,17 @@
                     })();
                     $('#openlayerTips').load('views/tips.html');
                 },
-                mounted: function () {
-                    //this.selectMenu(sessionStorage.getItem('_2_nav_selected_') || 'forester');
-                },
+                // mounted: function () {
+                //     this.selectMenu(sessionStorage.getItem('_2_nav_selected_') || 'forester');
+                // },
                 methods: {
                     selectMenu: function(val) {
-                        this.selected = val;
+                        this.selected = this.selected == val ? '' : val;
                         var self = this, targetId;
                         var item = this.menus.filter(function(item){
                             return item.id == val;
                         })[0];
                         if(!item) return;
-                        //离开时清除原有专题
-                        Page.destroyed && (Page.destroyed(), Page.destroyed = null);
-                        sessionStorage.setItem('_2_nav_selected_', val);
-                        //清除不同面板下副面板的选中项
-                        sessionStorage.removeItem('_panel_nav_selected_');
                         targetId = 'mainPanel_item_' + item.id;
                         if (!item.cached) {
                             item.cached = true;
