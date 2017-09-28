@@ -151,7 +151,6 @@
      */
     GIS$.DrawToMap = function(pageId, options, info) {
         var arr = getCurrPanelInfo(options);
-        console.log('DrawToMap', arr);
         switch(pageId){
             case 'forester':
                 alert('未处理');
@@ -221,10 +220,8 @@
     function mapClickEvent() {
         hlyMapService.on("themeLayerPointerClick", function (e) {
             //显示到界面
-            console.log("点击" + e.layerType, "项ID：" + e.itemId, "对象所属专题:" + e.themeBelongsTo, "所属专题ID:" + e.itemIdBelongsTo, "是否为专题要素对象:" + e.isThemeItem);
             var belongs = getPageId(e.themeBelongsTo);
             var curr = getPageId(e.layerType);
-
             panelInfoShow(belongs || curr, e.itemIdBelongsTo || e.itemId);
         });
     }
@@ -396,14 +393,12 @@
      * 打开轨迹专题
      */
     function startGjTheme(info) {
-        console.log('打开轨迹专题', info);
         hlyMapService.showGj(null, null, info);
     }
     /**
      * 添加轨迹到护林员专题
      */
     function addGjToTheme(name, id, info) {
-        console.log('添加轨迹到护林员专题', name, id, info);
         hlyMapService.showGj(name, id, info);
     }
 
@@ -450,7 +445,6 @@
      * 打开巡护区专题
      */
     function startXhqTheme(info) {
-        console.log('打开巡护区专题', info);
         hlyMapService.showXhq(null, null, info);
     }
 
@@ -458,7 +452,6 @@
      * 添加巡护区到护林员专题
      */
     function addXhqToTheme(name, id, info) {
-        console.log('添加巡护区到护林员专题', name, id, info);
         hlyMapService.showXhq(name, id, info);
     }
     /**
