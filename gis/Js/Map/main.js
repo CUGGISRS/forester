@@ -8,7 +8,7 @@
  */
 
 require.config({
-	baseUrl: BASEURL,           //依赖相对路径
+	baseUrl: 'gis/js/Map',           //依赖相对路径
     paths: {
         'loadImage': './Core/loadImage'
     }
