@@ -15,10 +15,10 @@ require.config({
 });
 
 require([
-    './hlymap/HlyMap',
-    './hlymap/HlyMapService',
-    './hlymap/LayerManager',
-    './hlymap/MapDataLoader',
+    '/hlymap/HlyMap',
+    '/hlymap/HlyMapService',
+    '/hlymap/LayerManager',
+    '/hlymap/MapDataLoader',
 ], function (HlyMap, HlyMapService, LayerManager, MapDataLoader) {
     'use strict';
     /**
