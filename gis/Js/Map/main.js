@@ -10,7 +10,7 @@
 require.config({
 	baseUrl: BASEURL,           //依赖相对路径
     paths: {
-        'loadImage': './Core/loadImage'
+        'loadImage': './core/loadImage'
     }
 });
 
