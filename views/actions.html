@@ -6,7 +6,7 @@
             </button>
         </div>
     </div>
-    <div class="single">
+    <div class="single" id="layer-actions">
         <div class="block flex_1">
             <div class="tabs flex">
                 <!--
@@ -20,15 +20,15 @@
                 <button class="item cursor" @click="taggleBtn(3)" :class="{'selected': selected==3}">
                     <i class="icons icon_63"></i> 图层
                 </button>
-              <!--  <button v-if="layerModal == '2d'" class="item cursor" @click="taggleBtn(4)" :class="{'selected': selected==4}"> -->
-                    <button  class="item cursor" @click="taggleBtn(4)" class="{'selected': selected==4}">
-                        <i class="icons icon_64"></i> 工具
-                        <dl class="toolDiv absolute bottom left w100 bbox bgfff" v-if="selected==4">
-                            <dd v-for="(item,index) in tools" @click="toolsManger(item)">
-                                <i class="icons" class="item.clsName"></i> {{item.name}}
-                            </dd>
-                        </dl>
-                    </button>
+                <!-- <button v-if="layerModal == '2d'" class="item cursor" @click="taggleBtn(4)" :class="{'selected': selected==4}"> -->
+                <button class="item cursor" @click="taggleBtn(4)" class="{'selected': selected==4}">
+                    <i class="icons icon_64"></i> 工具
+                    <dl class="toolDiv absolute bottom left w100 bbox bgfff" v-if="selected==4">
+                        <dd v-for="(item,index) in tools" @click="toolsManger(item)">
+                            <i class="icons" :class="item.clsName"></i> {{item.name}}
+                        </dd>
+                    </dl>
+                </button>
                 <button class="item cursor" @click="taggleBtn(5)" :class="{'selected': selected==5}">
                     <i class="icons icon_65"></i> 全屏
                 </button>
@@ -116,7 +116,7 @@
                 </dl>
                 <dl>
                     <dt class="flex acenter"></dt>
-                    <dd class="flex wrap layermanger">
+                    <dd class="flex wrap layermanger columns2">
                         <label class="whitespace" v-for="(item,index) in layers[0]" :key="index">
                             <input type="checkbox" class="hidden" v-model="item.val" @change="layerManger(item)">
                             <i class="checkbox"></i>
@@ -131,7 +131,7 @@
                     <dt class="flex acenter">
                         <span class="flex_1">森林资源</span>
                     </dt>
-                    <dd class="flex wrap layermanger">
+                    <dd class="flex wrap layermanger columns2">
                         <label class="whitespace" v-for="(item,index) in layers[1]" :key="index">
                             <input type="checkbox" class="hidden" @change="layerManger(item, $event)">
                             <i class="checkbox"></i>
@@ -146,7 +146,7 @@
                     <dt class="flex acenter">
                         <span class="flex_1">防火专题</span>
                     </dt>
-                    <dd class="flex wrap layermanger">
+                    <dd class="flex wrap layermanger columns2"> <!--要显示三列改成columns3-->
                         <label class="whitespace" v-for="(item,index) in layers[2]" :key="index">
                             <input type="checkbox" class="hidden" @change="layerManger(item, $event)">
                             <i class="checkbox"></i>
@@ -294,17 +294,36 @@
                 document.addEventListener("msfullscreenchange", this.fullscreenchange);
             },
             mounted: function () {
-                this.selected = 0;
-                this.layerManger({
-                    id: 'area',
-                    val: true
-                });
                 var self = this;
-                $(document).mouseover(function (e) {
-                    $(e.target).closest('#openlayerBtns').size() < 1 && self.reset();
-                });
+                document.getElementById('layer-actions').onmouseout = function(e){
+                    var obj = this;
+                    var related = getRelated(e);
+                    if (obj != related && !contains(obj, related) && self.selected) {
+                        self.reset();
+                    }
+                    function contains(a, b) {
+                        return a.contains ? a != b && a.contains(b) : !! (a.compareDocumentPosition(b) & 16);
+                    }
+                    function getRelated(e) {
+                        var related, type = (e.type || '').toLowerCase();
+                        if (type == 'mouseover') {
+                            related = e.relatedTarget || e.fromElement
+                        } else if (type = 'mouseout') {
+                            related = e.relatedTarget || e.toElement
+                        }
+                        return related;
+                    }
+                }
+                this.initOpen();
             },
             methods: {
+                initOpen: function () {
+                    this.selected = 0; //初始打开统计
+                    this.layerManger({ //初始选中巡护区图层
+                        id: 'area',
+                        val: true
+                    });
+                },
                 taggleBtn: function (i) {
                     if(this.selected == i) {
                         this.selected = -1;
@@ -317,7 +336,7 @@
                 },
                 loadPanel: function (bol) {
                     this.selected = bol ? 0 : this.selected;
-                    bol ? $('#assistPanel').load('views/main/assist/main.html').fadeIn(400) : $('#assistPanel').hide();
+                    bol ? $('#assistPanel').addClass('fixedHeight').load('views/main/assist/main.html').fadeIn(400) : $('#assistPanel').hide();
                 },
                 reset: function () {
                     this.selected = -1;
@@ -325,7 +344,7 @@
                 gotoGPS: function(){
                     switch (this.gpsIdx) {
                         case 0: 
-                            $.get(Home_Ctrl + "/GetPalceByName", { name: this.gps.address }).done(function (data) {    GIS$.poiItemsShow(data); });
+                            $.get(Home_Ctrl + "GetPalceByName", { name: this.gps.address }).done(function (data) { GIS$.poiItemsShow(data); });
                             break;
                         case 1:
                             GIS$.gotoLocation([this.gps.ed, this.gps.ef, this.gps.em], [this.gps.nd, this.gps.nf, this.gps.nm]);

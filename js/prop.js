@@ -28,6 +28,36 @@ String.prototype.toFixed = function (l) {
     return parseFloat(this || 0).toFixed(l || 2);
 };
 
+String.prototype.toDfm = function (l) {
+    if(this.indexOf('.') != -1) {
+        return formatDegree(this);
+    } else {
+        return this;
+    }
+    function formatDegree(value) {
+        value = Math.abs(value);
+        var v1 = Math.floor(value);
+        var v2 = Math.floor((value - v1) * 60);
+        var v3 = Math.round((value - v1) * 3600 % 60);
+        return v1 + '°' + v2 + '\'' + v3 + '"';
+    }
+};
+
+Number.prototype.toDfm = function (l) {
+    if(this) {
+        return formatDegree(this);
+    } else {
+        return this;
+    }
+    function formatDegree(value) {
+        value = Math.abs(value);
+        var v1 = Math.floor(value);
+        var v2 = Math.floor((value - v1) * 60);
+        var v3 = Math.round((value - v1) * 3600 % 60);
+        return v1 + '°' + v2 + '\'' + v3 + '"';
+    }
+};
+
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function (from, to) {
     var rest = this.slice((to || from) + 1 || this.length);

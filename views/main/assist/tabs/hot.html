@@ -7,7 +7,7 @@
             {{detail.HOTSPOT_SITE}}
         </dd>
         <dd class="list_item_padding">
-            E{{detail.LONGITUDE}}&emsp; N{{detail.LATITUDE}}
+            E{{(detail.LONGITUDE||0).toDfm()}}&emsp; N{{(detail.LATITUDE||0).toDfm()}}
         </dd>
     </dl>
     <dl class="tab_panel">
@@ -65,6 +65,7 @@
                     }).done(function (d) {
                         self.detail = d || [];
                         GIS$.DrawToMap('hot', self.options, d);
+                    }).always(function(){
                         self.loading = 2;
                     });
                 }

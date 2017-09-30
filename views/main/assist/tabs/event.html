@@ -1,5 +1,5 @@
-<div id="assist_tab_event" class="relative">
-    <dl class="tab_panel">
+<div id="assist_tab_event" class="relative h100">
+    <dl class="tab_panel" :class="{'noresult mh50': !AlarmInfoList.length}">
         <dt class="tab_panel_title">
             <label class="circle red">报</label>警信息
         </dt>
@@ -7,7 +7,7 @@
             {{item.ALARMTIME.Date('yyyy-MM-dd hh:ss')}}（{{type119(item.ALARMTYPE)}}）
         </dd>
     </dl>
-    <dl class="tab_panel">
+    <dl class="tab_panel" :class="{'noresult mh50': !HotList.length}">
         <dt class="tab_panel_title">
             <label class="circle orange">热</label>点信息
         </dt>
@@ -45,6 +45,7 @@
                         day:2, dayuserId: options.userId
                     }).done(function (d) {
                         self.AlarmInfoList = d;
+                    }).always(function(){
                         self.loading = 2;
                     });
 
@@ -52,6 +53,7 @@
                         userId: options.userId
                     }).done(function (d) {
                         self.HotList = d;
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },

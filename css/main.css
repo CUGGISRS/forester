@@ -6,7 +6,7 @@ body {
   width: 20px;
   height: 20px;
   background: url(../img/icons.png) no-repeat 0 0;
-  cursor:pointer;
+  cursor: pointer;
 }
 .icon_00 {
   background-position: 0 0;
@@ -223,7 +223,7 @@ i.loading {
   width: 32px;
   height: 32px;
   margin: auto;
-  background: url(../img/load.gif) no-repeat center center;
+  background: url(../img/load.gif) no-repeat center 40%;
 }
 .fullload {
   position: absolute;
@@ -331,9 +331,15 @@ i.loading {
   margin-left: -1px;
 }
 .noresult {
-  background: url(../img/noresult.png) no-repeat center 30%;
-  background-size: 30px 30px;
   opacity: .8;
+}
+.noresult:after {
+  content: "暂无数据";
+  display: block;
+  margin-top: 2em;
+  text-align: center;
+  line-height: 3;
+  color: #888;
 }
 .full-screen #mainNav {
   display: none;
@@ -799,17 +805,22 @@ i.loading {
 }
 #openlayerBtns .layersDiv .layermanger label {
   position: relative;
-  width: 36%;
   font-size: 12px;
 }
 #openlayerBtns .layersDiv .layermanger label .vcenter {
   vertical-align: -6px;
 }
-#openlayerBtns .layersDiv .layermanger label:nth-child(3n+2) {
+#openlayerBtns .layersDiv .layermanger.columns3 label {
+  width: 36%;
+}
+#openlayerBtns .layersDiv .layermanger.columns3 label:nth-child(3n+2) {
   width: 30%;
 }
-#openlayerBtns .layersDiv .layermanger label:nth-child(3n+3) {
+#openlayerBtns .layersDiv .layermanger.columns3 label:nth-child(3n+3) {
   width: 34%;
+}
+#openlayerBtns .layersDiv .layermanger.columns2 label {
+  width: 50%;
 }
 #openlayerBtns .toolDiv {
   -webkit-transform: translateY(100%);
@@ -826,11 +837,17 @@ i.loading {
 }
 #assistPanel {
   display: none;
-  width: 18em;
-  height: -webkit-calc(100vh - 260px);
-  height: calc(100vh - 260px);
+  width: 19em;
+  height: -webkit-calc(100vh - 335px);
+  height: calc(100vh - 335px);
   top: 70px;
   right: 96px;
+}
+#assistPanel.fixedHeight {
+  height: 480px;
+  width: 21.7em;
+  max-height: -webkit-calc(100vh - 335px);
+  max-height: calc(100vh - 335px);
 }
 #assistPanel .title {
   color: #588AA1;

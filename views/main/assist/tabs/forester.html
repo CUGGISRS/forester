@@ -51,8 +51,8 @@
             {{info.GpsInfo.COLLECTTIME.Date()}}（{{info.GpsInfo.PROVIDER}}定位）
         </dd>
         <dd class="list_item_padding">
-            E{{info.GpsInfo.LONGITUDE}}&emsp;
-            N{{info.GpsInfo.LATITUDE}}
+            E{{info.GpsInfo.LONGITUDE.toDfm()}}&emsp;
+            N{{info.GpsInfo.LATITUDE.toDfm()}}
         </dd>
         <dd class="list_item_padding">
            {{info.GpsInfo.ADDRESS}}
@@ -63,8 +63,8 @@
             <label class="circle red">报</label>警信息（48小时内）
         </dt>
         <dd class="list_item_padding" v-for="(item,index) in info.AlarmInfoList" :key="index">
-           {{item.LONGITUDE}} {{item.LATITUDE}} <br>
-           {{item.ALARMTIME}}（{{item.ALARMTYPE}}）
+           {{item.LONGITUDE.toDfm()}} {{item.LATITUDE}} <br>
+           {{item.ALARMTIME.toDfm()}}（{{item.ALARMTYPE}}）
         </dd>
     </dl>
     <dl class="tab_panel" v-if="info.NoticeList.length">
@@ -113,6 +113,7 @@
                         isOnline: self.options.isOnline || false
                     }).done(function (d) {
                         self.setInfo(d);
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },

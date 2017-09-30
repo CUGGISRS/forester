@@ -5,6 +5,7 @@ body{
     display: inline-block;
     width: 20px; height: 20px;
     background: url(../img/icons.png) no-repeat 0 0;
+    cursor: pointer;
 }
 .icon_00{ background-position: 0 0;}
 .icon_01{ background-position: -20px 0;}
@@ -26,6 +27,7 @@ body{
 .icon_22{ background-position: -80px -120px; }
 .icon_23{ background-position: -120px -120px; }
 .icon_24{ background-position: -160px -120px; }
+.icon_241{ background-position: -200px -120px; }
 
 .icon_25{ background-position: -240px -40px; }
 
@@ -102,7 +104,7 @@ body{
 }
 i.loading{
     display: inline-block; width:32px; height: 32px; margin: auto;
-    background: url(../img/load.gif) no-repeat center center;
+    background: url(../img/load.gif) no-repeat center 40%;
 }
 .fullload{
   position: absolute;
@@ -191,9 +193,17 @@ i.loading{
     }
 }
 .noresult{
-    background: url(../img/noresult.png) no-repeat center 30%;
-    background-size: 30px 30px;
+    // background: url(../img/noresult.png) no-repeat center 30%;
+    // background-size: 30px 30px;
     opacity: .8;
+    &:after{
+        content: "暂无数据";
+        display: block;
+        margin-top: 2em;
+        text-align: center;
+        line-height: 3;
+        color: #888;
+    }
 }
 
 .full-screen{
@@ -480,7 +490,7 @@ i.loading{
     .single{
         & + .single{
             margin-left: 5px;
-            width: 24em;
+            width: 19em;
         }
     }
     .item{
@@ -605,13 +615,23 @@ i.loading{
         .layermanger{
             label{
                 position: relative;
-                width: 36%; font-size: 12px;
+                font-size: 12px;
                 .vcenter{ vertical-align: -6px; }
-                &:nth-child(3n+2){
-                    width: 30%;
+            }
+            &.columns3{
+                label{
+                    width: 36%; 
+                    &:nth-child(3n+2){
+                        width: 30%;
+                    }
+                    &:nth-child(3n+3){
+                        width: 34%;
+                    }
                 }
-                &:nth-child(3n+3){
-                    width: 34%;
+            }
+            &.columns2{
+                label{
+                    width: 50%;
                 }
             }
         }
@@ -633,10 +653,15 @@ i.loading{
 
 #assistPanel{
     display: none;
-    width: 18em;
-    height: -webkit-calc(~"100vh - 260px");
-    height: calc(~"100vh - 260px");
-    top: 70px; right: 70px;
+    width: 19em;
+    height: -webkit-calc(~"100vh - 335px");
+    height: calc(~"100vh - 335px");
+    top: 70px; right: 96px;
+    &.fixedHeight{
+        height: 480px; width: 21.7em;
+        max-height: -webkit-calc(~"100vh - 335px");
+        max-height: calc(~"100vh - 335px");
+    }
     .title{color: #588AA1; padding-left: .6em;}
     .maininfo{
         font-size: 13px;

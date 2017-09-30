@@ -254,6 +254,10 @@ textarea {
     height: 100%!important;
 }
 
+.mh50{
+    min-height: 50%!important;
+}
+
 .h100vh {
     height: 100vh!important;
 }
@@ -261,7 +265,6 @@ textarea {
 .w100 {
     width: 100%!important;
 }
-
 .w100vw {
     width: 100vw!important;
 }

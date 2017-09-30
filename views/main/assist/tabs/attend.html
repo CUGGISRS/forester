@@ -92,6 +92,7 @@
                         time: time
                     }).done(function (d) {
                         self.Linelists = d || [];
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },
@@ -111,6 +112,7 @@
                                 }
                             }, this);
                         }, this);
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },
@@ -121,6 +123,7 @@
                         lineId: self.lineId
                     }).done(function (info) {
                         GIS$.DrawToMap('road', self.options, info);
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },

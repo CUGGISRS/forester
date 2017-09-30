@@ -40,7 +40,7 @@
                 <dd class="list_item" v-for="(item,index) in DetailInfo.GpsDisplayPoints" :key="index">
                     <p><i class="iconfont icon-dingwei"></i><span>{{item.COLLECTTIME.Date()}}</span></p>
                     <p>{{item.ADDRESS}}</p>
-                    <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
+                    <p>E{{item.LONGITUDE.toDfm()}}&emsp;N{{item.LATITUDE.toDfm()}}</p>
                 </dd>
             </dl>
         </div>
@@ -89,6 +89,7 @@
                         userId: self.options.userId
                     }).done(function (d) {
                         self.lists = d || [];
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },
@@ -100,6 +101,7 @@
                         lineId: lineId
                     }).done(function (d) {
                         self.setInfo(d);
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },

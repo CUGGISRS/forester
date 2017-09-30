@@ -87,7 +87,7 @@
                 //关闭简要信息
                 Page.Actions.reset();
                 window.setTimeout(function(){
-                    $('#assistPanel').load('views/main/assist/info.html').fadeIn(400);
+                    $('#assistPanel').removeClass('fixedHeight').load('views/main/assist/info.html').fadeIn(400);
                 })
             }
         })();

@@ -29,8 +29,8 @@
                     <td>{{(item.LbsUserBaseInfo[0]||{}).USER_NAME}}</td>
                     <td>{{item.HOTSPOT_SOURCE}}</td>
                     <td>{{item.REPORT_TIME.Date('hh:mm')}}</td>
-                    <td>{{item.LONGITUDE}}</td>
-                    <td>{{item.LATITUDE}}</td>
+                    <td>{{item.LONGITUDE.toDfm()}}</td>
+                    <td>{{item.LATITUDE.toDfm()}}</td>
                     <td class="tleft">{{item.HOTSPOT_SITE}}</td>
                 </tr>
             </table>
@@ -47,8 +47,8 @@
                     <td>{{item.LBSUSERINFO.USER_NAME}}</td>
                     <td>{{type119(item.ALARMTYPE)}}</td>
                     <td>{{item.ALARMTIME.Date('hh:mm')}}</td>
-                    <td>{{item.LONGITUDE}}</td>
-                    <td>{{item.LATITUDE}}</td>
+                    <td>{{item.LONGITUDE.toDfm()}}</td>
+                    <td>{{item.LATITUDE.toDfm()}}</td>
                     <td class="tleft">{{item.ORGAN_NAME}}</td>
                 </tr>
             </table>

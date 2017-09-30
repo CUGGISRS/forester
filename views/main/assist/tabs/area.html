@@ -32,7 +32,7 @@
                     <ul class="num">
                         <li class="list_item" v-for="(item,index) in DetailInfo.PatrolPoints" @click="selectPoint(item)" :key="index">
                             <p><span class="strong">{{item.POINTNAME}}</span>({{item.POINTNO}})</p>
-                            <p>E{{item.LONGITUDE}}&emsp;N{{item.LATITUDE}}</p>
+                            <p>E{{item.LONGITUDE.toDfm()}}&emsp;N{{item.LATITUDE.toDfm()}}</p>
                         </li>
                     </ul>
                 </dd>
@@ -86,6 +86,7 @@
                         } else {
                             self.lists = lists;
                         }
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },
@@ -97,6 +98,7 @@
                         patrolAreaId: areaId
                     }).done(function (d) {
                         self.setInfo(d);
+                    }).always(function(){
                         self.loading = 2;
                     });
                 },
