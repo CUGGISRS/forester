@@ -14,8 +14,6 @@ define([
      */
     var HlyMap = function (option) {
         this._option = option;
-        this._getCurrentLocationZoneUrl = option.getCurrentLocationZoneUrl;
-        this._xhqMapUrl = option.xhqMapUrl;
     };
     //集成自EventObject类
     HlyMap.prototype = new EventObject();
@@ -46,15 +44,6 @@ define([
         tmpLayerDataSource: {
             get: function () {
                 return this._tmpLayer.getSource();
-            }
-        },
-
-        /**
-         * 临时图层（底图用）数据源
-         */
-        tmpBaseMapLayerDataSource: {
-            get: function () {
-                return this._tmpLayer2.getSource();
             }
         },
 
@@ -128,15 +117,6 @@ define([
             get: function () {
                 return this._baseLayerContainer;
             }
-        },
-
-        /**
-         * 巡护区地图服务图层
-         */
-        xhqBaseMapLayer: {
-            get: function () {
-                return this._xhqBaseMapLayer;
-            }
         }
 
     });
@@ -146,21 +126,21 @@ define([
      */
     HlyMap.prototype.init = function () {
         this._contMap = new Cont.ContMap({
-            baseMapUrls: {
-            	map2D: {
-            		normal: this._option.baseMapUrls,
-            		satellite: []
-            	},
-            	map3D: this._option.baseMapUrls
-            },
+             baseMapUrls: {
+             map2D: {
+             normal: this._option.baseMapUrls,
+             satellite: []
+             },
+             map3D: this._option.baseMapUrls
+             }, 
             mapContainer: this._option.mapContainer,
             terrainProviderUrl: this._option.terrainProviderUrl,
             isContTmsTerrain: this._option.isContTmsTerrain,
             initView: {
                 center: [113.15, 23.23],
                 zoom: 7,
-                project: 'EPSG:4326',
-                minResolution: (5.3644181298507004e-6) / 2
+                project: 'EPSG:4326'
+
             },
             widgets: {
                 viewModeSwitcher: false,
@@ -194,29 +174,14 @@ define([
         //8、关键点业务图层
         this._gjdTmpLayer = this._layerManager.gjdLayer;
         this._layerManager.themePointLayerGroup.getLayers().push(this._gjdTmpLayer);
-        //9、临时图层（上）
+        //9、临时图层
         this._tmpLayer = this._layerManager.tmpLayer;
         this._layerManager.themePlyLayerGroup.getLayers().push(this._tmpLayer);
-        //9、临时图层（下）
-        this._tmpLayer2 = this._layerManager.getTmpLayer();
-        this._tmpLayer2.name = "临时图层（下）";
-        this._baseLayerContainer.getLayers().push(this._tmpLayer2);
-        //10、巡护区地图底图EsriOfflineDataSource
-        this._xhqBaseMapLayer = new ol.layer.Tile({
-            source: new Cont.EsriOfflineDataSource({
-                url: this._xhqMapUrl,
-                format: "png",
-                projection: ol.proj.get('EPSG:4326')
-            })
-        });
-        this._baseLayerContainer.getLayers().push(this._xhqBaseMapLayer);
 
 
         //低高度、倾斜看时，开启DepthTest，以便用山遮蔽图形
         //camera.readonlypositionWC   pitch
 
-
-        var $MapDomObj = $("#"+this._contMap.scene.map2d.getTarget());
         //地图针对鼠标的事件响应
         var that = this;
         //鼠标放置时高亮处理
@@ -275,7 +240,7 @@ define([
                 }
             }
 
-            $MapDomObj[0].style.cursor = "";
+
             if (olLayer) {
                 //高亮显示
                 var layerDataSource;
@@ -288,100 +253,29 @@ define([
                 if (feature && layerDataSource instanceof LayerBaseDataSource) {
                     //高亮
                     layerDataSource.setHighLight(feature.getId());
-                    $MapDomObj[0].style.cursor = "pointer";
                 }
             }
         });
 
         //计算默认的图形最佳视角显示像素宽度
-        var mapSize = this._contMap.scene.map2d.getSize();
-        var padding = .16 * mapSize[0];
-        var pixelWidth = mapSize[0] - padding * 2;
+        var padding = .16 * this._contMap.scene.map2d.getSize()[0];
+        var pixelWidth = this._contMap.scene.map2d.getSize()[0] - padding * 2;
         baseUtil.defaultGraphicShowWith = pixelWidth;
-        var padding2 = .16 * mapSize[1];
-        var pixelheight = mapSize[1] - padding2 * 2;
-        baseUtil.defaultGraphicShowHeight = pixelheight;
-
-        //当前地图范围方位地名变更事件（locationNameChanged）
-        this._contMap.scene.map2d.on('moveend', function (e) {
-            var centerPoint = that._contMap.scene.map2d.getView().getCenter();
-            var level = that._contMap.scene.map2d.getView().getZoom();
-            // 16 - Math.round(Math.log(Math.round(that._contMap.scene.map2d.getView().getResolution() / 2.38865713397468)) / Math.log(2));
-            var x = centerPoint[0];
-            var y = centerPoint[1];
-            //获取当前位置区域信息
-            if (that._getCurrentLocationZoneUrl) {
-                $.get(that._getCurrentLocationZoneUrl, {
-                    x: x,
-                    y: y,
-                    level: level,
-                }, function (data) {
-                    //获取到当前位置信息后，触发事件
-                    that.raiseEvent(data, "locationNameChanged");
-                });
-            }
-        });
-
     };
 
     /**
-     * 地图显示分辨率控制（与当前比显示最详细地图）
-     * @param resolution
+     * 跳转到坐标点位
+     * @param x 经度
+     * @param y 纬度
+     * @param resolution 分辨率，默认为村级
      */
-    HlyMap.prototype.setSmartResolution = function (resolution) {
-        var currentResolution = this._contMap.scene.map2d.getView().getResolution();
-        resolution = resolution > currentResolution ? currentResolution : resolution;
+    HlyMap.prototype.gotoLocation = function (x, y, resolution) {
+        this._contMap.viewControl.jumpTo([x, y]);
+        if (!resolution) {
+            resolution = 8.583069007761132E-5;
+        }
         this._contMap.viewControl.setResolution(resolution);
-    };
-
-    /**
-     * 居中显示设置（含视野内跳转逻辑控制）
-     * @param geometry
-     * @param mustJump
-     * @param paddings
-     * @return {boolean}
-     */
-    HlyMap.prototype.setSmartCenter = function (geometry, mustJump, paddings) {
-        //强制跳转情况
-        if (mustJump) {
-            this._contMap.viewControl.jumpTo(geometry, paddings);
-            return true;
-        }
-        //非强制跳转情况
-        var point;
-        var extent;
-        if (geometry instanceof Array && geometry.length === 4) {
-            extent = geometry;
-        } else if (geometry instanceof Array && geometry.length === 2) {
-            point = geometry;
-        } else if (geometry.getType() === "Point") {
-            point = geometry.getCoordinates();
-        } else if (geometry.getType() === "Polygon") {
-            extent = geometry.getExtent();
-        } else if (geometry.getType() === "MultiPolygon") {
-            extent = geometry.getExtent();
-        }
-        //根据当前地图空间范围，缩放到图层范围决定是否跳转
-        var mapExtent = this._contMap.viewControl.getExtent();
-        var contains;
-        if (point) {
-            //是点对象
-            contains = ol.extent.containsCoordinate(mapExtent, point);
-        }
-        if (extent) {
-            //是范围对象
-            contains = ol.extent.containsExtent(mapExtent, extent);
-        }
-        //被包含但视野比较高或不被包含才进行跳转
-        var currentResolution = this._contMap.scene.map2d.getView().getResolution();
-        if (!contains || (contains && currentResolution > 8.5830690077611316e-005 * 2)) {
-            //居中或缩放并居中
-            this._contMap.viewControl.jumpTo(geometry, paddings);
-            return true;
-        } else {
-            return false;
-        }
-    };
+    }
 
     return HlyMap;
 });

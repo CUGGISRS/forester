@@ -69,7 +69,7 @@
             },
             created: function () {
                 var self = this;
-                $.get(Home_Ctrl + 'GetHomeCount').done(function (d) {
+                $.get(Home_Ctrl + 'GetHomeCount?day=100').done(function (d) {
                     self.num = d;
                 });
             },
@@ -85,18 +85,16 @@
                     var self = this;
                     if(idx == 'hot' && !this.Hots.length) {
                         self.loading = 1;
-                        $.get(QueryHotSpot_Ctrl + 'GetHotspotList', {
-                            sTime: '2017-01-01',
-                            eTime: '2017-10-10'
+                        $.get(QueryHotSpot_Ctrl + 'GetHotspotNextDayByOrganId', {
+                            day: 100 
                         }).done(function (d) {
                             self.Hots = d;
                             self.loading = 2;
                         });
                     } else if(idx == 'c119' && !this.C119s.length) {
                         self.loading = 1;
-                        $.get(QueryAlrma_Ctrl + 'GetAlarmsByOrgan', {
-                            sTime: '2017-01-01',
-                            eTime: '2017-10-10'
+                        $.get(QueryAlrma_Ctrl + 'GetAlarmNextDayByOrganId', {
+                            day: 100
                         }).done(function (d) {
                             self.C119s = d;
                             self.loading = 2;

@@ -42,7 +42,7 @@ define([
         var widthOption = {
             normal: 4,
             selected: 8,
-            highlight: 8,
+            highlight: 6,
         };
         var width = widthOption[iconState];
 

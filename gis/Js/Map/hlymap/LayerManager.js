@@ -146,21 +146,7 @@
             get: function () {
                 if (!this._tmpLayer) {
                     //创建该图层
-                    this._tmpLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector(),
-                    });
-					//贴地
-                    this._tmpLayer.set("altitudeMode", "clampToGround");
-					//三维宽度
-                    this._tmpLayer.getCorridorGeometryWidth = function (feature) {
-                    	//最佳显示
-                    	var extent = feature.getGeometry().getExtent();
-                    	//转换成3857
-                    	extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857");
-                    	var resolution = (extent[2] - extent[0]) / baseUtil.defaultGraphicShowWith;
-                    	return resolution * 8;
-                    };
-
+                    this._tmpLayer =this.getTmpLayer();
 				}
                 return this._tmpLayer;
             }
@@ -309,6 +295,30 @@
         hlyLayerCluster.init();
         return hlyLayerCluster;
     };
+
+    /**
+     * 创建临时图层
+     * @return {ol.layer.Vector}
+     */
+    LayerManager.prototype.getTmpLayer=function () {
+        //创建该图层
+        var tmpLayer = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+        });
+        tmpLayer.LayerType="临时图层";
+        //贴地
+        tmpLayer.set("altitudeMode", "clampToGround");
+        //三维宽度
+        tmpLayer.getCorridorGeometryWidth = function (feature) {
+            //最佳显示
+            var extent = feature.getGeometry().getExtent();
+            //转换成3857
+            extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857");
+            var resolution = (extent[2] - extent[0]) / baseUtil.defaultGraphicShowWith;
+            return resolution * 8;
+        };
+        return tmpLayer;
+    }
 
 
     return LayerManager;

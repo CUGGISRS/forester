@@ -1,38 +1,106 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-      <title>弹窗组件</title>     
-    <meta name="keywords" content="免费控件,免费UI控件,免费开源UI,免费开源UI控件,免费开源UI框架,弹窗组件,dialog,jquery弹窗" />
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .dialog {
+            font-size: 14px;
+            padding: 1rem 2rem;
+        }
+
+        .buttons input {
+            outline: none;
+            border: none;
+            color: #fff;
+            height: 25px;
+            width: 60px;
+            border-radius: 3px;
+            background: #4BA9E0;
+            cursor: pointer;
+            margin-right: 2rem;
+        }
+
+            .buttons input:active {
+                background: #64E04B;
+            }
+
+        div.text_section textarea {
+            resize: none;
+            height: 15rem;
+            width: 100%;
+            border-radius: 3px;
+            outline: none;
+            border: 1px solid #ddd;
+            text-indent: 12px;
+            margin-bottom: 1rem;
+            vertical-align: top;
+            padding: 0.5rem;
+            box-sizing: border-box;
+        }
+
+        div.buttons {
+            text-align: center;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>弹窗组件</title>
+    <meta name="keywords" />
+    <script src="../../libs/jquery-1.9.0.min.js"></script>
+    <script src="../../js/config.js"></script>
     <script type="text/javascript">
         var dialog = frameElement.dialog; //调用页面的dialog对象(ligerui对象)
-       
-     
-        
-        function setTitle()
-        {
+
+
+        function setTitle() {
             dialog.set('title', '新标题'); //设置标题
         }
-        function closeDialog()
-        {
-            dialog.close();//关闭dialog 
+
+        function closeDialog() {
+            dialog.close(); //关闭dialog
         }
-        function showDialogData()
-        {
-            var dialogData = dialog.get('data');//获取data参数
-   
+
+        function showDialogData() {
+            var dialogData = dialog.get('data'); //获取data参数
+
 
             document.getElementById("message").innerHTML = "dialog.get('data'):" + dialogData.name + "<br>dialog.get('myDataName'):" + dialog.get('myDataName');
         }
 
-        
+        function send() {
+            var message = $("#Message").val();
+            if (message === "") {
+                $("#Message").html("请填写通告内容。");
+                return;
+            }
+            var userId = dialog.get('userId');
+            $.ajax({
+                type: 'post',
+                url: IPServer + "/ManageNotice/SendMessages",
+                data: {
+                    userId: userId,
+                    content: message
+                },
+                error: function () { },
+                success: function (data) {
+                    dialog.close();
+                }
+            });
+        }
+
     </script>
 </head>
-<body>
-    <input type="button" value="改变Dialog标题" onclick="setTitle()" />
-    <input type="button" value="关闭Dialog" onclick="closeDialog()" />
-    <input type="button" value="获取Dialog参数" onclick="showDialogData()" />
-    <br />
-    <div id="message"></div>
+<body class="dialog">
+    <div class="text_section">
+        <textarea name="message" id="Message"></textarea>
+    </div>
+    <div class="buttons">
+        <!--<input type="button" value="改变Dialog标题" onclick="setTitle()"/>-->
+        <input type="button" value="发送" onclick="send()" />
+        <input type="button" value="关闭" onclick="closeDialog()" />
+        <!--<input type="button" value="获取Dialog参数" onclick="showDialogData()" />-->
+    </div>
+
 </body>
-</html>

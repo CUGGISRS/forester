@@ -41,8 +41,8 @@
                     if (!options.userId) return console.log('缺少必要的userId！');
 
                     self.loading = 1;
-                    $.get(QueryAlrma_Ctrl + 'GetAlarmsByUserId', {
-                        userId: options.userId
+                    $.get(QueryAlrma_Ctrl + 'GetAlarmNextDayByUserId', {
+                        day:2, dayuserId: options.userId
                     }).done(function (d) {
                         self.AlarmInfoList = d;
                         self.loading = 2;

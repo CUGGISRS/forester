@@ -84,9 +84,8 @@
                     var self = this;
                     //近三天的轨迹
                     self.loading = 1;
-                    $.get(QueryGPSInfo_Ctrl + 'GetUserContrailList', {
-                        sTime: '2017-01-01',
-                        eTime: '2017-10-10',
+                    $.get(QueryGPSInfo_Ctrl + 'GetContrailNextDayByUserId', {
+                        day: 200, 
                         userId: self.options.userId
                     }).done(function (d) {
                         self.lists = d || [];
@@ -108,6 +107,7 @@
                     GIS$.DrawToMap('road', this.options, info);
                     this.DetailInfo.GpsDisplayPoints = info.GpsDisplayPoints || [];
                     this.DetailInfo.GpsInfos = info.GpsInfos || [];
+                    this.DetailInfo.BaseInfo = info;
                 },
                 palyRoad: function(){
                     var self = this;

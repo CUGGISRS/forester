@@ -1,0 +1,469 @@
+[{
+    "UserId": "8e57ae8c-0ba9-4729-b171-123cd25e35b1",
+    "UserName": "黄红权",
+    "Longitude": 112.64124875799526,
+    "Latitude": 24.48366043228694,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "6eedeffb-5cfe-45d8-bda5-538e690244bc",
+    "UserName": "技术支持",
+    "Longitude": 116.41860961956938,
+    "Latitude": 39.9488353293652740,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "ee25710a-3e55-46b7-8e06-53d4840374f0",
+    "UserName": "黄俊杰",
+    "Longitude": 112.6333,
+    "Latitude": 24.4745,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "d4c566bd-eb13-47e4-a94c-35cc6a3af173",
+    "UserName": "欧国卫",
+    "Longitude": 112.6910,
+    "Latitude": 24.5864,
+    "Provider": "GPS"
+}, {
+    "UserId": "452395e8-e3fa-487d-80d6-0cc54a8174af",
+    "UserName": "李祎",
+    "Longitude": 113.23751692044351,
+    "Latitude": 23.12830416950944,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "b8d8e4c6-13d1-423e-9f73-0e2ad5553f61",
+    "UserName": "刘伟中",
+    "Longitude": 115.81186396819419,
+    "Latitude": 24.0800997673542270,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "3a638518-8275-4ee1-a535-95dcc8961b0a",
+    "UserName": "周四成",
+    "Longitude": 112.63901437370768,
+    "Latitude": 24.4804725601317270,
+    "Provider": "GPS"
+}, {
+    "UserId": "d60a4be0-f41e-4e34-809c-6e2f74720d82",
+    "UserName": "廖俊荣",
+    "Longitude": 113.23754994751924,
+    "Latitude": 23.12799030505173,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "d06f79e6-a733-4395-bda7-513507185cfb",
+    "UserName": "张印娣",
+    "Longitude": 112.6427,
+    "Latitude": 24.4633,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "b016ca04-35d0-4977-aac6-7acf4b1e15ee",
+    "UserName": "叶燕飞",
+    "Longitude": 115.78189164482899,
+    "Latitude": 24.36816147495720,
+    "Provider": "GPS"
+}, {
+    "UserId": "47189b3c-fba6-4bde-b08d-0a045358d431",
+    "UserName": "石相泉",
+    "Longitude": 115.7327,
+    "Latitude": 24.1453,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "6d011392-fe01-4717-a562-3832885046f3",
+    "UserName": "戴子思",
+    "Longitude": 112.72021995676037,
+    "Latitude": 24.5233019608225820,
+    "Provider": "GPS"
+}, {
+    "UserId": "2b224ff4-e080-496f-9e42-05c64884fa4f",
+    "UserName": "邓小兵",
+    "Longitude": 112.6572,
+    "Latitude": 24.7009,
+    "Provider": "GPS"
+}, {
+    "UserId": "224c58cb-3e38-41c0-9957-f0067edec9d6",
+    "UserName": "杨科",
+    "Longitude": 115.6793,
+    "Latitude": 24.4237,
+    "Provider": "GPS"
+}, {
+    "UserId": "119b18b8-c7e2-440a-be61-7149c8b7acef",
+    "UserName": "黄志发",
+    "Longitude": 112.945869024639,
+    "Latitude": 24.8529931663279730,
+    "Provider": "GPS"
+}, {
+    "UserId": "f590ed02-9ced-456c-8bfd-a37f2a2b545b",
+    "UserName": "伍子锋",
+    "Longitude": 112.5133,
+    "Latitude": 24.0913,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "ec49d212-2efc-4082-8ecb-ec2a034c2ec6",
+    "UserName": "李芳兴",
+    "Longitude": 112.52421386330916,
+    "Latitude": 23.991510046981,
+    "Provider": "GPS"
+}, {
+    "UserId": "bd253c91-c316-49b1-84cb-0680a0befcbd",
+    "UserName": "陈柏忠",
+    "Longitude": 115.7484,
+    "Latitude": 24.1770,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "d3184029-509b-4a3e-9d67-a849c7949b0a",
+    "UserName": "杨昔兰",
+    "Longitude": 115.58988655763837,
+    "Latitude": 24.4504978062890750,
+    "Provider": "GPS"
+}, {
+    "UserId": "1d3ca2b5-1afe-4f4e-9ed1-76ff78611f3a",
+    "UserName": "陈伟彬",
+    "Longitude": 115.7441,
+    "Latitude": 24.3644,
+    "Provider": "GPS"
+}, {
+    "UserId": "b6f20384-f556-40f6-a67d-5e7888cb8cb7",
+    "UserName": "曾锦松",
+    "Longitude": 112.68486081719253,
+    "Latitude": 24.69012650505705,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "93ca5baf-8bbd-4e9e-aa05-96a3208b3450",
+    "UserName": "钱朝华",
+    "Longitude": 112.69610859422858,
+    "Latitude": 24.7174914872079760,
+    "Provider": "GPS"
+}, {
+    "UserId": "a8843f53-ff8d-4f21-b0e2-7f36789f6059",
+    "UserName": "陈水清",
+    "Longitude": 112.65572563763870,
+    "Latitude": 24.26664586450367,
+    "Provider": "GPS"
+}, {
+    "UserId": "e63d923e-bee4-44b2-aaa9-bc60f7d3639a",
+    "UserName": "薛传飞",
+    "Longitude": 115.95502378325887,
+    "Latitude": 23.8821001646862920,
+    "Provider": "GPS"
+}, {
+    "UserId": "da548a4e-4fbc-4c1b-ac8b-dbc39bee141f",
+    "UserName": "刘标明",
+    "Longitude": 115.85315017462527,
+    "Latitude": 23.9999744966133160,
+    "Provider": "GPS"
+}, {
+    "UserId": "529e3e88-b766-4bba-ab92-cf63ac2f50a2",
+    "UserName": "欧伟东",
+    "Longitude": 112.75611422502058,
+    "Latitude": 24.46326265638796,
+    "Provider": "GPS"
+}, {
+    "UserId": "0a5e352f-4b68-4a3b-a43b-fb93ab67dc6b",
+    "UserName": "张水胜",
+    "Longitude": 112.75534621842760,
+    "Latitude": 24.4613119851274940,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "1d41f907-2633-481b-ba0e-27ccb1705e96",
+    "UserName": "陈长春",
+    "Longitude": 112.64839329461194,
+    "Latitude": 24.4790203541049960,
+    "Provider": "GPS"
+}, {
+    "UserId": "fca9ff84-8a17-402d-8487-014d9b86df60",
+    "UserName": "孙卫忠",
+    "Longitude": 112.75774513777515,
+    "Latitude": 24.4555229451642260,
+    "Provider": "GPS"
+}, {
+    "UserId": "35f69e1e-4002-4337-b8b9-4df3d375168d",
+    "UserName": "陈义清",
+    "Longitude": 112.7523,
+    "Latitude": 24.4797,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "c83e90f9-7545-49f0-9c83-ab3d0528e659",
+    "UserName": "陈金德",
+    "Longitude": 112.64466982579107,
+    "Latitude": 24.48337860195891,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "ba0a1530-d183-4f84-8794-61cf316e5998",
+    "UserName": "何上伟",
+    "Longitude": 115.7097,
+    "Latitude": 24.1431,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "43828522-672a-4a0e-b733-60bc80c1db4f",
+    "UserName": "陈仕超",
+    "Longitude": 115.87789987032284,
+    "Latitude": 24.0788203271009920,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "7031bb8e-8ede-4421-8182-6aab2616180d",
+    "UserName": "蓝中宏",
+    "Longitude": 115.96255544186229,
+    "Latitude": 24.0210767357989430,
+    "Provider": "GPS"
+}, {
+    "UserId": "f9281739-d805-4850-ba87-4626ddfcd489",
+    "UserName": "邓明发",
+    "Longitude": 112.8401,
+    "Latitude": 24.5060,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "aed163e3-4fe9-4bc1-893b-40341ffa3861",
+    "UserName": "陈朝伟",
+    "Longitude": 112.7015,
+    "Latitude": 24.3086,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "8220b713-6c94-48d6-a011-99bfc79670fc",
+    "UserName": "唐贤财",
+    "Longitude": 112.5958,
+    "Latitude": 24.2542,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "dad37555-58f5-4674-a382-3afcc1593ecb",
+    "UserName": "凃新田",
+    "Longitude": 112.5685,
+    "Latitude": 24.2803,
+    "Provider": "GPS"
+}, {
+    "UserId": "3eca2258-ab11-4868-acc0-979521f9a6d6",
+    "UserName": "邹新桂",
+    "Longitude": 112.62484251016438,
+    "Latitude": 24.2660743603361340,
+    "Provider": "GPS"
+}, {
+    "UserId": "c814a306-1e4a-4599-b6ff-5c3ab7ad0ba4",
+    "UserName": "陈杰东",
+    "Longitude": 115.8291,
+    "Latitude": 24.2846,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "00571d71-4af0-46ec-9a1e-5001f86f1ba3",
+    "UserName": "杨文中",
+    "Longitude": 112.42806265601187,
+    "Latitude": 24.5670757236046950,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "26f9c1f0-7122-4df9-9d6d-602b25bd90b5",
+    "UserName": "刘建华",
+    "Longitude": 115.6049,
+    "Latitude": 24.18,
+    "Provider": "GPS"
+}, {
+    "UserId": "440ef078-416a-4aa5-a857-728074d0730d",
+    "UserName": "谢伟忠",
+    "Longitude": 115.78511520890990,
+    "Latitude": 24.22386689141518,
+    "Provider": "GPS"
+}, {
+    "UserId": "7b0626ea-2a3e-4604-b465-55e21554fcea",
+    "UserName": "丘可作",
+    "Longitude": 112.6615,
+    "Latitude": 24.3329,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "b077a7be-b4c1-4ea5-973c-acc8e5c1be9a",
+    "UserName": "陈志和",
+    "Longitude": 112.6571,
+    "Latitude": 24.7007,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "9cff1ce2-ea64-443f-a805-d83e068ff151",
+    "UserName": "朱贤先",
+    "Longitude": 112.68689706252816,
+    "Latitude": 24.6953827545313620,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "a7441909-7d52-4efe-b0bb-b44703abab05",
+    "UserName": "李钦华",
+    "Longitude": 115.80595127189775,
+    "Latitude": 24.2257355686733970,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "67ba8425-4e1c-4305-bfb2-24696397d049",
+    "UserName": "黄东明",
+    "Longitude": 112.87261827154776,
+    "Latitude": 24.8593258474761530,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "f391e153-dbcf-4fee-bbd8-f7b0313d1768",
+    "UserName": "黄有成",
+    "Longitude": 112.7015,
+    "Latitude": 24.6032,
+    "Provider": "GPS"
+}, {
+    "UserId": "7255010a-dc3a-411f-b537-6d06482a4b63",
+    "UserName": "倪昌广",
+    "Longitude": 112.58614928409075,
+    "Latitude": 24.0850850031239570,
+    "Provider": "GPS"
+}, {
+    "UserId": "31fb4a94-f4c3-479a-bead-6ddb41b3785e",
+    "UserName": "唐国秀",
+    "Longitude": 112.6106,
+    "Latitude": 24.3453,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "2a46959b-79e6-4585-84d1-998aa4909e71",
+    "UserName": "曾宏中",
+    "Longitude": 115.77263267115015,
+    "Latitude": 24.4720370171113930,
+    "Provider": "GPS"
+}, {
+    "UserId": "b05cb03d-1389-4753-bef7-4e0e16b880f3",
+    "UserName": "叶来新",
+    "Longitude": 115.74232749845393,
+    "Latitude": 24.1344065966074230,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "da9d9d05-a3dc-4862-9b9c-8b2be453b949",
+    "UserName": "冯志刚",
+    "Longitude": 112.54020673889383,
+    "Latitude": 24.6530162712932570,
+    "Provider": "GPS"
+}, {
+    "UserId": "85da242c-b4c6-479d-91b9-ce0c03ebc420",
+    "UserName": "何坤来",
+    "Longitude": 115.7729,
+    "Latitude": 24.4722,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "f4d2e7c3-9636-496b-9524-20bd18388c3f",
+    "UserName": "刘新辉",
+    "Longitude": 115.7345,
+    "Latitude": 24.4830,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "8a056013-575a-416f-92b6-0e470c20dacb",
+    "UserName": "王成立",
+    "Longitude": 112.68286409913237,
+    "Latitude": 24.6913170683867840,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "d428a6de-7392-4f9f-8eb4-2200dae262de",
+    "UserName": "莫志国",
+    "Longitude": 112.6204,
+    "Latitude": 24.4712,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "1ee385ac-b946-4073-8222-a98d55e83c63",
+    "UserName": "刘坤宏",
+    "Longitude": 115.5790,
+    "Latitude": 24.5253,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "f55e7ad7-c28b-4f52-8503-6e9d528a5a7f",
+    "UserName": "石启新",
+    "Longitude": 115.7343,
+    "Latitude": 24.4067,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "33352306-4468-43ee-ae61-7129b42ba59d",
+    "UserName": "刘洪灵",
+    "Longitude": 115.86379028427027,
+    "Latitude": 24.0573355941382660,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "afd96f8a-6466-4949-a326-f782722b50f4",
+    "UserName": "冯海科",
+    "Longitude": 112.70781430420182,
+    "Latitude": 24.7332207614634180,
+    "Provider": "GPS"
+}, {
+    "UserId": "1e3848d5-f748-4e25-8446-d15151108703",
+    "UserName": "练洋珊",
+    "Longitude": 115.61156642354885,
+    "Latitude": 24.37207983474790,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "dc4cec4a-32e4-4bf4-8893-416dc616a532",
+    "UserName": "刘利华",
+    "Longitude": 116.0735,
+    "Latitude": 24.3231,
+    "Provider": "GPS"
+}, {
+    "UserId": "53d82207-08ba-4e06-93bd-57d4252f4300",
+    "UserName": "余云发",
+    "Longitude": 115.5317,
+    "Latitude": 24.5628,
+    "Provider": "GPS"
+}, {
+    "UserId": "c7445a52-c832-40fe-8184-65bb9b1324b5",
+    "UserName": "林玉坤",
+    "Longitude": 115.7263,
+    "Latitude": 24.2621,
+    "Provider": "GPS"
+}, {
+    "UserId": "a760cf01-e18a-4bac-bd86-7f9e370d6690",
+    "UserName": "彭汝才",
+    "Longitude": 115.61841687585132,
+    "Latitude": 24.5758123125717670,
+    "Provider": "GPS"
+}, {
+    "UserId": "aa1b0048-e32d-4f6f-93f1-13c286d92a2a",
+    "UserName": "黄进",
+    "Longitude": 115.6010,
+    "Latitude": 24.6198,
+    "Provider": "GPS"
+}, {
+    "UserId": "81e3b846-e4fb-410f-ac1b-427123594e8d",
+    "UserName": "钟远文",
+    "Longitude": 115.5642,
+    "Latitude": 24.5833,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "69f3977e-d7fb-4dd4-b419-d805d6307849",
+    "UserName": "刘天助",
+    "Longitude": 115.62091971865908,
+    "Latitude": 24.4703467246213540,
+    "Provider": "GPS"
+}, {
+    "UserId": "e61ec6c1-a61b-4638-bc59-13e6743d519a",
+    "UserName": "刘文新",
+    "Longitude": 115.5705,
+    "Latitude": 24.5976,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "89954a6c-85f7-4e57-b97a-fae8eed87f2c",
+    "UserName": "丘福添",
+    "Longitude": 115.56949046498526,
+    "Latitude": 24.3636603023486660,
+    "Provider": "GPS"
+}, {
+    "UserId": "51294634-66e6-4f09-82ac-ad7d20c918e1",
+    "UserName": "蔡炽明",
+    "Longitude": 115.69905189134960,
+    "Latitude": 24.10474231833775,
+    "Provider": "GPS"
+}, {
+    "UserId": "11abdc6a-0ffc-4730-b0c5-c5e487c28448",
+    "UserName": "曾焕原",
+    "Longitude": 115.7088,
+    "Latitude": 24.3938,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "10aa1268-c7cf-447b-8a3c-343e6a6e25d3",
+    "UserName": "毛战强",
+    "Longitude": 112.6837,
+    "Latitude": 24.5803,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "d57082e1-d68a-405f-a469-c21342f00bcf",
+    "UserName": "高彦方",
+    "Longitude": 115.66828442180204,
+    "Latitude": 24.0943236701649040,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "343f2931-e3b9-4a35-8218-f75e974e0f05",
+    "UserName": "刘运芳",
+    "Longitude": 115.97200587970488,
+    "Latitude": 23.9109355419254580,
+    "Provider": "NETWORK"
+}, {
+    "UserId": "862e57d4-718f-48e3-b113-c657f95007cb",
+    "UserName": "陈志荣",
+    "Longitude": 115.82735140959224,
+    "Latitude": 24.28314360522350,
+    "Provider": "NETWORK"
+}]

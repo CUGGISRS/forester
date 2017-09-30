@@ -1,14 +1,13 @@
-var IPServer = 'http://180.76.134.119/gdhly/';
-var Home_Ctrl = IPServer + 'Home/';
-var QueryUser_Ctrl = IPServer + 'QueryUser/';
-var QueryGPSInfo_Ctrl = IPServer + 'QueryGPSInfo/';
-var QueryPatrolarea_Ctrl = IPServer + 'QueryPatrolarea/';
-var QueryAttendance_Ctrl = IPServer + 'QueryAttendance/';
-var QueryAlrma_Ctrl = IPServer + 'QueryAlrma/';
-var QueryHotSpot_Ctrl = IPServer + 'QueryHotSpot/';
-var ManagePatrol_Ctrl = IPServer + 'ManagePatrol/';
-var unitcode = ($.cookie("unitcode")||'').split(',');
-var Prov_Code = { "OrganID": unitcode[2], "OrganName": unitcode[1] };
+var IPServer = 'http://180.76.134.119'
+var Home_Ctrl = IPServer + '/gdhly/Home/';
+var QueryUser_Ctrl = IPServer + '/gdhly/QueryUser/';
+var QueryGPSInfo_Ctrl = IPServer + '/gdhly/QueryGPSInfo/';
+var QueryPatrolarea_Ctrl = IPServer + '/gdhly/QueryPatrolarea/';
+var QueryAttendance_Ctrl = IPServer + '/gdhly/QueryAttendance/';
+var QueryAlrma_Ctrl = IPServer + '/gdhly/QueryAlrma/';
+var QueryHotSpot_Ctrl = IPServer + '/gdhly/QueryHotSpot/';
+var ManagePatrol_Ctrl = IPServer + '/gdhly/ManagePatrol/';
+var Prov_Code = { "OrganID": 2, "OrganName": "广东省" };
 var TIMEOUT = '1000000';
 var MENUS = [
     {
@@ -23,7 +22,7 @@ var MENUS = [
     {
         id: 'report',
         name: '统计图表',
-        link: '../QueryReport/AttendanceDetail',
+        link: '../QueryReport/AttendanceDetail/',
         type: 'iframe',
         cached: false,
         needCache: true,
@@ -40,7 +39,7 @@ var MENUS = [
     },
     {
         id: 'areamange',
-        name: '巡护区管理',
+        name: '巡护林管理',
         link: '../ManageMap/LBSPatrol/index.html',
         type: 'iframe',
         cached: false,
@@ -63,7 +62,7 @@ var MENUS = [
         type: 'iframe',
         cached: false,
         needCache: true,
-        clsName: 'icon_241'
+        clsName: 'icon_24'
     }
 ];
 var PANELMENUS = [
@@ -193,28 +192,46 @@ var SECONDMENUS = [
 ];
 var TYPE119 = ['一键报警', '毁林案件', '火情火灾', '破坏林业设施', '野生动植物', '病虫害'];
 var serviceUrlConfig = {
-	getOnlineUserForMapList: QueryUser_Ctrl + "GetOnlineUserForMapList?disconnectTimer=100000",
-	getAlarmsByOrgan: QueryAlrma_Ctrl + "GetAlarmNextDayByOrganId?day=100&organId=2",
-	getHotspotList: QueryHotSpot_Ctrl + "GetHotspotNextDayByOrganId?day=100&organId=2",
-	getNoticesByOrgan: IPServer + "QueryNotice/GetNoticesByOrgan?day=100&organId=2",
-	getUserGpsInfo: IPServer + "/QueryGPSInfo/GetUserGpsInfo",
-    getPatrolAreaForEdit: IPServer + "ManagePatrol/GetPatrolAreaForEdit",
-    baseMapUrl: "http://172.30.3.209/GDYX/Layers/_alllayers/",
-     /*terrainProviderUrl: "http://172.30.3.204:8035/ContTmsTerrain",*/
-    terrainProviderUrl: "https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles",
-    gdXhqMapUrl: "http://172.30.3.209/PatrolArea/PatrolArea/PatrolArea/Layers/_alllayers/",
-    getPatrolAreaByLocation: IPServer + "/QueryPatrolarea/GetPatrolAreaByLocation"
-}
-var BASEURL = "/gis/Js/Map";
-var FILEURL = 'http://120.197.61.115:8081/GDHLYMobileServer/GetAlarmFile/';
-
+    getOnlineUserForMapList: "gis/Demo/data/QueryUser/GetOnlineUserForMapList.json",
+    //getOnlineUserForMapList:"http://172.30.3.205:8095/QueryUser/GetOnlineUserForMapList",
+    getAlarmsByOrgan: "gis/Demo/data/GetAlarmsByOrgan.json",
+    getHotspotList: "gis/Demo/data/GetHotspotList.json",
+    getNoticesByOrgan: "gis/Demo/data/GetNoticesByOrgan.json",
+    getUserGpsInfo: "gis/Demo/data/GetUserGpsInfo.json",
+    getPatrolAreaForEdit: "gis/Demo/data/GetPatrolAreaForEdit.json",
+    getPatrolAreaByLocation: "gis/Demo/data/GetPatrolAreaByLocation.json"
+};
 var GIS$ = {};
 var hlyMap;
 var hlyMapService;
 
-var patrolConfig = function () {
-    return {
-        serverUrl: IPServer,	/*属性数据服务地址*/
-        mapUrl: serviceUrlConfig.baseMapUrl  /*地图切片服务地址*/
-    }
-}();
+
+
+/**
+ * 公共函数
+ */
+String.prototype.Date = function (fmt) {
+    var val = this || '';
+    fmt = fmt || 'yyyy-MM-dd';
+    val = val.match(/\d+/g);
+    if(!val) return '';
+    val = new Date(val.length > 1 ? val.map(function(i){
+        return i.length == 1 ? '0' + i : i
+    }).join('-') : parseFloat(val[0]));
+    var o = {
+        "M+": val.getMonth() + 1, //月份 
+        "d+": val.getDate(), //日 
+        "h+": val.getHours(), //小时 
+        "m+": val.getMinutes(), //分 
+        "s+": val.getSeconds(), //秒 
+        "q+": Math.floor((val.getMonth() + 3) / 3), //季度 
+        "S": val.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (val.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+};
+String.prototype.toFixed = function(l){
+    return parseFloat(this || 0).toFixed(l || 2);
+};

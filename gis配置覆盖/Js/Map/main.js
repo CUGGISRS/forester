@@ -6,20 +6,25 @@
 /*
  * 文件依赖
  */
+var config = {
+    baseUrl: "/gdhly/QueryMap/gis/js/Map",           //依赖相对路径
+};
 
-require.config({
-	baseUrl: BASEURL,           //依赖相对路径
-    paths: {
-        'loadImage': './core/loadImage'
-    }
-});
+require.config(config);
 
 require([
     'hlymap/HlyMap',
     'hlymap/HlyMapService',
     'hlymap/LayerManager',
     'hlymap/MapDataLoader',
-], function (HlyMap, HlyMapService, LayerManager, MapDataLoader) {
+    'hlymap/Hly/HlyThemeService',
+    'hlymap/bj/BjThemeService',
+    'hlymap/rd/RdThemeService',
+    'hlymap/gj/GjThemeService',
+    'hlymap/xhq/XhqThemeService',
+    'hlymap/kq/KqThemeService',
+], function (HlyMap, HlyMapService, LayerManager, MapDataLoader, HlyThemeService,
+             BjThemeService, RdThemeService, GjThemeService, XhqThemeService, KqThemeService) {
     'use strict';
 
     // Array Remove - By John Resig (MIT Licensed)
@@ -54,6 +59,12 @@ require([
     scope.Hly.HlyMapService = HlyMapService;
     scope.Hly.LayerManager = LayerManager;
     scope.Hly.MapDataLoader = MapDataLoader;
+    scope.Hly.HlyThemeService = HlyThemeService;
+    scope.Hly.BjThemeService = BjThemeService;
+    scope.Hly.RdThemeService = RdThemeService;
+    scope.Hly.GjThemeService = GjThemeService;
+    scope.Hly.XhqThemeService = XhqThemeService;
+    scope.Hly.KqThemeService = KqThemeService;
 
     return scope.Hly;
 });

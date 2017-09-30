@@ -28,7 +28,7 @@
                 Longitude: gps.LONGITUDE,
                 Latitude: gps.LATITUDE,
                 Provider: gps.PROVIDER,
-                onlineState: gps.ONLINESTATE
+                onlineState: d.IsOnline
             });
         });
     }
@@ -196,18 +196,26 @@
         //地图初始化
         hlyMapService = new Hly.HlyMapService({
             serviceUrlConfig: serviceUrlConfig,
-            baseMapUrls: BASEMAPURLS,
+            baseMapUrls: [{
+            	name: "广东影像图",
+            	url: serviceUrlConfig.baseMapUrl,
+            	type: 'EsriOffline',
+            	format: "png",
+            	project: "EPSG:4326"
+            }],
             mapContainer: 'openlayerContent',
-            terrainProviderUrl: TERRAINPROVIDERURL,
-            xhqMapUrls: XHQMAPURLS,
+            terrainProviderUrl: serviceUrlConfig.terrainProviderUrl,
         });
         hlyMapService.init();
         hlyMap = hlyMapService.hlyMap;
         //默认挂接巡护区点击查询功能
         hlyMapService.on("xhqMouseClick", function (e) {
             //有切片且有数据时触发
-            //todo 打开右侧巡护区面板（showXhq方法可在获取面板信息后调用并传值）
+            //打开右侧巡护区面板（showXhq方法可在获取面板信息后调用并传值）
             hlyMapService.showXhq(null, null, e.item);
+            getAreaInfoAndShow({
+                areaId: e.item.PatrolAreaInfo.ID
+            });
         });
         mapClickEvent(); //挂载事件
         gjdMapOverEvent(); //挂载关键点事件
@@ -365,14 +373,14 @@
      * 图层面板里显示巡护区
      */
     GIS$.showXhqMap = function(bol){
-        hlyMapService.showHxqMap(bol || true);
+        hlyMapService.showHxqMap(bol);
     };
 
     /**
      * 巡护区查询时
      */
     GIS$.enableRaiseXhqClickEvent = function(bol){
-        hlyMapService.enableRaiseXhqClickEvent(bol || true);
+        hlyMapService.enableRaiseXhqClickEvent(bol);
     };
     /*==============================业务模块接口=============================*/
 
@@ -436,7 +444,21 @@
             per = value / count;
             callback(per >= 1 ? trackStop() : per.toFixed(2) * 100);
             hlyMapService.gjPlay(per < 1 ? per : 1);
-        }, timer > 1000 ? 1000 : timer < 100 ? 100 : timer);
+    	}, timer > 1000 ? 1000 : timer < 100 ? 100 : timer);
+
+        //var value = 0;
+        //var step = 10;
+        //code = setInterval(function () {
+        //	if (value > 100) {
+        //		//停止循环
+        //		clearInterval(code);
+        //		hlyMapService.gjPlayClose();
+        //	}
+        //	callback(value);
+        //	hlyMapService.gjPlay(value / 100.0);
+        //	value = value + step;
+        //}, 1000);
+
     }
     GIS$.trackPlay = trackPlay;
     /**
@@ -588,5 +610,15 @@
     function closeCurrentRdTheme() {
         hlyMapService.closeCurrentRdTheme();
     }
+
+	/**
+    * 兴趣点显示
+    * @param poiItems 地名搜索结果地名集合
+    * @constructor
+    */
+    function poiItemsShow(data) {
+    	hlyMapService.poiItemsShow(data);
+    }
+    GIS$.poiItemsShow = poiItemsShow;
 
 })();

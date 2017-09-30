@@ -83,8 +83,8 @@ define([
         }
 
         //跳转到该线
-        var padding = .16 * this._contMap.scene.map2d.getSize()[0];
-        this._contMap.viewControl.jumpTo(this._trackLine.getExtent(), [padding, padding, padding, padding]);
+        //var padding = .16 * this._contMap.scene.map2d.getSize()[0];
+        //this._contMap.viewControl.jumpTo(this._trackLine.getExtent(), [padding, padding, padding, padding]);
     };
 
     /**
@@ -128,6 +128,7 @@ define([
         this._clearSimulateLineFeatures();
         //根据线段容器的百分进度值找到需被切分的feature，以前的都被加载
         var location = this._trackLine.getCoordinateAt(fraction);
+        var featues=[];
         for (var i = 0; i < this._lineContainer.length; i++) {
             var lineItem = this._lineContainer[i];
             if (lineItem.startPointFraction < fraction && fraction < lineItem.endPointFraction) {
@@ -137,7 +138,7 @@ define([
                 var subLine = split.features[0].geometry.coordinates;
 
                 var subLineFeature = this._createFeatrue(new ol.geom.LineString(subLine), lineItem.olFeature);
-                tmpSource.addFeatures([subLineFeature]);
+                featues.push(subLineFeature);
 
                 //获取最近点，并根据点信息获取对应时间，同时进行时间显示
                 var dateList = lineItem.olFeature.geometryItem.dateList;
@@ -165,9 +166,10 @@ define([
             } else {
                 //被使用的线段，添加并进行显示
                 var newFeature = this._createFeatrue(lineItem.olFeature.getGeometry(), lineItem.olFeature);
-                tmpSource.addFeatures([newFeature]);
+                featues.push(newFeature);
             }
         }
+        tmpSource.addFeatures(featues);
 
         //模拟点移动
         this._simulateMarkerFeature.setGeometry(new ol.geom.Point(location));

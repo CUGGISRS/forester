@@ -6,6 +6,7 @@ body {
   width: 20px;
   height: 20px;
   background: url(../img/icons.png) no-repeat 0 0;
+  cursor:pointer;
 }
 .icon_00 {
   background-position: 0 0;
@@ -63,6 +64,9 @@ body {
 }
 .icon_24 {
   background-position: -160px -120px;
+}
+.icon_241 {
+  background-position: -200px -120px;
 }
 .icon_25 {
   background-position: -240px -40px;
@@ -642,7 +646,7 @@ i.loading {
   margin-right: 1em;
 }
 #openlayerBtns {
-  right: 70px;
+  right: 96px;
   top: 20px;
 }
 #openlayerBtns .block {
@@ -654,7 +658,7 @@ i.loading {
 }
 #openlayerBtns .single + .single {
   margin-left: 5px;
-  width: 24em;
+  width: 19em;
 }
 #openlayerBtns .item {
   position: relative;
@@ -826,7 +830,7 @@ i.loading {
   height: -webkit-calc(100vh - 260px);
   height: calc(100vh - 260px);
   top: 70px;
-  right: 70px;
+  right: 96px;
 }
 #assistPanel .title {
   color: #588AA1;

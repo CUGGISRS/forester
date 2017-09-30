@@ -269,7 +269,6 @@
                     this.form.etime = $('#' + this.etimeId).val();
                     sessionStorage.setItem('_panel_query_form_', JSON.stringify(this.form));
                     
-                    GIS$.enableRaiseXhqClickEvent(false);
                     switch(pageId) {
                         case "road" :
                             this.filterRoad(); break;
@@ -310,8 +309,6 @@
                     });
                     //地图上显示巡护区
                     GIS$.getDistLineAndToShow(this.organId);
-                    //加载底图
-                    GIS$.enableRaiseXhqClickEvent(true);
                 },
                 //查询报警
                 filter119: function() {

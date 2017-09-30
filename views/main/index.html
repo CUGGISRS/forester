@@ -72,6 +72,8 @@
                             $('#mainPanel').append($('<div id="'+ targetId +'" class="h100 w100 hidden"></div>').load(item.link));
                         }
                         $('#mainPanel').fadeIn(400).find('#' + targetId).show().siblings().hide();
+                        //加载底图
+                        GIS$.enableRaiseXhqClickEvent(val == 'area');
                     }
                 }
             });

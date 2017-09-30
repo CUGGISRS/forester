@@ -77,7 +77,23 @@ define([
             //从容器中移除
             this._featureContainer[moudle].splice(existObj.index, 1);
         }
-    }
+    };
+
+    /**
+     * 移除（容器及地图上的）业务对象集合
+     * @param moudle
+     */
+    FeatureContainerManager.prototype.removeMapBusinessItemList = function (moudle) {
+        var items=this._featureContainer[moudle];
+        if(items){
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                //从地图移除
+                item.dispose();
+            }
+            this._featureContainer[moudle]=null;
+        }
+    };
 
     /**
      * 移除所有业务对象

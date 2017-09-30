@@ -15,12 +15,10 @@
         <label>基本模块接口：</label>
         <button onclick="mapInit()">地图初始化</button>
         <button onclick="mapClickEvent()">点击事件挂接</button>
-        <button onclick="locationNameChangedEvent()">当前位置事件挂接</button>
         <button onclick="switch2D()">到二维</button>
         <button onclick="switch3D()">到三维</button>
         <button onclick="jumpToUnitZone()">跳转到单位</button>
         <button onclick="gotoLocation()">跳转坐标点</button>
-        <button onclick="poiItemsShow()">兴趣点搜索并显示</button>
     </div>
     <div style="border: solid 1px red">
         <label>护林员模块接口：</label>
@@ -64,7 +62,6 @@
     <div>
         <label id="mouseClickInfo"></label>
         <label id="keyPointId"></label>
-        <label id="currentLocation"></label>
     </div>
 </div>
 <div id="map">
@@ -88,7 +85,6 @@
         getUserGpsInfo: "./data/GetUserGpsInfo.json",
         getPatrolAreaForEdit: "./data/GetPatrolAreaForEdit.json",
         getPatrolAreaByLocation: "./data/GetPatrolAreaByLocation.json",
-        getCurrentLocationZone:"http://172.30.3.205:8095/Home/GetDistrictByLocation"
     };
 </script>
 <script>
@@ -103,15 +99,15 @@
         //地图初始化
         hlyMapService = new Hly.HlyMapService({
             serviceUrlConfig: serviceUrlConfig,
-            /*baseMapUrls: [{
+            baseMapUrls: [{
                 name: "广东影像图",
                 url: 'http://localhost/广东影像地图切片',
                 type: 'EsriOffline',
                 format: "png",
                 project: "EPSG:4326"
-            }],*/
+            }],
             mapContainer: 'map',
-            //terrainProviderUrl: "http://localhost:8035/ContTmsTerrain",
+            terrainProviderUrl: "http://localhost:8035/ContTmsTerrain",
             xhqMapUrls: {
                 "广东省": "http://localhost/测试地图切片/PatrolArea/Layers/_alllayers",
                 "阳山县": "http://localhost/测试地图切片/PatrolArea_ysx",
@@ -140,18 +136,6 @@
     }
 
     /**
-     * 当前位置事件挂接
-     */
-    function locationNameChangedEvent() {
-        hlyMap.on("locationNameChanged", function (data) {
-            //显示到界面
-            if(data){
-                $("#currentLocation").text("当前位置：" + data.NAME);
-            }
-        });
-    }
-
-    /**
      * 切换到三维
      */
     function switch3D() {
@@ -176,14 +160,7 @@
      * 跳转到坐标点位
      */
     function gotoLocation() {
-        hlyMapService.gotoLocation(115, 24,null,true);
-    }
-
-    /**
-     * 兴趣点显示
-     */
-    function poiItemsShow() {
-        hlyMapService.poiItemsShow([{"NAME":"广旺埇","LONGITUDE":110.672430,"LATITUDE":22.122970},{"NAME":"广浪根","LONGITUDE":110.520370,"LATITUDE":22.123040},{"NAME":"广平街","LONGITUDE":116.036720,"LATITUDE":24.880240},{"NAME":"广育村","LONGITUDE":116.166210,"LATITUDE":24.824380},{"NAME":"广福楼","LONGITUDE":116.929230,"LATITUDE":23.997880},{"NAME":"广福亭","LONGITUDE":116.929360,"LATITUDE":24.062560},{"NAME":"广当口","LONGITUDE":111.162950,"LATITUDE":22.667560},{"NAME":"广生","LONGITUDE":111.310110,"LATITUDE":22.832850},{"NAME":"广西凹","LONGITUDE":111.292290,"LATITUDE":22.829950},{"NAME":"广西坑","LONGITUDE":111.294220,"LATITUDE":22.830280}]);
+        hlyMap.gotoLocation(115, 24);
     }
     /*==============================业务模块接口=============================*/
 

@@ -55,7 +55,10 @@ define([
         if (item["onlineState"]) {
             onlineState = item["onlineState"];
         } else {
-            onlineState = "online";
+        	onlineState = "offline";
+        	if (typeof item["onlineState"] === 'undefined') {
+        		onlineState = "online";
+	        }
         }
         feature.set("onlineState", onlineState);
     }

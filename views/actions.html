@@ -9,23 +9,26 @@
     <div class="single">
         <div class="block flex_1">
             <div class="tabs flex">
+                <!--
                 <button class="item" @click="taggleBtn(1)">
                     <i class="icons icon_61"></i> 广东省
                 </button>
+                    -->
                 <button class="item cursor" @click="taggleBtn(2)" :class="{'selected': selected==2}">
                     <i class="icons icon_62"></i> 定位
                 </button>
                 <button class="item cursor" @click="taggleBtn(3)" :class="{'selected': selected==3}">
                     <i class="icons icon_63"></i> 图层
                 </button>
-                <button v-if="layerModal == '2d'" class="item cursor" @click="taggleBtn(4)" :class="{'selected': selected==4}">
-                    <i class="icons icon_64"></i> 工具
-                    <dl class="toolDiv absolute bottom left w100 bbox bgfff" v-if="selected==4">
-                        <dd v-for="(item,index) in tools" @click="toolsManger(item)">
-                            <i class="icons" :class="item.clsName"></i> {{item.name}}
-                        </dd>
-                    </dl>
-                </button>
+              <!--  <button v-if="layerModal == '2d'" class="item cursor" @click="taggleBtn(4)" :class="{'selected': selected==4}"> -->
+                    <button  class="item cursor" @click="taggleBtn(4)" class="{'selected': selected==4}">
+                        <i class="icons icon_64"></i> 工具
+                        <dl class="toolDiv absolute bottom left w100 bbox bgfff" v-if="selected==4">
+                            <dd v-for="(item,index) in tools" @click="toolsManger(item)">
+                                <i class="icons" class="item.clsName"></i> {{item.name}}
+                            </dd>
+                        </dl>
+                    </button>
                 <button class="item cursor" @click="taggleBtn(5)" :class="{'selected': selected==5}">
                     <i class="icons icon_65"></i> 全屏
                 </button>
@@ -115,7 +118,7 @@
                     <dt class="flex acenter"></dt>
                     <dd class="flex wrap layermanger">
                         <label class="whitespace" v-for="(item,index) in layers[0]" :key="index">
-                            <input type="checkbox" class="hidden" @change="layerManger(item, $event)">
+                            <input type="checkbox" class="hidden" v-model="item.val" @change="layerManger(item)">
                             <i class="checkbox"></i>
                             <span>
                                 <i class="icons vcenter" :class="item.clsName"></i>
@@ -182,7 +185,8 @@
                         {
                             id: 'area',
                             name: '巡护区',
-                            clsName: 'icon_74'
+                            clsName: 'icon_74',
+                            val: true
                         }
                     ],
                     [
@@ -291,6 +295,14 @@
             },
             mounted: function () {
                 this.selected = 0;
+                this.layerManger({
+                    id: 'area',
+                    val: true
+                });
+                var self = this;
+                $(document).mouseover(function (e) {
+                    $(e.target).closest('#openlayerBtns').size() < 1 && self.reset();
+                });
             },
             methods: {
                 taggleBtn: function (i) {
@@ -312,8 +324,8 @@
                 },
                 gotoGPS: function(){
                     switch (this.gpsIdx) {
-                        case 0:
-                            //this.gps.address
+                        case 0: 
+                            $.get(Home_Ctrl + "/GetPalceByName", { name: this.gps.address }).done(function (data) {    GIS$.poiItemsShow(data); });
                             break;
                         case 1:
                             GIS$.gotoLocation([this.gps.ed, this.gps.ef, this.gps.em], [this.gps.nd, this.gps.nf, this.gps.nm]);
@@ -322,8 +334,9 @@
                             GIS$.gotoLocation(this.gps.edfm, this.gps.ndfm);
                             break;
                     }
+                    this.reset();
                 },
-                layerManger: function(item, target){
+                layerManger: function (item) {
                     if(item == '2d') {
                         this.layerModal = '2d'
                         GIS$.switch2D();
@@ -331,12 +344,23 @@
                         this.layerModal = '3d'
                         GIS$.switch3D();
                     } else {
-                        item.id == 'area' && GIS$.showXhqMap(target.target.checked);
+                        item.id == 'area' && (function checkGIS() {
+                            if (typeof GIS$ == 'undefined') {
+                                setTimeout(checkGIS);
+                            } else {
+                                if ('showXhqMap' in GIS$ && typeof hlyMapService != 'undefined') {
+                                    GIS$.showXhqMap(item.val);
+                                } else {
+                                    setTimeout(checkGIS);
+                                }
+                            }
+                        })();
                     }
                 },
                 toolsManger: function(item){
                     //清除
                     item.id == 3 && GIS$.mapClear();
+                    this.reset();
                 },
                 fullscreenchange: function (e) {
                     if ($('#app').hasClass("full-screen")) {
@@ -367,7 +391,7 @@
 							document.webkitExitFullscreen();
 						}
 					}
-			   }
+                }
             }
         })
     })();

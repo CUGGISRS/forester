@@ -420,33 +420,32 @@ define([
             var iconState = feature.get("iconState") ? feature.get("iconState") : "normal";
 
             //当选中或高亮时，显示人名
-            var newiconUrl = iconUrl;
-            var imageSubRegion;
-            var pixelOffset;
             if (iconState !== "normal") {
                 var userName = feature.get("UserName");
                 var labelOption = that._options.textLabelIcon;
                 var lableIconUrl = baseUtil.getImageFromText(that._image, labelOption.offset[0], labelOption.offset[1],
                     labelOption.size[0], labelOption.size[1],
                     userName, "14px 微软雅黑", labelOption.size[0] / 2 + 1, labelOption.size[1] / 2 + 5, "black");
+                labelOption = that._options.pointIcon[provider][onlineState][iconState];
+
                 var lableIcon = new Image();
                 lableIcon.src = lableIconUrl;
-
-                labelOption = that._options.pointIcon[provider][onlineState][iconState];
-                newiconUrl = baseUtil.getImageCoveredImage(that._image, labelOption.offset[0], labelOption.offset[1],
-                    labelOption.size[0], labelOption.size[1],
-                    lableIcon, 32, -10);
-                imageSubRegion = null;
-                pixelOffset = new Cesium.Cartesian2(23, 6);
-            } else {
+                lableIcon.onload = function (e) {
+                	var newiconUrl = baseUtil.getImageCoveredImage(that._image, labelOption.offset[0], labelOption.offset[1],
+						labelOption.size[0], labelOption.size[1],
+						lableIcon, 32, -10);
+                	feature.cesiumEntity.billboard.image = newiconUrl;
+                	feature.cesiumEntity.billboard.pixelOffset = new Cesium.Cartesian2(23, 6);
+                	feature.cesiumEntity.billboard.imageSubRegion = null;
+                };
+			} else {
                 var offset = that._options.pointIcon[provider][onlineState][iconState].offset;
                 var size = that._options.pointIcon[provider][onlineState][iconState].size;
-                imageSubRegion = new Cesium.BoundingRectangle(offset[0], that._imageHeight - offset[1] - size[1], size[0], size[1]);
-                pixelOffset = new Cesium.Cartesian2(0, 0);
-            }
-            feature.cesiumEntity.billboard.pixelOffset = pixelOffset;
-            feature.cesiumEntity.billboard.image = newiconUrl;
-            feature.cesiumEntity.billboard.imageSubRegion = imageSubRegion;
+                var imageSubRegion = new Cesium.BoundingRectangle(offset[0], that._imageHeight - offset[1] - size[1], size[0], size[1]);
+                feature.cesiumEntity.billboard.image = iconUrl;
+                feature.cesiumEntity.billboard.pixelOffset = new Cesium.Cartesian2(0, 0);
+                feature.cesiumEntity.billboard.imageSubRegion = imageSubRegion;
+			}
         });
         feature.on("change:geometry", function (e) {
 

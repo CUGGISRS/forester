@@ -62,6 +62,9 @@ define([
             $.get(that._getUserGpsInfoUrl, {
                 userId: that._userId
             }, function (gpsInfo) {
+				if (!gpsInfo) {
+					return;
+				}
                 var foundedFeature = that._userFeature;
                 //更新图标位置
                 if (foundedFeature) {

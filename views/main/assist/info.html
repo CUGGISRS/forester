@@ -37,9 +37,9 @@
 
         <div class="btnarea" :class="info.kid == 'forester' ? 'aselfcenter' : 'aselfend'">
             <p :style="info.kid != 'forester' ? 'margin-bottom: 4px' : ''">
-                <i class="icons icon_31" @click="showDialog"></i>
-                <i class="icons icon_32" @click="showDialog"></i>
-                <i class="icons icon_33" @click="showDialog"></i>
+                <i class="icons icon_31" @click="showMessage(info.id,info.userId)"></i>
+                <i class="icons icon_32" @click="showSH(info.name,info.userName,info.tel)"></i>
+                <i class="icons icon_33" @click="showGST(info.name,info.userName,info.tel)"></i>
             </p>
             <p v-if="info.kid == 'forester'">
                 <button class="cursor" @click="trackHLY">跟踪</button>
@@ -67,6 +67,7 @@
             el: '#vue-panel-info',
             data: {
                 info: {
+                    id:'',
                     name: '',
                     tel: '',
                     address: '',
@@ -83,6 +84,7 @@
                 this.selected = 0;
                 if(info.UserInfo) {
                     this.info.kid = 'forester';
+                    this.info.id = info.UserInfo.ID;
                     this.info.name = info.UserInfo.USER_NAME;
                     this.info.tel = info.UserInfo.PHONE_NUM;
                     this.info.address = info.UserInfo.SNAME + info.UserInfo.XNAME;
@@ -124,18 +126,50 @@
                 trackHLY: function(){
                     GIS$.trackOnHly(this.options.userId);
                 },
-                showDialog: function () {
+                showGST: function (name1, name2, tel) {
+                    var id = tel.slice(7);
+                    var name = name1 != undefined ? name1 : name2;
                     $.ligerDialog.open({
-                        height: 600,
-                        width: 800,
-                        title : '打开窗口提示',
-                        url: 'views/dialogs/blank.html', 
+                        height: 500,
+                        width: 750,
+                        title: '即时通',
+                        url: 'http://120.197.61.115:808/YTX_Web_IM_Demo/index.html?id=' + id + '&aim=护林员(' + name + ':' + tel + ')',
                         isResize: true,
                         data: {
                             name: +new Date()
                         },
                         //自定义参数
                         myDataName: '$("#txtValue").val()'
+                    });
+                },
+                showSH: function (name1, name2, tel) {
+                    var name = name1 != undefined ? name1 : name2;
+                    $.ligerDialog.open({
+                        height: 260,
+                        width: 670,
+                        title: '市话呼叫',
+                        url: 'http://120.197.61.115:808/DCN/index.html?护林员' + name + '(' + tel + ')',
+                        isResize: true,
+                        data: {
+                            name: +new Date()
+                        },
+                        //自定义参数
+                        myDataName: '$("#txtValue").val()'
+                    });
+                },
+                showMessage: function (id1, id2) {
+                    var id = id1 == undefined ? id2 : id1;
+                    $.ligerDialog.open({
+                        height: 350,
+                        width: 500,
+                        title: '发消息',
+                        url: 'views/dialogs/blank.html',
+                        isResize: true,
+                        data: {
+                            name: +new Date()
+                        },
+                        //自定义参数
+                        userId: id
                     });
                 }
             }
