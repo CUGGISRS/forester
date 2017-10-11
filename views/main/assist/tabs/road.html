@@ -35,6 +35,7 @@
                         <button @click="palyRoad"><i class="iconfont" :class="isplay ? 'icon-tingzhi' : 'icon-bofang'"></i></button>
                         <div class="flex_1 process">
                             <span class="control" :style="'width:'+ isplay +'%'"></span>
+                            <input type="range" class="cursor" @mouseup="mouseUp" v-model="rangeVal">
                         </div>
                     </div>
                 </dd>
@@ -70,7 +71,22 @@
                     GpsDisplayPoints: [],
                     GpsInfos: []
                 },
-                isplay: false
+                isplay: 0,
+                rangeVal: 0,
+                ishandle: false
+            },
+            watch: {
+                rangeVal: function(v, o) {
+                    this.isplay = v;
+                    GIS$.trackPlayHandler(this.roadData, v);
+                }
+            },
+            computed: {
+                roadData: function() {
+                    return $.extend({
+                            GpsInfos: this.DetailInfo.GpsInfos
+                    }, this.DetailInfo.BaseInfo)
+                }
             },
             created: function () {
                 this.options = JSON.parse(sessionStorage.getItem('_panel_info_options_') || '{}');
@@ -149,12 +165,14 @@
                     this.DetailInfo.GpsInfos = info.GpsInfos || [];
                     this.DetailInfo.BaseInfo = info;
                 },
+                mouseUp: function(){
+                    //这是可以添加结束后续播事件
+                    console.log('拖动、点击释放。', +new Date);
+                },
                 palyRoad: function(){
                     var self = this;
                     if (!this.isplay) {
-                        GIS$.trackPlay($.extend({
-                            GpsInfos: this.DetailInfo.GpsInfos
-                        }, this.DetailInfo.BaseInfo), function(per) {
+                        GIS$.trackPlay(this.roadData, function(per) {
                             // per为0-100
                             self.isplay = per;
                         });

@@ -317,6 +317,16 @@ i.loading {
   -webkit-box-shadow: 0 0 1px #bbb;
   box-shadow: 0 0 1px #bbb;
 }
+.audio .process [type="range"] {
+  position: absolute;
+  left: -12px;
+  top: 0;
+  z-index: 2;
+  width: 104%;
+  height: 10px;
+  margin-top: -5px;
+  opacity: 0;
+}
 .cursor {
   cursor: pointer;
 }

@@ -496,6 +496,19 @@
     }
     GIS$.trackPlay = trackPlay;
 
+    /**
+     * 手动播放路径
+     */
+    GIS$.trackPlayHandler = function(info, per) {
+        trackStop();
+        if(!per) {
+            hlyMapService.gjPlayClose()
+        } else {
+            hlyMapService.gjPlayInit(info);
+            hlyMapService.gjPlay(per / 100);
+        }
+    }
+
     var oldInterval;
     /**
      * 设置加速倍数
@@ -523,7 +536,7 @@
      */
     function trackStop() {
         //停止循环
-        job.stop();
+        job && job.stop();
         hlyMapService.gjPlayClose();
         if (resolutionChangeFun) {
             hlyMapService.hlyMap.contMap.scene.map2d.getView().un("change:resolution", resolutionChangeFun);

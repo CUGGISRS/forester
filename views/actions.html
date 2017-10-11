@@ -280,11 +280,18 @@
                         name: '清空',
                         clsName: 'icon_73'
                     }
-                ]
+                ],
+                prevState: true
             },
             watch: {
-                selected: function (v) {
+                selected: function (v, o) {
+                    if(v > 0) {
+                        this.prevState = $('#assistPanel').is(':hidden')
+                    }
                     this.loadPanel(v == 0);
+                    if(v == -1 && o != 0 && !this.prevState) {
+                        $('#assistPanel').find('#vue-assist-main').size() ? this.selected = 0 : $('#assistPanel').show();
+                    }
                 }
             },
             created: function () {

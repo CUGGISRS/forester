@@ -120,7 +120,7 @@
                 setInfo: function(info){
                     this.info.UserInfo = info.UserInfo || {};
                     this.info.GpsInfo = info.GpsInfo || {};
-                    if (info !== "") {
+                    if (info.GpsInfo && info !== "") {
                         if (info.GpsInfo.PROVIDER === "NETWORK") {
                             info.GpsInfo.PROVIDER = "基站";
                         }

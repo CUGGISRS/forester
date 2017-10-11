@@ -40,10 +40,13 @@
                     $('#openlayerBtns').load('views/actions.html');
                     $('#openlayerFrame').on('click', '.panel .close', function(){
                         $(this).closest('.panel').fadeOut(400);
-                        //关闭汇总信息
-                        $(this).closest('#vue-assist-main').size() && Page.Actions.reset();
-                        // 关闭左侧主面板
-                        $(this).closest('#mainPanel').size() && (self.selected = '');
+                        if($(this).closest('#vue-assist-main').size()) {
+                            //关闭汇总信息
+                            Page.Actions.reset();
+                        } else if ($(this).closest('#mainPanel').size()) {
+                            // 关闭左侧主面板
+                            self.selected = '';
+                        }
                     });
                     (function initMap(){
                         if (typeof Hly != 'undefined') {
