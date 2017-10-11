@@ -37,9 +37,9 @@ define([
             //最佳显示
             var extent = that._trackLine.getExtent();
             //转换成3857
-            extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857")
+            extent = ol.proj.transformExtent(extent, "EPSG:4326", "EPSG:3857");
             var resolution = (extent[2] - extent[0]) / baseUtil.defaultGraphicShowWith;
-            return resolution * 6;
+            return resolution * 10;
         };
         this._contMap.layerManager.addLayer(this._tmpLayer, true);
 
@@ -153,7 +153,7 @@ define([
                 if (dateList[key]) {
                     var dateTime = dateList[key];
                     var date = new Date(parseInt(dateTime.replace("/Date(", "").replace(")/", ""), 10));
-                    var lableText = date.Format("hh:mm:ss.S");
+                    var lableText = date.Format("hh:mm:ss");
                     var style = this._simulateMarkerFeature.getStyle();
                     style.getText().setText(lableText);
                     this._simulateMarkerFeature.setStyle(style);

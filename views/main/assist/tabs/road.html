@@ -1,7 +1,13 @@
 <div id="assist_tab_road" class="h100 relative">
     <dl v-show="!lineId" class="tab_panel h100 scroll" :class="{'noresult': !lists.length && loading == 2}">
-        <dt class="tab_panel_title">
+        <dt class="tab_panel_title" v-if="options.pageId!='hot'&&options.pageId!='c119'">
             <label class="circle orange">近</label>三天轨迹
+        </dt>
+        <dt class="tab_panel_title" v-if="options.pageId=='hot'">
+            <label class="circle orange">近</label>24小时轨迹
+        </dt>
+        <dt class="tab_panel_title" v-if="options.pageId=='c119'">
+            报警点轨迹
         </dt>
         <dd class="list_item cursor" v-for="(item,index) in lists" :key="index" @click="selectItem(item)">
             <p class="strong">{{item.LbsUserBaseInfo.USER_NAME}}</p>
@@ -38,7 +44,7 @@
                     <label class="circle orange">轨</label>迹点
                 </dt>
                 <dd class="list_item" v-for="(item,index) in DetailInfo.GpsDisplayPoints" :key="index">
-                    <p><i class="iconfont icon-dingwei"></i><span>{{item.COLLECTTIME.Date()}}</span></p>
+                    <p><i class="iconfont icon-dingwei"></i><span>{{item.TIME}}</span></p>
                     <p>{{item.ADDRESS}}</p>
                     <p>E{{item.LONGITUDE.toDfm()}}&emsp;N{{item.LATITUDE.toDfm()}}</p>
                 </dd>
@@ -76,7 +82,14 @@
                 if (this.options.lineId) {
                     this.getInfo(this.options.lineId)
                 } else {
-                    this.getList();
+                    if (this.options.pageId === "hot") {
+                        this.getHotspotList();
+                    }
+                    else if (this.options.pageId === "c119") {
+                        this.getAlarmList();
+                    } else {
+                        this.getList();
+                    }
                 }
             },
             methods: {
@@ -90,6 +103,31 @@
                     }).done(function (d) {
                         self.lists = d || [];
                     }).always(function(){
+                        self.loading = 2;
+                    });
+                },
+                getAlarmList: function () {
+                    debugger;
+                    var self = this;
+                    //报警的轨迹
+                    self.loading = 1;
+                    $.get(QueryGPSInfo_Ctrl + 'GetUserContrailByAlarmId', {
+                        alarmId: self.options.c119Id
+                    }).done(function (d) {
+                        self.lists = d || [];
+                    }).always(function () {
+                        self.loading = 2;
+                    });
+                },
+                getHotspotList: function () {
+                    var self = this;
+                    //热点的轨迹
+                    self.loading = 1;
+                    $.get(QueryGPSInfo_Ctrl + 'GetContrailsByHotspotId', {
+                        hotspotId: self.options.hotId
+                    }).done(function (d) {
+                        self.lists = d || [];
+                    }).always(function () {
                         self.loading = 2;
                     });
                 },

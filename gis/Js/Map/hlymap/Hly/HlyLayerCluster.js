@@ -25,16 +25,16 @@ define([
             textLabelIcon: {
                 offset: [0, 140],//位置
                 url: iconsUrl,//图片资源
-                anchor: [-.15, 1.3],//图标位置对应的地图点
+                anchor: [-.2, 1.5],//图标位置对应的地图点
                 size: [60, 40],//截取大小
                 opacity: 1,//透明度
             },
             //聚合点图标
             clusterIcon: {
-                offset: [229, 46],//位置
+                offset: [324,232],//位置
                 url: iconsUrl,//图片资源
                 anchor: [1, 1],//图标位置对应的地图点
-                size: [40, 40],//截取大小
+                size: [43, 45],//截取大小
                 opacity: 1//透明度
             },
             //离散点图标
@@ -43,47 +43,47 @@ define([
                 GPS: {
                     online: {
                         normal: {
-                            offset: [93, 182],//位置
+                            offset: [0,300],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
-                            size: [40, 40],//截取大小
+                            size: [40, 54],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [1, 182],//位置
+                            offset: [162,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
-                            size: [46, 48],//截取大小
+                            size: [54, 64],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [1, 182],//位置
+                            offset: [162,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
-                            size: [46, 48],//截取大小
+                            size: [54, 64],//截取大小
                             opacity: 1//透明度
                         },
                     },
                     offline: {
                         normal: {
-                            offset: [133, 182],//位置
+                            offset: [367,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
-                            size: [40, 40],//截取大小
+                            size: [40, 54],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [47, 182],//位置
+                            offset: [0,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
-                            size: [46, 48],//截取大小
+                            size: [54, 64],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [47, 182],//位置
+                            offset: [0,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
-                            size: [46, 48],//截取大小
+                            size: [54, 64],//截取大小
                             opacity: 1//透明度
                         },
                     }
@@ -92,47 +92,47 @@ define([
                 NETWORK: {
                     online: {
                         normal: {
-                            offset: [171, 140],//位置
+                            offset: [160,300],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
-                            size: [40, 40],//截取大小
+                            size: [40, 54],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [44, 86],//位置
+                            offset: [270,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
-                            size: [46, 48],//截取大小
+                            size: [54, 64],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [44, 86],//位置
+                            offset: [270,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
-                            size: [46, 48],//截取大小
+                            size: [54, 64],//截取大小
                             opacity: 1//透明度
                         },
                     },
                     offline: {
                         normal: {
-                            offset: [211, 140],//位置
+                            offset: [120,300],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, 1],//图标位置对应的地图点
-                            size: [40, 40],//截取大小
+                            size: [40, 54],//截取大小
                             opacity: 1,//透明度
                         },
                         selected: {
-                            offset: [182, 86],//位置
+                            offset: [108,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
-                            size: [46, 48],//截取大小
+                            size: [54, 64],//截取大小
                             opacity: 1//透明度
                         },
                         highlight: {
-                            offset: [182, 86],//位置
+                            offset: [108,232],//位置
                             url: iconsUrl,//图片资源
                             anchor: [.5, .86],//图标位置对应的地图点
-                            size: [46, 48],//截取大小
+                            size: [54, 64],//截取大小
                             opacity: 1//透明度
                         },
                     }
@@ -199,8 +199,8 @@ define([
                     text: new ol.style.Text({
                         font: "18px 微软雅黑",
                         textAlign: "center",
-                        offsetX: -20,
-                        offsetY: -20,
+                        offsetX: -23,
+                        offsetY: -23,
                         fill: new ol.style.Fill({
                             color: [255, 255, 255, 1],
                         }),
@@ -245,8 +245,8 @@ define([
                                 text: new ol.style.Text({
                                     font: "14px 微软雅黑",
                                     textAlign: "center",
-                                    offsetX: 40,
-                                    offsetY: -32,
+                                    offsetX: 43,
+                                    offsetY: -40,
                                     text: userName
                                 })
                             }));
@@ -358,7 +358,7 @@ define([
                     removeListener = modelLayer.clustering.clusterEvent.addEventListener(function (clusteredEntities, cluster) {
                         var clusterIconUrl = baseUtil.getImageFromText(that._image, clusterOffset[0],
                             clusterOffset[1], clusterSize[0], clusterSize[1], clusteredEntities.length.toString(), "18px 微软雅黑",
-                            clusterSize[0] / 2, clusterSize[1] / 2 + 7);
+                            clusterSize[0] / 2-1, clusterSize[1] / 2 + 6);
 
                         cluster.billboard.show = true;
                         cluster.billboard.image = clusterIconUrl;
@@ -433,9 +433,9 @@ define([
                 lableIcon.onload = function (e) {
                 	var newiconUrl = baseUtil.getImageCoveredImage(that._image, labelOption.offset[0], labelOption.offset[1],
 						labelOption.size[0], labelOption.size[1],
-						lableIcon, 32, -10);
+						lableIcon, 39, -5);
                 	feature.cesiumEntity.billboard.image = newiconUrl;
-                	feature.cesiumEntity.billboard.pixelOffset = new Cesium.Cartesian2(23, 6);
+                	feature.cesiumEntity.billboard.pixelOffset = new Cesium.Cartesian2(23, 9);
                 	feature.cesiumEntity.billboard.imageSubRegion = null;
                 };
 			} else {

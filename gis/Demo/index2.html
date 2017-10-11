@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="../Scripts/Cesium/Widgets/widgets.css">
     <link rel="stylesheet" href="../Scripts/ContMap/css/contmap.css">
     <link rel="stylesheet" href="../Scripts/ol3/css/ol.css">
+    <script>
+        BASEURL="../js/Map";
+
+    </script>
 </head>
 <body>
 <h1>护林员地图交互接口演示（重构）
@@ -92,6 +96,8 @@
     };
 </script>
 <script>
+
+
     var hlyMap;
     var hlyMapService;
 
@@ -111,7 +117,7 @@
                 project: "EPSG:4326"
             }],*/
             mapContainer: 'map',
-            //terrainProviderUrl: "http://localhost:8035/ContTmsTerrain",
+            terrainProviderUrl: "https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles",
             xhqMapUrls: {
                 "广东省": "http://localhost/测试地图切片/PatrolArea/Layers/_alllayers",
                 "阳山县": "http://localhost/测试地图切片/PatrolArea_ysx",
@@ -7882,9 +7888,8 @@
                 }
             ]
         });
-
         var value = 0;
-        var step = 10;
+        var step = .5;
         code = setInterval(function () {
             if (value > 100) {
                 //停止循环
@@ -7893,7 +7898,7 @@
             }
             hlyMapService.gjPlay(value / 100.0);
             value = value + step;
-        }, 1000);
+        }, 100);
 
     }
 

@@ -115,7 +115,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt class="flex acenter"></dt>
+                    <dt class="flex acenter"><span class="flex_1">巡护区域</span></dt>
                     <dd class="flex wrap layermanger columns2">
                         <label class="whitespace" v-for="(item,index) in layers[0]" :key="index">
                             <input type="checkbox" class="hidden" v-model="item.val" @change="layerManger(item)">
@@ -185,7 +185,7 @@
                         {
                             id: 'area',
                             name: '巡护区',
-                            clsName: 'icon_74',
+                            clsName: 'icon_02',
                             val: true
                         }
                     ],

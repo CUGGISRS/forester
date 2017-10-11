@@ -47,14 +47,14 @@ define([
                     opacity: 1,//透明度
                 },
                 selected: {
-                    offset: [67, 46],//位置
+                    offset: [72,353],//位置
                     url: iconsUrl,//图片资源
                     anchor: [.5, .5],//图标位置对应的地图点
-                    size: [34, 37],//截取大小
+                    size: [36, 37],//截取大小
                     opacity: 1,//透明度
                 },
                 highlight: {
-                    offset: [134, 140],//位置
+                    offset: [275,300],//位置
                     url: iconsUrl,//图片资源
                     anchor: [.5, .5],//图标位置对应的地图点
                     size: [37, 37],//截取大小
@@ -71,17 +71,17 @@ define([
                     opacity: 1,//透明度
                 },
                 selected: {
-                    offset: [97, 140],//位置
+                    offset: [36,353],//位置
                     url: iconsUrl,//图片资源
                     anchor: [.5, .5],//图标位置对应的地图点
-                    size: [37, 36],//截取大小
+                    size: [36, 37],//截取大小
                     opacity: 1,//透明度
                 },
                 highlight: {
-                    offset: [33, 46],//位置
+                    offset: [200,300],//位置
                     url: iconsUrl,//图片资源
                     anchor: [.5, .5],//图标位置对应的地图点
-                    size: [34, 36],//截取大小
+                    size: [37, 37],//截取大小
                     opacity: 1,//透明度
                 },
             },

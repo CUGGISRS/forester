@@ -18,7 +18,7 @@
                 <label class="label">市</label>
                 <span class="flex_1 input">
                     <select v-model="form.city" class="w100" :disabled="disableds.city">
-                        <option v-for="i in options.city" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
+                        <option v-for="i in options.city" :key="i.OrganID" :value="i.ORGAN_ID" v-html="i.ORGAN_NAME"></option>
                     </select>
                 </span>
             </p>
@@ -26,7 +26,7 @@
                 <label class="label">县</label>
                 <span class="flex_1 input">
                     <select v-model="form.county" class="w100" :disabled="disableds.county">
-                        <option v-for="i in options.county" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
+                        <option v-for="i in options.county" :key="i.OrganID" :value="i.ORGAN_ID" v-html="i.ORGAN_NAME"></option>
                     </select>
                 </span>
             </p>
@@ -34,7 +34,7 @@
                 <label class="label">乡</label>
                 <span class="flex_1 input">
                     <select v-model="form.village" class="w100" :disabled="disableds.village">
-                        <option v-for="i in options.village" :key="i.OrganID" :value="i.OrganID" v-html="i.OrganName"></option>
+                        <option v-for="i in options.village" :key="i.OrganID" :value="i.ORGAN_ID" v-html="i.ORGAN_NAME"></option>
                     </select>
                 </span>
             </p>
@@ -120,11 +120,12 @@
                         <span class="flex_1">{{item.AttendanceTimeOrName}}</span>
                         <i class="iconfont opacity4" :class="index==resultsIdx ? 'icon-shousuo-copy' : 'icon-zhankai-copy'"></i>
                     </h3>
-                    <p>总出勤率&emsp;{{item.TotalRate}}%</p>
-                    <p>总时长&emsp;{{item.TotalTimeLength}}小时</p>
+                    <p>总出勤率&emsp;{{(item.TotalRate*100).toFixed(4)}}%</p>
+                    <p>总时长&emsp;{{item.TotalTimeLength.toFixed(2)}}小时</p>
                     <ul v-if="index==resultsIdx" class="recordtable">
                         <li class="flex tr" v-for="(r,ridx) in item.records" :key="ridx">
-                            <div class="th"><label>{{ r.AttendanceTimeOrName.split(' ')[0] }}</label></div>
+                            <div class="th"><label>{{ r.AttendanceTimeOrName.split(' ')[0] }}</label>
+                            </div>
                             <div v-if="r.State == '1'" class="th flex_1">
                                 <p>{{r.TimeLength}}小时&emsp;{{r.Distance}}km</p>
                                 <p>
@@ -221,7 +222,7 @@
             },
             mounted: function () {
                 $('#' + this.btimeId).ligerDateEditor({
-                    initValue: String(new Date().setMonth(new Date().getMonth() - 6)).Date()
+                    initValue: String(new Date().setMonth(new Date().getMonth() - 1)).Date()
                 });
                 $('#' + this.etimeId).ligerDateEditor({
                     initValue: String(+new Date()).Date()
@@ -232,7 +233,7 @@
                     var self = this;
                     var level = this.cascade.indexOf(key);
                     var val = !level ? '2' : self.form[this.cascade[level - 1]];
-                    var url = level > 0 ? 'GetHomeSubOrganList' : 'GetHomeRootOrgan';
+                    var url = level > 0 ? 'GetSubOrganList' : 'GetHomeRootOrgan';
                     if(key && level != -1) {
                         this.cascade.forEach(function(item, idx) {
                             if(idx < level) return;
@@ -256,7 +257,7 @@
                     });
                 },
                 fillSelect: function(d, key, level){
-                    this.options[key] = [{ "OrganID": "", "OrganName": "--请选择--" }].concat(d);
+                    this.options[key] = [{ "ORGAN_ID": "", "ORGAN_NAME": "--请选择--" }].concat(d);
                     this.form[key] = this.defVal[level];
                 },
                 type119: function(i){

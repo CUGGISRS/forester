@@ -42,7 +42,7 @@ define([
 
         var style = new ol.style.Style({
             stroke: new ol.style.Stroke({
-            	color: "rgba(0,255,127,.8)",
+            	color: "rgba(123,243,255,.8)",
                 width: width
             })
         });

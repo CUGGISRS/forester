@@ -194,13 +194,13 @@ var SECONDMENUS = [
 var TYPE119 = ['一键报警', '毁林案件', '火情火灾', '破坏林业设施', '野生动植物', '病虫害'];
 var serviceUrlConfig = {
 	getOnlineUserForMapList: QueryUser_Ctrl + "GetOnlineUserForMapList?disconnectTimer=100000",
-	getAlarmsByOrgan: QueryAlrma_Ctrl + "GetAlarmNextDayByOrganId?day=100&organId=2",
-	getHotspotList: QueryHotSpot_Ctrl + "GetHotspotNextDayByOrganId?day=100&organId=2",
-	getNoticesByOrgan: IPServer + "QueryNotice/GetNoticesByOrgan?day=100&organId=2",
+	getAlarmsByOrgan: QueryAlrma_Ctrl + "GetAlarmNextDayByOrganId?day=3000&organId=2",
+	getHotspotList: QueryHotSpot_Ctrl + "GetHotspotNextDayByOrganId?day=200&organId=2",
+	getNoticesByOrgan: IPServer + "QueryNotice/GetNoticesByOrgan?day=300&organId=2",
 	getUserGpsInfo: IPServer + "/QueryGPSInfo/GetUserGpsInfo",
     getPatrolAreaForEdit: IPServer + "ManagePatrol/GetPatrolAreaForEdit",
     baseMapUrl: "http://172.30.3.209/GDYX/Layers/_alllayers/",
-     /*terrainProviderUrl: "http://172.30.3.204:8035/ContTmsTerrain",*/
+    /*terrainProviderUrl: "http://172.30.3.204:8035/ContTmsTerrain",*/
     terrainProviderUrl: "https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles",
     gdXhqMapUrl: "http://172.30.3.209/PatrolArea/PatrolArea/PatrolArea/Layers/_alllayers/",
     getPatrolAreaByLocation: IPServer + "/QueryPatrolarea/GetPatrolAreaByLocation"

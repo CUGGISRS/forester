@@ -23,10 +23,10 @@
         <div class="treeContext h100 scroll bbox" v-show="tabIdx == 0">
             <ul id="treecontext" class="l-tree l-tree-nolines" style="width: calc(100% - 30px)"></ul>
         </div>
-        <div class="resultContext h100 scroll bbox" v-show="tabIdx == 1">
+        <div class="resultContext h100 scroll bbox" :class="{'noresult': !results.length }" v-show="tabIdx == 1">
             <dl>
                 <dd v-for="(item,index) in results" :key="index" @click="selectItem(index)" :class="{'selected': index==resultsIdx}">
-                    <h3><i class="icons" :class="(item.Provider || 'NETWORK') + (item.IsOnline ? ' online' : '')"></i><span>{{item.DEPARTMENT_NAME}}</span></h3>
+                    <h3><i class="icons" :class="(translate(item.Provider) || 'NETWORK') + (item.IsOnline ? ' online' : '')"></i><span>{{item.DEPARTMENT_NAME}}</span></h3>
                     <p class="whitespace">{{item.USER_NAME}}&emsp;{{item.PHONE_NUM}}</p>
                     <p class="whitespace">面积&emsp;{{item.Area}}亩</p>
                 </dd>
@@ -73,6 +73,21 @@
                         userId: data.ID,
                         isOnline: data.IsOnline
                     });
+                },
+                translate:function(value) {
+                    var result = "";
+                    switch (value) {
+                        case "北斗":
+                            result = "BD";
+                            break;
+                        case "超短波":
+                            result = "GPS";
+                            break;
+                        case "":
+                            result = "";
+                            break;
+                    }
+                    return result;
                 }
             }
         });
@@ -128,6 +143,12 @@
                 },
                 render: function (data) {
                     if ('UserId' in data) {
+                        if (data.Provider === '北斗') {
+                            data.Provider = 'BD';
+                        }
+                        if (data.Provider === '超短波') {
+                            data.Provider = 'GPS';
+                        }
                         return '<label class="placeholder"><i class="icons ' + (data.Provider || 'NETWORK') + (data.IsOnline ? ' online ' : '') + '"></i>' + data.UserName + '</label>'
                     } else {
                         return data.OrganName + '（' + data.OrganOnLineNum + '/' + data.OrganTotal + '）'

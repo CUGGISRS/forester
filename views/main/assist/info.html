@@ -133,7 +133,7 @@
                         height: 500,
                         width: 750,
                         title: '即时通',
-                        url: 'http://120.197.61.115:808/YTX_Web_IM_Demo/index.html?id=' + id + '&aim=护林员(' + name + ':' + tel + ')',
+                        url: 'https://120.197.61.115/YTX_Web_IM_Demo/index.html?id=' + id + '&aim=护林员(' + name + ':' + tel + ')',
                         isResize: true,
                         data: {
                             name: +new Date()
@@ -148,7 +148,8 @@
                         height: 260,
                         width: 670,
                         title: '市话呼叫',
-                        url: 'http://120.197.61.115:808/DCN/index.html?护林员' + name + '(' + tel + ')',
+                       /* url: 'http://120.197.61.115:808/DCN/index.html?护林员' + name + '(' + tel + ')',*/
+                        url: 'http://120.197.61.115:808/DCN/Dispatcher.aspx?Tel=' + tel + '&timestamp=' + name,
                         isResize: true,
                         data: {
                             name: +new Date()

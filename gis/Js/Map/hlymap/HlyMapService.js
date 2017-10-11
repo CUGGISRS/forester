@@ -54,7 +54,7 @@ define([
             terrainProviderUrl: this._option.terrainProviderUrl,
             xhqMapUrl: this._serviceUrlConfig.gdXhqMapUrl,
             getCurrentLocationZoneUrl: this._serviceUrlConfig.getCurrentLocationZone,
-            clusterDistance: 30,
+            clusterDistance: 39,
             isContTmsTerrain: false,
         });
         this._hlyMap.init();
@@ -157,7 +157,7 @@ define([
     };
 
     /**
-     * 跳到单位区域并标注（到tmp图层）
+     * 跳到单位区域
      * @param esriGeometryString
      */
     HlyMapService.prototype.jumpToUnitZone = function (esriGeometryString) {
@@ -166,22 +166,22 @@ define([
         //新增
         var format = new ol.format.EsriJSON();
         var geometry = format.readGeometry(esriGeometryString);
-        var unitZoneFeature = new ol.Feature({
-            geometry: geometry
-        });
-        unitZoneFeature.setStyle(new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color: "rgba(255,65,65,.8)",
-                width: 3
-            })
-        }));
+        //var unitZoneFeature = new ol.Feature({
+        //    geometry: geometry
+        //});
+        //unitZoneFeature.setStyle(new ol.style.Style({
+        //    stroke: new ol.style.Stroke({
+        //        color: "rgba(255,65,65,.8)",
+        //        width: 3
+        //    })
+        //}));
 
-        //添加到图层
-        var tmpSource = this._hlyMap.tmpBaseMapLayerDataSource;
-        this._featureContainerManager.addFeatureItem("选择的区域", {}, unitZoneFeature, tmpSource, "单位区域", true);
+        ////添加到图层
+        //var tmpSource = this._hlyMap.tmpBaseMapLayerDataSource;
+        //this._featureContainerManager.addFeatureItem("选择的区域", {}, unitZoneFeature, tmpSource, "单位区域", true);
         //转跳到该图形
-        var paddingLR = 0;//.01 * this._hlyMap.contMap.scene.map2d.getSize()[0];
-        var paddingUD = 0;// .01 * this._hlyMap.contMap.scene.map2d.getSize()[1];
+        //var paddingLR = 0;//.01 * this._hlyMap.contMap.scene.map2d.getSize()[0];
+        //var paddingUD = 0;// .01 * this._hlyMap.contMap.scene.map2d.getSize()[1];
         this._hlyMap.setSmartCenter(geometry.getExtent(), true);
     };
 
@@ -1121,8 +1121,8 @@ define([
                 anchor: [.5, 1],//图标位置对应的地图点
                 src: iconsUrl,
                 scale: 1,
-                offset: [367, 0],
-                size: [33, 46],
+                offset: [0,353],
+                size: [36, 67],
             })
         }));
         var endFeature = new ol.Feature({
@@ -1133,8 +1133,8 @@ define([
                 anchor: [.5, 1],//图标位置对应的地图点
                 src: iconsUrl,
                 scale: 1,
-                offset: [0, 46],
-                size: [33, 46],
+                offset: [350,290],
+                size: [36, 67],
             })
         }));
 
