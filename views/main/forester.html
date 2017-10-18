@@ -15,7 +15,7 @@
             <button type="submit"><i class="icons icon_30"></i></button>
         </form>
         <div class="tabsarea flex acenter jcenter">
-            <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="tabIdx=0">组织机构</span>
+            <span class="flex_1" :class="{'selected': tabIdx == 0}" @click="refreshTree">组织机构</span>
             <span class="flex_1" :class="{'selected': tabIdx == 1}" @click="tabIdx=1">查询结果</span>
         </div>
     </div>
@@ -55,6 +55,10 @@
             },
             mounted: mounted,
             methods: {
+                refreshTree: function () {
+                    this.tabIdx = 0;
+                    treeEve.reload();
+                },
                 filterQuery: function () {
                     var self = this;
                     this.tabIdx = +!!this.filterWord;
@@ -158,7 +162,6 @@
                     if (!data || !data[0]) return false;
                     if (data[0]['OrganID'] == Prov_Code.OrganID) {
                         data[0].IsExistSub && treeEve.expandAll();
-                        // Page.Actions.loadPanel(true);
                     }
                 }
             });
