@@ -81,3 +81,22 @@ Date.prototype.Format = function (fmt) { //author: meizz
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
+
+function thousands(num) {
+    num = num.toString();
+    num = num.replace(/[^0-9.+-]/g, '');
+    num = parseFloat(num) || 0;
+    num = num.toString();
+    if (/^-?\d+\.?\d+$/.test(num)) {
+        if (/^-?\d+$/.test(num)) {
+            num = num + ",00";
+        } else {
+            num = num.replace(/\./, ',');
+        }
+        while (/\d{4}/.test(num)) {
+            num = num.replace(/(\d+)(\d{3}\,)/, '$1,$2');
+        }
+        num = num.replace(/\,(\d*)$/, '.$1');
+    }
+    return num
+}
